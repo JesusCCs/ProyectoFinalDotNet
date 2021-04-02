@@ -4,4 +4,13 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Contracts" />
+      <Folder Include="Implementations" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ProyectoFinal.DAL\ProyectoFinal.DAL.csproj" />
+    </ItemGroup>
+
 </Project>

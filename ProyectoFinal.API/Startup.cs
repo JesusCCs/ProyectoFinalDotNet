@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,9 +29,34 @@ namespace ProyectoFinal.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            
+            // Automapper
+            services.AddAutoMapper(typeof(MappingProfile));
+
+            // Para habilitar CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
+            
+            // Se añade Swagger
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "ProyectoFinal.API", Version = "v1"});
+                const string groupName = "v1";
+
+                c.SwaggerDoc(groupName, new OpenApiInfo
+                {
+                    Title = "ProyectoFinal.API", 
+                    Version = groupName,
+                    Description = "BackEnd del Proyecto Final de DAM"
+                });
+                
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
 
@@ -48,6 +75,8 @@ namespace ProyectoFinal.API
             app.UseRouting();
 
             app.UseAuthorization();
+            
+            app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
