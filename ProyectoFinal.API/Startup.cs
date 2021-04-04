@@ -71,6 +71,9 @@ namespace ProyectoFinal.API
             }
 
             app.UseHttpsRedirection();
+            
+            // Permite tener archivos estáticos, que se acceden directamente, sin pasar por los controladores
+            app.UseStaticFiles();
 
             app.UseRouting();
 
