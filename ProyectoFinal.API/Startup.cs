@@ -18,6 +18,10 @@ namespace ProyectoFinal.API
 {
     public class Startup
     {
+        private const string DevCors = "DevCors"; // Vamos a permitir cualquiera para desarrollo en local
+        private const string ProdCors = "ProdCors"; // Permitiremos solo ciertas url en producción
+        
+        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -36,10 +40,13 @@ namespace ProyectoFinal.API
             // Para habilitar CORS
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy",
+                // Cors en local
+                options.AddPolicy(DevCors,
                     builder => builder.AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader());
+                
+                // TODO: cors para producción
             });
             
             // Se añade Swagger
@@ -63,11 +70,14 @@ namespace ProyectoFinal.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var cors = ProdCors;
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProyectoFinal.API v1"));
+                cors = DevCors;
             }
 
             app.UseHttpsRedirection();
@@ -79,7 +89,7 @@ namespace ProyectoFinal.API
 
             app.UseAuthorization();
             
-            app.UseCors("CorsPolicy");
+            app.UseCors(cors);
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

@@ -11,6 +11,10 @@ jobs:
     name: Compilación de la App
     runs-on: ubuntu-latest
     steps:
+      - name: Colocamos acciones del marketplace
+        uses: actions/checkout@v2
+      - name: ¿Dónde estoy?
+        run: ls
       - name: Build con dotnet
         run: dotnet build
         
