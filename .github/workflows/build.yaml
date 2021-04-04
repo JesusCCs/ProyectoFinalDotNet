@@ -1,0 +1,17 @@
+﻿name: Build App
+
+on:
+  push:
+    branches:
+      - master
+      
+jobs:
+  build:
+    
+    name: Compilación de la App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build con dotnet
+        run: dotnet build
+        
+
