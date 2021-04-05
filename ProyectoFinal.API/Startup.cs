@@ -25,12 +25,19 @@ namespace ProyectoFinal.API
         
         private IConfiguration Configuration { get; }
         
+        /// <summary>
+        /// Constructor of the startup. Dependency injection for the configuration file
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -72,9 +79,13 @@ namespace ProyectoFinal.API
                 c.IncludeXmlComments(xmlPath);
             });
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var cors = ProdCors;
             
