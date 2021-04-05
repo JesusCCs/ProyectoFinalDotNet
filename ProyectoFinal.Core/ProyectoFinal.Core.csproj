@@ -5,7 +5,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="DTO" />
+      <Folder Include="DTO\Mobile" />
+      <Folder Include="DTO\Share" />
+      <Folder Include="DTO\Web" />
     </ItemGroup>
 
 </Project>
