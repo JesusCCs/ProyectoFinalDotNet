@@ -8,11 +8,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ProyectoFinal.DAL.Models;
 
 namespace ProyectoFinal.API
 {
@@ -21,19 +23,23 @@ namespace ProyectoFinal.API
         private const string DevCors = "DevCors"; // Vamos a permitir cualquiera para desarrollo en local
         private const string ProdCors = "ProdCors"; // Permitiremos solo ciertas url en producción
         
+        private IConfiguration Configuration { get; }
         
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
             
+            // Base de datos
+            var connectionString = Configuration.GetConnectionString("DbConnection");
+            services.AddDbContext<DataBaseContext>(o => 
+                o.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
             // Automapper
             services.AddAutoMapper(typeof(MappingProfile));
 
