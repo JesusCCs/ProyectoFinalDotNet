@@ -8,11 +8,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ProyectoFinal.DAL.Models;
 
 namespace ProyectoFinal.API
 {
@@ -21,19 +23,30 @@ namespace ProyectoFinal.API
         private const string DevCors = "DevCors"; // Vamos a permitir cualquiera para desarrollo en local
         private const string ProdCors = "ProdCors"; // Permitiremos solo ciertas url en producción
         
+        private IConfiguration Configuration { get; }
         
+        /// <summary>
+        /// Constructor of the startup. Dependency injection for the configuration file
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
             
+            // Base de datos
+            var connectionString = Configuration.GetConnectionString("DbConnection");
+            services.AddDbContext<DataBaseContext>(o => 
+                o.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
             // Automapper
             services.AddAutoMapper(typeof(MappingProfile));
 
@@ -66,9 +79,13 @@ namespace ProyectoFinal.API
                 c.IncludeXmlComments(xmlPath);
             });
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var cors = ProdCors;
             
