@@ -2,10 +2,30 @@
 
 namespace ProyectoFinal.Core.DTO
 {
-    public class GimnasioDto
+    public class GimnasioLoginDto
+    {
+        public string Login { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+    
+    public class GimnasioCreateDto
+    {
+        public string Login { get; set; }
+        public string Password { get; set; }
+        public string Email { get; set; }
+        public string Cif { get; set; }
+        public string Nombre { get; set; }
+        public string Direccion { get; set; }
+        public string Descripcion { get; set; }
+        public int Tarifa { get; set; }
+    }
+    
+    public class GimnasioDetallesDto
     {
         public int Id { get; set; }
-        public AuthDto Auth { get; set; }
+        public string Login { get; set; }
+        public string Email { get; set; }
         public string Cif { get; set; }
         public string Nombre { get; set; }
         public string Direccion { get; set; }
