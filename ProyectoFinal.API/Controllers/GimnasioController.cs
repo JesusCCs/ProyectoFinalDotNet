@@ -6,17 +6,24 @@ using ProyectoFinal.Core.DTO;
 
 namespace ProyectoFinal.API.Controllers
 {
+    /// <inheritdoc />
     [Route("/gimnasio")]
     [ApiController]
     public class GimnasioController : ControllerBase
     {
         private readonly IGinmasioBL _bl;
-        
+
+        /// <inheritdoc />
         public GimnasioController(IGinmasioBL bl)
         {
             _bl = bl;
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="itemLogin"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("/gimnasio/login")]
         public async Task<ActionResult> Login([FromBody] GimnasioLoginDto itemLogin)
@@ -25,6 +32,10 @@ namespace ProyectoFinal.API.Controllers
             return item == null ? Ok(false) : Ok(item);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
@@ -32,6 +43,11 @@ namespace ProyectoFinal.API.Controllers
             return Ok(lista);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id:guid}")]
         public async Task<ActionResult> GetById(Guid id)
         {
@@ -39,6 +55,11 @@ namespace ProyectoFinal.API.Controllers
             return Ok(item);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="itemNuevo"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] GimnasioCreateDto itemNuevo)
         {
@@ -47,6 +68,12 @@ namespace ProyectoFinal.API.Controllers
         }
         
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="itemActualizado"></param>
+        /// <returns></returns>
         [HttpPut("{id:guid}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] GimnasioUpdateDto itemActualizado)
         {
@@ -54,6 +81,11 @@ namespace ProyectoFinal.API.Controllers
             return Ok(item);
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Delete(Guid id)
         {
