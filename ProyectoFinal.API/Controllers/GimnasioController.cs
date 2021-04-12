@@ -1,66 +1,64 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProyectoFinal.BL.Contracts;
+using ProyectoFinal.Core.DTO;
 
 namespace ProyectoFinal.API.Controllers
 {
-    [Route("[controller]")]
+    [Route("/gimnasio")]
     [ApiController]
     public class GimnasioController : ControllerBase
     {
-
+        private readonly IGinmasioBL _bl;
         
-        
-        /// <summary>
-        /// GET: gimnasio
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        public GimnasioController(IGinmasioBL bl)
         {
-            
+            _bl = bl;
         }
         
-        /// <summary>
-        /// GET: gimnasio/5
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-        
-        /// <summary>
-        /// POST: gimnasio
-        /// </summary>
-        /// <param name="value"></param>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Route("/gimnasio/login")]
+        public async Task<ActionResult> Login([FromBody] GimnasioLoginDto itemLogin)
         {
+            var item = await _bl.Login(itemLogin);
+            return item == null ? Ok(false) : Ok(item);
         }
         
-        /// <summary>
-        /// PUT: gimnasio/5
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="value"></param>
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpGet]
+        public async Task<ActionResult> GetAll()
         {
+            var lista = await _bl.GetAll();
+            return Ok(lista);
         }
         
-        /// <summary>
-        /// DELETE: gimnasio/5
-        /// </summary>
-        /// <param name="id"></param>
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult> GetById(Guid id)
         {
+            var item = await _bl.GetById(id);
+            return Ok(item);
+        }
+        
+        [HttpPost]
+        public async Task<ActionResult> Create([FromBody] GimnasioCreateDto itemNuevo)
+        {
+            var item = await _bl.Create(itemNuevo);
+            return Ok(item);
+        }
+        
+
+        [HttpPut("{id:guid}")]
+        public async Task<ActionResult> Update(Guid id, [FromBody] GimnasioUpdateDto itemActualizado)
+        {
+            var item = await _bl.Update(id, itemActualizado);
+            return Ok(item);
+        }
+        
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var item = await _bl.Delete(id);
+            return Ok(item);
         }
     }
 }

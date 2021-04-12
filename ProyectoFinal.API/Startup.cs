@@ -1,20 +1,18 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ProyectoFinal.BL.Contracts;
+using ProyectoFinal.BL.Implementations;
 using ProyectoFinal.DAL.Models;
+using ProyectoFinal.DAL.Repositories.Contracts;
+using ProyectoFinal.DAL.Repositories.Implementations;
 
 namespace ProyectoFinal.API
 {
@@ -78,6 +76,13 @@ namespace ProyectoFinal.API
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+            
+            // Se añade inyección de dependencias de bl
+            services.AddScoped<IGinmasioBL, GinmasioBL>();
+            
+            // Se añade inyección de dependencias de respositories
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IRepositoryAuth<>), typeof(RepositoryAuth<>));
         }
         
         /// <summary>
