@@ -5,7 +5,7 @@ using ProyectoFinal.Core.DTO;
 
 namespace ProyectoFinal.BL.Contracts
 {
-    public interface IGinmasioBL
+    public interface IGinmasioBl
     {
         Task<GimnasioDetallesDto> Login(GimnasioLoginDto login);
         Task<GimnasioDetallesDto> Create(GimnasioCreateDto gimnasio);

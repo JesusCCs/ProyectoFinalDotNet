@@ -9,13 +9,13 @@ using ProyectoFinal.DAL.Repositories.Contracts;
 
 namespace ProyectoFinal.BL.Implementations
 {
-    public class GinmasioBL : IGinmasioBL
+    public class GinmasioBl : IGinmasioBl
     {
         private readonly IRepository<Gimnasio> _repository;
         private readonly IRepositoryAuth<Gimnasio> _repositoryAuth;
         private readonly IMapper _mapper;
 
-        public GinmasioBL(IRepository<Gimnasio> repository, IRepositoryAuth<Gimnasio> repositoryAuth, IMapper mapper)
+        public GinmasioBl(IRepository<Gimnasio> repository, IRepositoryAuth<Gimnasio> repositoryAuth, IMapper mapper)
         {
             _repository = repository;
             _repositoryAuth = repositoryAuth;
@@ -62,7 +62,7 @@ namespace ProyectoFinal.BL.Implementations
                 var entity = _mapper.Map<Gimnasio>(gimnasio);
                 return await _repository.Update(entity);
             }
-            catch (Exception _)
+            catch (Exception)
             {
                 return false;
             }
@@ -74,7 +74,7 @@ namespace ProyectoFinal.BL.Implementations
             {
                 return await _repository.Delete(new Gimnasio {Id = id});
             }
-            catch (Exception _)
+            catch (Exception)
             {
                 return false;
             }

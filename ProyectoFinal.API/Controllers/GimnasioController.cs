@@ -11,10 +11,10 @@ namespace ProyectoFinal.API.Controllers
     [ApiController]
     public class GimnasioController : ControllerBase
     {
-        private readonly IGinmasioBL _bl;
+        private readonly IGinmasioBl _bl;
 
         /// <inheritdoc />
-        public GimnasioController(IGinmasioBL bl)
+        public GimnasioController(IGinmasioBl bl)
         {
             _bl = bl;
         }

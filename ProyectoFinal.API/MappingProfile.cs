@@ -1,4 +1,5 @@
-﻿using System.Security;
+﻿using System;
+using System.Linq.Expressions;
 using System.Security.Cryptography;
 using AutoMapper;
 using ProyectoFinal.Core.DTO;
@@ -13,6 +14,7 @@ namespace ProyectoFinal.API
     /// </summary>
     public class MappingProfile : Profile
     {
+        /// <inheritdoc />
         public MappingProfile()
         {
             // AutoHash de Password para Gimnasios y Usuarios
@@ -28,7 +30,7 @@ namespace ProyectoFinal.API
             CreateMap<GimnasioLoginDto, Gimnasio>();
             CreateMap<GimnasioCreateDto, Gimnasio>();
             CreateMap<GimnasioUpdateDto, Gimnasio>();
-            
+
             //  ------- Gimnasios ----------
         }
     }

@@ -46,7 +46,7 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
         public async Task<bool> Update(T entity)
         {
             var element = await _context.Set<T>().FindAsync(entity.Id);
-            _context.Entry(element).CurrentValues.SetValues(element);
+            _context.Entry(element).CurrentValues.SetValues(entity);
             var count = await _context.SaveChangesAsync();
             
             return count == 1;

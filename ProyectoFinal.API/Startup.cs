@@ -16,6 +16,9 @@ using ProyectoFinal.DAL.Repositories.Implementations;
 
 namespace ProyectoFinal.API
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Startup
     {
         private const string DevCors = "DevCors"; // Vamos a permitir cualquiera para desarrollo en local
@@ -78,7 +81,7 @@ namespace ProyectoFinal.API
             });
             
             // Se añade inyección de dependencias de bl
-            services.AddScoped<IGinmasioBL, GinmasioBL>();
+            services.AddScoped<IGinmasioBl, GinmasioBl>();
             
             // Se añade inyección de dependencias de respositories
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
