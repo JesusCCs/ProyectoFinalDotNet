@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ProyectoFinal.DAL.Models;
@@ -45,10 +46,20 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
 
         public async Task<bool> Update(T entity)
         {
-            var element = await _context.Set<T>().FindAsync(entity.Id);
-            _context.Entry(element).CurrentValues.SetValues(entity);
-            var count = await _context.SaveChangesAsync();
+            _context.Set<T>().Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            var entry = _context.Entry(entity);
             
+            var properties = typeof(T).GetProperties();
+            foreach (var property in properties)
+            {
+                if (property.GetValue(entity, null) == null)
+                {
+                    entry.Property(property.Name).IsModified = false;
+                }
+            }
+
+            var count = await _context.SaveChangesAsync();
             return count == 1;
         }
 

@@ -29,7 +29,8 @@ namespace ProyectoFinal.API
             // Mapeo DTO   --> Model
             CreateMap<GimnasioLoginDto, Gimnasio>();
             CreateMap<GimnasioCreateDto, Gimnasio>();
-            CreateMap<GimnasioUpdateDto, Gimnasio>();
+            CreateMap<GimnasioUpdateDto, Gimnasio>()
+                .ForMember(g => g.FechaCreado, opt => opt.Ignore());
 
             //  ------- Gimnasios ----------
         }
