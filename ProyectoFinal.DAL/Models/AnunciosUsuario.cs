@@ -1,15 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 
 #nullable disable
 
 namespace ProyectoFinal.DAL.Models
 {
-    public partial class AnunciosUsuario
+    public partial class AnunciosUsuario : Base
     {
-        public int Id { get; set; }
-        public int AnucioId { get; set; }
-        public int UsuarioId { get; set; }
+        public Guid AnucioId { get; set; }
+        public Guid UsuarioId { get; set; }
         public int Reproducciones { get; set; }
+
+        public virtual Anuncio Anucio { get; set; }
+        public virtual Usuario Usuario { get; set; }
     }
 }

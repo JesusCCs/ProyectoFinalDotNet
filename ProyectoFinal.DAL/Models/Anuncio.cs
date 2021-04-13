@@ -5,16 +5,19 @@ using System.Collections.Generic;
 
 namespace ProyectoFinal.DAL.Models
 {
-    public partial class Anuncio
+    public partial class Anuncio : Base
     {
-        public int Id { get; set; }
-        public int? GimnasioId { get; set; }
+        public Anuncio()
+        {
+            AnunciosUsuarios = new HashSet<AnunciosUsuario>();
+        }
+        
+        public Guid GimnasioId { get; set; }
         public string Tipo { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
         public int ReproduccionesLimite { get; set; }
-        public DateTime FechaCreado { get; set; }
-        public DateTime FechaActualizado { get; set; }
-        public bool? Activo { get; set; }
+        public Gimnasio Gimnasio { get; set; }
+        public ICollection<AnunciosUsuario> AnunciosUsuarios { get; set; }
     }
 }

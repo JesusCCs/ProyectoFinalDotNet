@@ -5,12 +5,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Contracts" />
-      <Folder Include="Implementations" />
+      <ProjectReference Include="..\ProyectoFinal.DAL\ProyectoFinal.DAL.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ProyectoFinal.DAL\ProyectoFinal.DAL.csproj" />
+      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     </ItemGroup>
 
 </Project>
