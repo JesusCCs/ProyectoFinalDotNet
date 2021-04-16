@@ -1,13 +1,15 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using ProyectoFinal.DAL.Models;
+using ProyectoFinal.DAL.Models.Auth;
 
 #nullable disable
 
-namespace ProyectoFinal.DAL.Models
+namespace ProyectoFinal.DAL
 {
-    public partial class DataBaseContext : DbContext
+    public class DataBaseContext : IdentityDbContext<Auth, Rol, Guid>
     {
         public DataBaseContext()
         {
@@ -17,11 +19,6 @@ namespace ProyectoFinal.DAL.Models
             : base(options)
         {
         }
-
-        public virtual DbSet<Anuncio> Anuncios { get; set; }
-        public virtual DbSet<AnunciosUsuario> AnunciosUsuarios { get; set; }
-        public virtual DbSet<Gimnasio> Gimnasios { get; set; }
-        public virtual DbSet<Usuario> Usuarios { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,6 +30,8 @@ namespace ProyectoFinal.DAL.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            
             modelBuilder.Entity<Anuncio>(entity =>
             {
                 entity.ToTable("anuncios");
@@ -146,7 +145,7 @@ namespace ProyectoFinal.DAL.Models
                     .HasConstraintName("FK_anuncios_usuarios_anuncios");
 
                 entity.HasOne(d => d.Usuario)
-                    .WithMany(p => p.AnunciosUsuarios)
+                    .WithMany(p => p.Anuncios)
                     .HasForeignKey(d => d.UsuarioId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_anuncios_usuarios_usuarios");
@@ -156,14 +155,10 @@ namespace ProyectoFinal.DAL.Models
             {
                 entity.ToTable("gimnasios");
 
-                entity.HasIndex(e => e.Email, "email")
-                    .IsUnique();
-
                 entity.HasIndex(e => e.Cif, "gimnasios_cif_uindex")
                     .IsUnique();
-
-                entity.HasIndex(e => e.Login, "login")
-                    .IsUnique();
+                
+                entity.HasIndex(e => e.AuthId, "FK_auth_gimnasios");
 
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
@@ -197,13 +192,6 @@ namespace ProyectoFinal.DAL.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_unicode_ci");
 
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasColumnType("varchar(255)")
-                    .HasColumnName("email")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_unicode_ci");
-
                 entity.Property(e => e.FechaActualizado)
                     .HasColumnType("datetime")
                     .ValueGeneratedOnAddOrUpdate()
@@ -215,13 +203,6 @@ namespace ProyectoFinal.DAL.Models
                     .HasColumnName("fechaCreado")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.Login)
-                    .IsRequired()
-                    .HasColumnType("varchar(25)")
-                    .HasColumnName("login")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_unicode_ci");
-
                 entity.Property(e => e.Nombre)
                     .IsRequired()
                     .HasColumnType("varchar(255)")
@@ -229,31 +210,17 @@ namespace ProyectoFinal.DAL.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_unicode_ci");
 
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasColumnType("varchar(255)")
-                    .HasColumnName("password")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_unicode_ci")
-                    .HasConversion(new ValueConverter<Password, string>(
-                        p => p.PasswordHash,
-                        p => new Password {PasswordHash = p}));;
-
                 entity.Property(e => e.Tarifa)
                     .HasColumnType("int(11)")
                     .HasColumnName("tarifa")
                     .HasComment("Es en céntimos");
+                
+                entity.HasOne(d => d.Auth);
             });
 
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.ToTable("usuarios");
-
-                entity.HasIndex(e => e.Email, "email")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.Login, "login")
-                    .IsUnique();
 
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
@@ -279,13 +246,6 @@ namespace ProyectoFinal.DAL.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_unicode_ci");
 
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasColumnType("varchar(255)")
-                    .HasColumnName("email")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_unicode_ci");
-
                 entity.Property(e => e.FechaActualizado)
                     .HasColumnType("datetime")
                     .ValueGeneratedOnAddOrUpdate()
@@ -297,13 +257,6 @@ namespace ProyectoFinal.DAL.Models
                     .HasColumnName("fechaCreado")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.Login)
-                    .IsRequired()
-                    .HasColumnType("varchar(50)")
-                    .HasColumnName("login")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_unicode_ci");
-
                 entity.Property(e => e.Nombre)
                     .IsRequired()
                     .HasColumnType("varchar(255)")
@@ -311,20 +264,26 @@ namespace ProyectoFinal.DAL.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_unicode_ci");
 
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasColumnType("varchar(255)")
-                    .HasColumnName("password")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_unicode_ci")
-                    .HasConversion(new ValueConverter<Password, string>(
-                        p => p.PasswordHash,
-                        p => new Password {PasswordHash = p}));
+                entity.HasOne(d => d.Auth);
             });
-
-            OnModelCreatingPartial(modelBuilder);
+            
+            modelBuilder.Entity<Auth>().ToTable("auth");
+            
+            modelBuilder.Entity<Rol>().ToTable("roles");
+            
+            modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("role_claims");
+            
+            modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("auth_claims")
+                .Property(t => t.UserId).HasColumnName("AuthId");
+            
+            modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("auth_login")
+                .Property(t => t.UserId).HasColumnName("AuthId");
+            
+            modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("auth_roles")
+                .Property(t => t.UserId).HasColumnName("AuthId");
+            
+            modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("auth_tokens")
+                .Property(t => t.UserId).HasColumnName("AuthId");
         }
-
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

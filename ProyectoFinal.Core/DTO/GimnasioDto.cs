@@ -3,24 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoFinal.Core.DTO
 {
-    public class GimnasioLoginDto
+    public class GimnasioCreateDto : AuthDto
     {
-        [Required] public string Login { get; set; }
-        [Required] public string Email { get; set; }
-        [Required] public string Password { get; set; }
-    }
-
-    public class GimnasioCreateDto
-    {
-        [Required, StringLength(50, MinimumLength = 3)]
-        public string Login { get; set; }
-
-        [Required, StringLength(200, MinimumLength = 6)]
-        public string Password { get; set; }
-
-        [Required, EmailAddress, StringLength(200, MinimumLength = 6)]
-        public string Email { get; set; }
-
         [Required, StringLength(9)] public string Cif { get; set; }
 
         [Required, StringLength(200, MinimumLength = 6)]
@@ -37,8 +21,6 @@ namespace ProyectoFinal.Core.DTO
     public class GimnasioUpdateDto
     {
         [Required] public Guid Id { get; set; }
-        [Required] public string Login { get; set; }
-        [Required] public string Email { get; set; }
         [Required] public string Cif { get; set; }
         [Required] public string Nombre { get; set; }
         [Required] public string Direccion { get; set; }
@@ -49,7 +31,7 @@ namespace ProyectoFinal.Core.DTO
     public class GimnasioDetallesDto
     {
         public Guid Id { get; set; }
-        public string Login { get; set; }
+        public string UserName { get; set; }
         public string Email { get; set; }
         public string Cif { get; set; }
         public string Nombre { get; set; }

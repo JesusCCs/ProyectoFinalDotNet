@@ -2,9 +2,11 @@
 using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using ProyectoFinal.BL.Contracts;
 using ProyectoFinal.Core.DTO;
 using ProyectoFinal.DAL.Models;
+using ProyectoFinal.DAL.Models.Auth;
 using ProyectoFinal.DAL.Repositories.Contracts;
 
 namespace ProyectoFinal.BL.Implementations
@@ -12,35 +14,28 @@ namespace ProyectoFinal.BL.Implementations
     public class GinmasioBl : IGinmasioBl
     {
         private readonly IRepository<Gimnasio> _repository;
-        private readonly IRepositoryAuth<Gimnasio> _repositoryAuth;
         private readonly IMapper _mapper;
 
-        public GinmasioBl(IRepository<Gimnasio> repository, IRepositoryAuth<Gimnasio> repositoryAuth, IMapper mapper)
+        public GinmasioBl(IRepository<Gimnasio> repository, IMapper mapper)
         {
             _repository = repository;
-            _repositoryAuth = repositoryAuth;
-            
             _mapper = mapper;
         }
 
         public async Task<GimnasioDetallesDto> Login(GimnasioLoginDto login)
         {
             var entity = _mapper.Map<Gimnasio>(login);
-            
-            entity = await _repositoryAuth.Login(entity);
             return _mapper.Map<GimnasioDetallesDto>(entity);
         }
-        
-        public async Task<GimnasioDetallesDto> Create(GimnasioCreateDto gimnasio)
+
+        public async Task<GimnasioDetallesDto> Create(GimnasioCreateDto gimnasioCreate, Guid authId)
         {
-            var entity = _mapper.Map<Gimnasio>(gimnasio);
+            var gimnasioInfo = _mapper.Map<Gimnasio>(gimnasioCreate);
+            gimnasioInfo.AuthId = authId;
+
+            var gimnasio = await _repository.Create(gimnasioInfo);
             
-            // Comprobamos si existe el email/login antes de añadirlo
-            var existencia = await _repositoryAuth.CheckExistence(entity);
-            if (existencia != 0) return null;
-            
-            entity = await _repository.Create(entity);
-            return _mapper.Map<GimnasioDetallesDto>(entity);
+            return _mapper.Map<GimnasioDetallesDto>(gimnasio);
         }
 
         public async Task<IEnumerable<GimnasioListaDto>> GetAll()
@@ -48,13 +43,13 @@ namespace ProyectoFinal.BL.Implementations
             var list = await _repository.GetAll();
             return _mapper.Map<IEnumerable<GimnasioListaDto>>(list);
         }
-        
+
         public async Task<GimnasioDetallesDto> GetById(Guid id)
         {
             var entity = await _repository.Get(id);
             return _mapper.Map<GimnasioDetallesDto>(entity);
         }
-        
+
         public async Task<bool> Update(Guid id, GimnasioUpdateDto gimnasio)
         {
             try
@@ -67,7 +62,7 @@ namespace ProyectoFinal.BL.Implementations
                 return false;
             }
         }
-        
+
         public async Task<bool> Delete(Guid id)
         {
             try

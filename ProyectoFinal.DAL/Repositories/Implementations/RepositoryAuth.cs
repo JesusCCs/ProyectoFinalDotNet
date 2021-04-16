@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ProyectoFinal.DAL.Models;
+using ProyectoFinal.DAL.Models.Auth;
 using ProyectoFinal.DAL.Repositories.Contracts;
 
 namespace ProyectoFinal.DAL.Repositories.Implementations
 {
-    public class RepositoryAuth<T> : IRepositoryAuth<T> where T : BaseAuth
+    public class RepositoryAuth<T> : IRepositoryAuth<T> where T : Auth
     {
         private readonly DataBaseContext _context;
 
@@ -17,14 +18,14 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
         public async Task<T> Login(T entity)
         {
             return await _context.Set<T>().FirstOrDefaultAsync(g =>
-                (g.Email == entity.Email || g.Login == entity.Login) && 
-                g.Password == entity.Password && (bool) g.Activo);
+                (g.Email == entity.Email || g.UserName == entity.UserName) && 
+                g.PasswordHash == entity.PasswordHash && g.EmailConfirmed);
         }
 
         public async Task<int> CheckExistence(T entity)
         {
             var emailExiste = await _context.Set<T>().AnyAsync(g => g.Email == entity.Email);
-            var loginExiste = await _context.Set<T>().AnyAsync(g => g.Login == entity.Login);
+            var loginExiste = await _context.Set<T>().AnyAsync(g => g.UserName == entity.UserName);
 
             return emailExiste switch
             {

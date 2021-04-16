@@ -1,30 +1,29 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProyectoFinal.BL.Contracts;
 using ProyectoFinal.Core.DTO;
+using ProyectoFinal.DAL.Models.Auth;
 
 namespace ProyectoFinal.API.Controllers
 {
-    /// <inheritdoc />
-    [Route("/gimnasio")]
+    [Authorize]
     [ApiController]
+    [Route("/gimnasio")]
     public class GimnasioController : ControllerBase
     {
         private readonly IGinmasioBl _bl;
-
-        /// <inheritdoc />
-        public GimnasioController(IGinmasioBl bl)
+        private readonly IAuthBl _authBl;
+        
+        public GimnasioController(IGinmasioBl bl,IAuthBl authBl)
         {
             _bl = bl;
+            _authBl = authBl;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="itemLogin"></param>
-        /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
         [Route("/gimnasio/login")]
         public async Task<ActionResult> Login([FromBody] GimnasioLoginDto itemLogin)
         {
@@ -32,10 +31,7 @@ namespace ProyectoFinal.API.Controllers
             return item == null ? Ok(false) : Ok(item);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
+
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
@@ -43,11 +39,7 @@ namespace ProyectoFinal.API.Controllers
             return Ok(lista);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+
         [HttpGet("{id:guid}")]
         public async Task<ActionResult> GetById(Guid id)
         {
@@ -55,25 +47,24 @@ namespace ProyectoFinal.API.Controllers
             return Ok(item);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="itemNuevo"></param>
-        /// <returns></returns>
+
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult> Create([FromBody] GimnasioCreateDto itemNuevo)
         {
-            var item = await _bl.Create(itemNuevo);
+            var guid = await _authBl.SignUp(itemNuevo, Rol.Gimnasio);
+
+            if (guid == null)
+            {
+                return Problem("Fallo al generar el usuario",null,500);
+            }
+            
+            var item = await _bl.Create(itemNuevo,(Guid) guid);
+            
             return Ok(item);
         }
         
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="itemActualizado"></param>
-        /// <returns></returns>
+        
         [HttpPut("{id:guid}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] GimnasioUpdateDto itemActualizado)
         {
@@ -81,11 +72,7 @@ namespace ProyectoFinal.API.Controllers
             return Ok(item);
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Delete(Guid id)
         {
