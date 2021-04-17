@@ -51,7 +51,7 @@ namespace ProyectoFinal.BL.Implementations
         
         public async Task<UsuarioDetallesDto> GetById(Guid id)
         {
-            var entity = await _repository.Get(id);
+            var entity = await _repository.GetById(id);
             return _mapper.Map<UsuarioDetallesDto>(entity);
         }
         

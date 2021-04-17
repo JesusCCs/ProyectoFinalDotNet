@@ -1,10 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using ProyectoFinal.BL.Contracts;
 using ProyectoFinal.BL.Implementations;
+using ProyectoFinal.DAL;
+using ProyectoFinal.DAL.Models.Auth;
 using ProyectoFinal.DAL.Repositories.Contracts;
 using ProyectoFinal.DAL.Repositories.Implementations;
 
@@ -70,11 +73,9 @@ namespace ProyectoFinal.API
 
         public static void AddIdentity(IServiceCollection services)
         {
-            services.AddAuthentication("OAuth")
-                .AddJwtBearer("OAuth", config =>
-                {
-                    
-                });
+            services.AddIdentity<Auth, Rol>()
+                .AddEntityFrameworkStores<DataBaseContext>()
+                .AddDefaultTokenProviders();
         }
     }
 }

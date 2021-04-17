@@ -22,12 +22,6 @@ namespace ProyectoFinal.BL.Implementations
             _mapper = mapper;
         }
 
-        public async Task<GimnasioDetallesDto> Login(GimnasioLoginDto login)
-        {
-            var entity = _mapper.Map<Gimnasio>(login);
-            return _mapper.Map<GimnasioDetallesDto>(entity);
-        }
-
         public async Task<GimnasioDetallesDto> Create(GimnasioCreateDto gimnasioCreate, Guid authId)
         {
             var gimnasioInfo = _mapper.Map<Gimnasio>(gimnasioCreate);
@@ -46,7 +40,13 @@ namespace ProyectoFinal.BL.Implementations
 
         public async Task<GimnasioDetallesDto> GetById(Guid id)
         {
-            var entity = await _repository.Get(id);
+            var entity = await _repository.GetById(id);
+            return _mapper.Map<GimnasioDetallesDto>(entity);
+        }
+        
+        public async Task<GimnasioDetallesDto> GetByAuthId(Guid? guidAuth)
+        {
+            var entity = await _repository.GetByCondition(gimnasio => gimnasio.AuthId == guidAuth);
             return _mapper.Map<GimnasioDetallesDto>(entity);
         }
 

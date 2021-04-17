@@ -13,41 +13,49 @@ namespace ProyectoFinal.API.Controllers
     [Route("/gimnasio")]
     public class GimnasioController : ControllerBase
     {
-        private readonly IGinmasioBl _bl;
+        private readonly IGinmasioBl _gimnasioBl;
         private readonly IAuthBl _authBl;
-        
-        public GimnasioController(IGinmasioBl bl,IAuthBl authBl)
+
+        public GimnasioController(IGinmasioBl gimnasioBl, IAuthBl authBl)
         {
-            _bl = bl;
+            _gimnasioBl = gimnasioBl;
             _authBl = authBl;
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         [Route("/gimnasio/login")]
-        public async Task<ActionResult> Login([FromBody] GimnasioLoginDto itemLogin)
+        public async Task<ActionResult> Login([FromBody] AuthDto itemLogin)
         {
-            var item = await _bl.Login(itemLogin);
-            return item == null ? Ok(false) : Ok(item);
+            var guidAuth = await _authBl.SignIn(itemLogin);
+
+            if (guidAuth == null)
+            {
+                return Ok(false);
+            }
+
+            var gimansio = await _gimnasioBl.GetByAuthId(guidAuth);
+            
+            return Ok(gimansio);
         }
         
-
+        
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
-            var lista = await _bl.GetAll();
+            var lista = await _gimnasioBl.GetAll();
             return Ok(lista);
         }
         
-
+        
         [HttpGet("{id:guid}")]
         public async Task<ActionResult> GetById(Guid id)
         {
-            var item = await _bl.GetById(id);
+            var item = await _gimnasioBl.GetById(id);
             return Ok(item);
         }
         
-
+        
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult> Create([FromBody] GimnasioCreateDto itemNuevo)
@@ -56,27 +64,27 @@ namespace ProyectoFinal.API.Controllers
 
             if (guid == null)
             {
-                return Problem("Fallo al generar el usuario",null,500);
+                return Problem("Fallo al generar el usuario", null, 500);
             }
-            
-            var item = await _bl.Create(itemNuevo,(Guid) guid);
-            
+
+            var item = await _gimnasioBl.Create(itemNuevo, (Guid) guid);
+
             return Ok(item);
         }
-        
-        
+
+
         [HttpPut("{id:guid}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] GimnasioUpdateDto itemActualizado)
         {
-            var item = await _bl.Update(id, itemActualizado);
+            var item = await _gimnasioBl.Update(id, itemActualizado);
             return Ok(item);
         }
-        
-        
+
+
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> Delete(Guid id)
         {
-            var item = await _bl.Delete(id);
+            var item = await _gimnasioBl.Delete(id);
             return Ok(item);
         }
     }

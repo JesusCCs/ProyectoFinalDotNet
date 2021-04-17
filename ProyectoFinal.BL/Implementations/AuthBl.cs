@@ -36,17 +36,24 @@ namespace ProyectoFinal.BL.Implementations
             return auth.Id;
         }
 
-        public async Task<bool> SignIn(AuthDto authDto)
+        public async Task<Guid?> SignIn(AuthDto authDto)
         {
             var auth = await _userManager.Users.FirstOrDefaultAsync(u =>
                 u.UserName == authDto.UserName || u.Email == authDto.Email);
 
             if (auth == null)
             {
-                return false;
+                return null;
             }
 
-            return await _userManager.CheckPasswordAsync(auth, authDto.Password);
+            var passIsValid = await _userManager.CheckPasswordAsync(auth, authDto.Password);
+
+            if (!passIsValid)
+            {
+                return null;
+            }
+
+            return auth.Id;
         }
     }
 }
