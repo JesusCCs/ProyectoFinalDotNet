@@ -1,11 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProyectoFinal.BL.Contracts;
 using ProyectoFinal.BL.Implementations;
@@ -27,17 +30,21 @@ namespace ProyectoFinal.API
         /// Constante para la configuración de CORS en producción
         /// </summary>
         public const string ProdCors = "ProdCors";
+        
+        private static IConfiguration _configuration;
+        private static IWebHostEnvironment _env;
 
         public static IServiceCollection SetConfigurationAndEnvironment(
             this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
         {
+            // Aplicamos variables
+            _configuration = configuration;
+            _env = env;
+            
             // Base de datos
             var connectionString = configuration.GetConnectionString("DbConnection");
             services.AddDbContext<DataBaseContext>(o =>
                 o.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-
-            // Añadimos clases wrapper de la configuración creada en app settings
-            services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
 
             return services;
         }
@@ -99,20 +106,34 @@ namespace ProyectoFinal.API
             services.AddIdentity<Auth, Rol>()
                 .AddEntityFrameworkStores<DataBaseContext>()
                 .AddDefaultTokenProviders();
+            
+            return services;
+        }
+        
+        public static IServiceCollection AddJwt(this IServiceCollection services)
+        {
+            var jwtOptions = _configuration.GetSection("Jwt");
+            
+            services.AddAuthorization()
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = jwtOptions.GetValue<string>("Issuer"),
+                        ValidAudience = jwtOptions.GetValue<string>("Audience"),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.GetValue<string>("Secret"))),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
 
             return services;
         }
-    }
-
-    /// <summary>
-    /// Clase Wrapper para la configuración de app settings sobre los tokens tipo jwt
-    /// </summary>
-    public class JwtSettings
-    {
-        public string Issuer { get; set; }
-
-        public string Secret { get; set; }
-
-        public int ExpirationInDays { get; set; }
     }
 }

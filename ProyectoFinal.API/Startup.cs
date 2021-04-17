@@ -20,16 +20,19 @@ namespace ProyectoFinal.API
         
         public void ConfigureServices(IServiceCollection services)
         {
+            // Iniciamos base...
             services.SetConfigurationAndEnvironment(_configuration, _env);
 
+            // ...Controladores
             services.AddControllers();
-            
-            services.AddIdentity();
-            
-            services.AddCors();
-            
+
+            // ...Sistema de seguridad
+            services.AddIdentity().AddJwt().AddCors();
+
+            // ...Swagger para pruebas y documentación visual
             services.AddSwagger();
 
+            // ...Inyección de dependencias
             services.AddDependencies();
         }
         
