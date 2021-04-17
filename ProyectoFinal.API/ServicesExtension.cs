@@ -16,7 +16,7 @@ using ProyectoFinal.DAL.Repositories.Implementations;
 
 namespace ProyectoFinal.API
 {
-    public static class ServiceExtension
+    public static class ServicesExtension
     {
         /// <summary>
         /// Constante para la configuración de CORS en local
@@ -33,10 +33,10 @@ namespace ProyectoFinal.API
         {
             // Base de datos
             var connectionString = configuration.GetConnectionString("DbConnection");
-            services.AddDbContext<DataBaseContext>(o => 
+            services.AddDbContext<DataBaseContext>(o =>
                 o.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-            
-            // Añadimos clases wrapper de la configuración creada en appsettings
+
+            // Añadimos clases wrapper de la configuración creada en app settings
             services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
 
             return services;
@@ -102,5 +102,17 @@ namespace ProyectoFinal.API
 
             return services;
         }
+    }
+
+    /// <summary>
+    /// Clase Wrapper para la configuración de app settings sobre los tokens tipo jwt
+    /// </summary>
+    public class JwtSettings
+    {
+        public string Issuer { get; set; }
+
+        public string Secret { get; set; }
+
+        public int ExpirationInDays { get; set; }
     }
 }
