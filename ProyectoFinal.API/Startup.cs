@@ -22,20 +22,17 @@ namespace ProyectoFinal.API
         
         public void ConfigureServices(IServiceCollection services)
         {
-            // Base de datos
-            var connectionString = _configuration.GetConnectionString("DbConnection");
-            services.AddDbContext<DataBaseContext>(o => 
-                o.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-            
+            services.SetConfigurationAndEnvironment(_configuration, _env);
+
             services.AddControllers();
             
-            ServiceExtension.AddIdentity(services);
+            services.AddIdentity();
             
-            ServiceExtension.AddCors(services);
+            services.AddCors();
             
-            ServiceExtension.AddSwagger(services);
+            services.AddSwagger();
 
-            ServiceExtension.AddDependecies(services);
+            services.AddDependencies();
         }
         
         
