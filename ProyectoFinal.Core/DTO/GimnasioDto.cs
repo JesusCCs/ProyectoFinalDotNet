@@ -28,7 +28,14 @@ namespace ProyectoFinal.Core.DTO
         [Required] public int Tarifa { get; set; }
     }
 
-    public class GimnasioDetallesDto
+    public class GimansioLoginResponseDto
+    {
+        public Guid Id { get; set; }
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
+    }
+
+    public class GimnasioGetByIdResponseDto
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }
@@ -41,7 +48,7 @@ namespace ProyectoFinal.Core.DTO
         public int Tarifa { get; set; }
     }
 
-    public class GimnasioListaDto
+    public class GimnasioGetAllResponseDto
     {
         public Guid Id { get; set; }
         public string Nombre { get; set; }

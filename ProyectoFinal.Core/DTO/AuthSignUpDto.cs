@@ -14,7 +14,7 @@ namespace ProyectoFinal.Core.DTO
         public string Password { get; set; }
     }
     
-    public class AuthSignInDto
+    public class AuthLoginDto
     {
         [Required, StringLength(200, MinimumLength = 3)]
         public string UserNameOrEmail { get; set; }

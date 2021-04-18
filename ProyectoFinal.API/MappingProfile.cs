@@ -19,8 +19,8 @@ namespace ProyectoFinal.API
             //  ------- Gimnasios ----------
 
             // Mapeo Model --> DTO
-            CreateMap<Gimnasio, GimnasioListaDto>();
-            CreateMap<Gimnasio, GimnasioDetallesDto>();
+            CreateMap<Gimnasio, GimnasioGetAllResponseDto>();
+            CreateMap<Gimnasio, GimnasioGetByIdResponseDto>();
 
             // Mapeo DTO   --> Model
             CreateMap<GimnasioCreateDto, Gimnasio>();

@@ -15,28 +15,36 @@ namespace ProyectoFinal.API.Controllers
     {
         private readonly IGinmasioBl _gimnasioBl;
         private readonly IAuthBl _authBl;
+        private readonly IJwtTokenBl _jwtTokenBl;
 
-        public GimnasioController(IGinmasioBl gimnasioBl, IAuthBl authBl)
+        public GimnasioController(IGinmasioBl gimnasioBl, IAuthBl authBl, IJwtTokenBl jwtTokenBl)
         {
             _gimnasioBl = gimnasioBl;
             _authBl = authBl;
+            _jwtTokenBl = jwtTokenBl;
         }
 
         [HttpPost]
         [AllowAnonymous]
         [Route("/gimnasio/login")]
-        public async Task<ActionResult> Login([FromBody] AuthSignInDto itemLogin)
+        public async Task<ActionResult> Login([FromBody] AuthLoginDto itemLogin)
         {
-            var guidAuth = await _authBl.SignIn(itemLogin);
+            var guidAuth = await _authBl.Login(itemLogin, Rol.Gimnasio);
 
             if (guidAuth == null)
             {
                 return Ok(false);
             }
 
-            var gimansio = await _gimnasioBl.GetByAuthId(guidAuth);
+            var gimansioId = await _gimnasioBl.GetIdByAuthId((Guid) guidAuth);
+
+            var token = _jwtTokenBl.GenerateJwtToken(gimansioId, Rol.Gimnasio);
             
-            return Ok(gimansio);
+            return Ok(new GimansioLoginResponseDto
+            {
+                Id = gimansioId,
+                AccessToken = token
+            });
         }
         
         
@@ -60,7 +68,7 @@ namespace ProyectoFinal.API.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Create([FromBody] GimnasioCreateDto itemNuevo)
         {
-            var guid = await _authBl.SignUp(itemNuevo, Rol.Gimnasio);
+            var guid = await _authBl.Create(itemNuevo, Rol.Gimnasio);
 
             if (guid == null)
             {

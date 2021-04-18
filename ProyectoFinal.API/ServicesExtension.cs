@@ -140,9 +140,10 @@ namespace ProyectoFinal.API
         
         public static IServiceCollection AddJwt(this IServiceCollection services)
         {
-            // Se añade la configuración de JWT como singleton, para acceder a ella en el resto de la app
             var jwtSettings = _configuration.GetSection("Jwt").Get<JwtSettings>();
             services.AddSingleton(jwtSettings);
+
+            services.AddSingleton<IJwtTokenBl,JwtTokenBl>();
             
             // Se configura JWT
             services.AddAuthorization().AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
