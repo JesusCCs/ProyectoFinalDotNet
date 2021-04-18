@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProyectoFinal.BL.Contracts;
@@ -84,9 +85,7 @@ namespace ProyectoFinal.API
                 
                 var securityScheme = new OpenApiSecurityScheme
                 {
-                    Name = "JWT Authentication",
-                    Description = "Colocar JWT con Bearer en el campo",
-                    In = ParameterLocation.Header,
+                    Description = "Escribir en value: Bearer {TOKEN}. Donde {TOKEN} es el AccessToken devuelto en el login",
                     Type = SecuritySchemeType.ApiKey,
                     Reference = new OpenApiReference
                     {
@@ -125,15 +124,22 @@ namespace ProyectoFinal.API
         {
             services.AddIdentity<Auth, Rol>(options =>
                 {
-                    options.SignIn.RequireConfirmedEmail = false;
+                    options.SignIn.RequireConfirmedEmail = true;
                     options.User.RequireUniqueEmail = true;
-                    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                    options.User.AllowedUserNameCharacters =
+                        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+                    if (_env.IsDevelopment())
+                    {
+                        options.SignIn.RequireConfirmedEmail = false;
+                        options.Password.RequireDigit = false;
+                        options.Password.RequireUppercase = false;
+                    }
+
+                    options.Password.RequireNonAlphanumeric = false;
                 })
                 .AddEntityFrameworkStores<DataBaseContext>()
                 .AddDefaultTokenProviders();
-               // .AddUserManager<UserManager<Auth>>()
-               // .AddRoleManager<RoleManager<Rol>>()
-               // .AddSignInManager<SignInManager<Auth>>();
 
             return services;
         }
@@ -146,18 +152,26 @@ namespace ProyectoFinal.API
             services.AddSingleton<IJwtTokenBl,JwtTokenBl>();
             
             // Se configura JWT
-            services.AddAuthorization().AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddAuthentication(options =>  
+                {  
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;  
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;  
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;  
+                })
                 .AddJwtBearer(options =>
                 {
                     options.RequireHttpsMetadata = true;
                     options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidIssuer = jwtSettings.Issuer,
-                        ValidAudience = jwtSettings.Audience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
                         ValidateIssuerSigningKey = true,
-                        ClockSkew = TimeSpan.FromMinutes(1)
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
+                        ValidateIssuer = true,
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidateAudience = true,
+                        ValidAudience = jwtSettings.Audience,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
 
