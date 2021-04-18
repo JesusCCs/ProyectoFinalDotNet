@@ -8,8 +8,8 @@ using ProyectoFinal.DAL.Models.Auth;
 
 namespace ProyectoFinal.API.Controllers
 {
-    [Authorize]
     [ApiController]
+    [Authorize(Roles = Rol.Gimnasio + "," + Rol.Admin)]
     [Route("/gimnasio")]
     public class GimnasioController : ControllerBase
     {
@@ -39,31 +39,31 @@ namespace ProyectoFinal.API.Controllers
             var gimansioId = await _gimnasioBl.GetIdByAuthId((Guid) guidAuth);
 
             var token = _jwtTokenBl.GenerateJwtToken(gimansioId, Rol.Gimnasio);
-            
+
             return Ok(new GimansioLoginResponseDto
             {
                 Id = gimansioId,
                 AccessToken = token
             });
         }
-        
-        
+
         [HttpGet]
+        [Authorize(Roles = Rol.Admin)]
         public async Task<ActionResult> GetAll()
         {
             var lista = await _gimnasioBl.GetAll();
             return Ok(lista);
         }
-        
-        
+
+
         [HttpGet("{id:guid}")]
         public async Task<ActionResult> GetById(Guid id)
         {
             var item = await _gimnasioBl.GetById(id);
             return Ok(item);
         }
-        
-        
+
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult> Create([FromBody] GimnasioCreateDto itemNuevo)
@@ -90,6 +90,7 @@ namespace ProyectoFinal.API.Controllers
 
 
         [HttpDelete("{id:guid}")]
+        [Authorize(Roles = Rol.Admin)]
         public async Task<ActionResult> Delete(Guid id)
         {
             var item = await _gimnasioBl.Delete(id);

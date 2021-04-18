@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProyectoFinal.DAL.Models.Auth;
@@ -12,6 +10,7 @@ namespace ProyectoFinal.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize(Roles = Rol.Admin)]
     public class RolController : ControllerBase
     {
         private readonly RoleManager<Rol> _roleManager;

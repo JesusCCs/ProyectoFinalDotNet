@@ -34,6 +34,7 @@ namespace ProyectoFinal.BL.Implementations
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddSeconds(_jwt.AccessTokenExpirationInSeconds),
+                Audience = _jwt.Audience,
                 SigningCredentials = credentials
             };
 

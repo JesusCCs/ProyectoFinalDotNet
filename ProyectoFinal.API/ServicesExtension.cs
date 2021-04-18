@@ -85,8 +85,10 @@ namespace ProyectoFinal.API
                 
                 var securityScheme = new OpenApiSecurityScheme
                 {
+                    Name = "Authorization",
                     Description = "Escribir en value: Bearer {TOKEN}. Donde {TOKEN} es el AccessToken devuelto en el login",
                     Type = SecuritySchemeType.ApiKey,
+                    In = ParameterLocation.Header,
                     Reference = new OpenApiReference
                     {
                         Id = JwtBearerDefaults.AuthenticationScheme,
@@ -166,10 +168,9 @@ namespace ProyectoFinal.API
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
-                        ValidateIssuer = true,
-                        ValidIssuer = jwtSettings.Issuer,
                         ValidateAudience = true,
                         ValidAudience = jwtSettings.Audience,
+                        ValidateIssuer = false,
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.Zero
                     };
