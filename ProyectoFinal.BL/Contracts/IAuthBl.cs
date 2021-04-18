@@ -8,7 +8,7 @@ namespace ProyectoFinal.BL.Contracts
 {
     public interface IAuthBl
     {
-        Task<Guid?> SignUp(AuthDto authDto, string rol);
-        Task<Guid?> SignIn(AuthDto authDto);
+        Task<Guid?> SignUp(AuthSignUpDto authSignUpDto, string rol);
+        Task<Guid?> SignIn(AuthSignInDto authSignUpDto);
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoFinal.Core.DTO
 {
-    public class GimnasioCreateDto : AuthDto
+    public class GimnasioCreateDto : AuthSignUpDto
     {
         [Required, StringLength(9)] public string Cif { get; set; }
 

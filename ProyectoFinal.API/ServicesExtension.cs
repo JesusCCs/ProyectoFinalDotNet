@@ -45,15 +45,15 @@ namespace ProyectoFinal.API
             var connectionString = configuration.GetConnectionString("DbConnection");
             services.AddDbContext<DataBaseContext>(o =>
                 o.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+            
+            // Automapper
+            services.AddAutoMapper(typeof(MappingProfile));
 
             return services;
         }
 
         public static IServiceCollection AddDependencies(this IServiceCollection services)
         {
-            // Automapper
-            services.AddAutoMapper(typeof(MappingProfile));
-
             // Se añade inyección de dependencias de bl
             services.AddScoped<IGinmasioBl, GinmasioBl>();
             services.AddScoped<IAuthBl, AuthBl>();
@@ -81,6 +81,26 @@ namespace ProyectoFinal.API
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+                
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Name = "JWT Authentication",
+                    Description = "Colocar JWT con Bearer en el campo",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Reference = new OpenApiReference
+                    {
+                        Id = JwtBearerDefaults.AuthenticationScheme,
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+                
+                c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);
+                
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {securityScheme, Array.Empty<string>()}
+                });
             });
 
             return services;
@@ -103,33 +123,40 @@ namespace ProyectoFinal.API
 
         public static IServiceCollection AddIdentity(this IServiceCollection services)
         {
-            services.AddIdentity<Auth, Rol>()
+            services.AddIdentity<Auth, Rol>(options =>
+                {
+                    options.SignIn.RequireConfirmedEmail = false;
+                    options.User.RequireUniqueEmail = true;
+                    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                })
                 .AddEntityFrameworkStores<DataBaseContext>()
                 .AddDefaultTokenProviders();
-            
+               // .AddUserManager<UserManager<Auth>>()
+               // .AddRoleManager<RoleManager<Rol>>()
+               // .AddSignInManager<SignInManager<Auth>>();
+
             return services;
         }
         
         public static IServiceCollection AddJwt(this IServiceCollection services)
         {
-            var jwtOptions = _configuration.GetSection("Jwt");
+            // Se añade la configuración de JWT como singleton, para acceder a ella en el resto de la app
+            var jwtSettings = _configuration.GetSection("Jwt").Get<JwtSettings>();
+            services.AddSingleton(jwtSettings);
             
-            services.AddAuthorization()
-                .AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
+            // Se configura JWT
+            services.AddAuthorization().AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.RequireHttpsMetadata = false;
+                    options.RequireHttpsMetadata = true;
+                    options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidIssuer = jwtOptions.GetValue<string>("Issuer"),
-                        ValidAudience = jwtOptions.GetValue<string>("Audience"),
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.GetValue<string>("Secret"))),
-                        ClockSkew = TimeSpan.Zero
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidAudience = jwtSettings.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
+                        ValidateIssuerSigningKey = true,
+                        ClockSkew = TimeSpan.FromMinutes(1)
                     };
                 });
 
