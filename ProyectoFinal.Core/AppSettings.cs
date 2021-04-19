@@ -8,4 +8,9 @@
         public int AccessTokenExpirationInSeconds { get; set; }
         public int RefreshTokenExpiration { get; set; }
     }
+    
+    public static class Policy
+    {
+        public const string GymIsOwner = "GymIsOwner";
+    }
 }

@@ -4,6 +4,6 @@ namespace ProyectoFinal.BL.Contracts
 {
     public interface IJwtTokenBl
     {
-        string GenerateJwtToken(Guid authId, string rol);
+        string GenerateJwtToken(Guid entityId, Guid authId, string rol);
     }
 }

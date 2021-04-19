@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +30,7 @@ namespace ProyectoFinal.API
             services.AddControllers();
 
             // ...Sistema de seguridad
-            services.AddIdentity().AddJwt().AddCors();
+            services.AddIdentity().AddJwt().AddPolicies().AddCors();
 
             // ...Swagger para pruebas y documentación visual
             services.AddSwagger();
@@ -50,19 +51,25 @@ namespace ProyectoFinal.API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProyectoFinal.API v1"));
                 cors = ServicesExtension.DevCors;
             }
+            
+            app.Use((context, next) =>
+            {
+                context.Request.EnableBuffering();
+                return next();
+            });
 
             app.UseHttpsRedirection();
             
             app.UseStaticFiles();
 
             app.UseRouting();
+            
+            app.UseCors(cors);
 
             app.UseAuthentication();
             
             app.UseAuthorization();
             
-            app.UseCors(cors);
-
             app.UseEndpoints(endpoints =>  endpoints.MapControllers() );
         }
     }

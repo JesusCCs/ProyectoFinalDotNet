@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProyectoFinal.API.Authorization.Handlers;
+using ProyectoFinal.API.Authorization.Requirements;
 using ProyectoFinal.BL.Contracts;
 using ProyectoFinal.BL.Implementations;
 using ProyectoFinal.DAL;
@@ -176,6 +180,21 @@ namespace ProyectoFinal.API
                     };
                 });
 
+            return services;
+        }
+        
+        public static IServiceCollection AddPolicies(this IServiceCollection services)
+        {
+            services.AddSingleton<IAuthorizationHandler,GymIsOwnerHandler>();
+            
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(Policy.GymIsOwner, policy =>
+                {
+                    policy.Requirements.Add(new GymIsOwnerRequirement());
+                });
+            });
+            
             return services;
         }
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProyectoFinal.BL.Contracts;
@@ -9,8 +10,8 @@ using ProyectoFinal.DAL.Models.Auth;
 namespace ProyectoFinal.API.Controllers
 {
     [ApiController]
-    [Authorize(Roles = Rol.Gimnasio + "," + Rol.Admin)]
     [Route("/gimnasio")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class GimnasioController : ControllerBase
     {
         private readonly IGinmasioBl _gimnasioBl;
@@ -36,13 +37,13 @@ namespace ProyectoFinal.API.Controllers
                 return Ok(false);
             }
 
-            var gimansioId = await _gimnasioBl.GetIdByAuthId((Guid) guidAuth);
+            var gimansio = await _gimnasioBl.GetByAuthId((Guid) guidAuth);
 
-            var token = _jwtTokenBl.GenerateJwtToken(gimansioId, Rol.Gimnasio);
+            var token = _jwtTokenBl.GenerateJwtToken(gimansio.Id, (Guid) guidAuth, Rol.Gimnasio);
 
             return Ok(new GimansioLoginResponseDto
             {
-                Id = gimansioId,
+                Id = gimansio.Id,
                 AccessToken = token
             });
         }
@@ -82,6 +83,7 @@ namespace ProyectoFinal.API.Controllers
 
 
         [HttpPut("{id:guid}")]
+        [Authorize(Roles = Rol.AdminOGimnasio, Policy = Policy.GymIsOwner)]
         public async Task<ActionResult> Update(Guid id, [FromBody] GimnasioUpdateDto itemActualizado)
         {
             var item = await _gimnasioBl.Update(id, itemActualizado);

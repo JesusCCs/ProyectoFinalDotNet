@@ -19,12 +19,13 @@ namespace ProyectoFinal.BL.Implementations
         }
 
 
-        public string GenerateJwtToken(Guid authId, string rol)
+        public string GenerateJwtToken(Guid entityId, Guid authId, string rol)
         {
             var claims = new List<Claim>
             {
-                new(ClaimTypes.NameIdentifier, authId.ToString()),
-                new(ClaimTypes.Role, rol)
+                new(ClaimTypes.Sid, authId.ToString()),
+                new(ClaimTypes.NameIdentifier, entityId.ToString()),
+                new(ClaimTypes.Role,rol)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Secret));
@@ -42,7 +43,7 @@ namespace ProyectoFinal.BL.Implementations
 
             var accessToken = tokenHandler.CreateToken(tokenDescriptor);
 
-            return  tokenHandler.WriteToken(accessToken);
+            return tokenHandler.WriteToken(accessToken);
         }
     }
 }
