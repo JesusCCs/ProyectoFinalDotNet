@@ -32,19 +32,17 @@ namespace ProyectoFinal.API.Controllers
         {
             var guidAuth = await _authBl.Login(itemLogin, Rol.Gimnasio);
 
-            if (guidAuth == null)
-            {
-                return Ok(false);
-            }
+            var gimansio = await _gimnasioBl.GetByAuthId(guidAuth);
 
-            var gimansio = await _gimnasioBl.GetByAuthId((Guid) guidAuth);
+            var token = _jwtTokenBl.GenerateAccessToken(gimansio.Id, guidAuth, Rol.Gimnasio);
+            var refreshToken = await _jwtTokenBl.GenerateRefreshToken(guidAuth);
 
-            var token = _jwtTokenBl.GenerateJwtToken(gimansio.Id, (Guid) guidAuth, Rol.Gimnasio);
-
-            return Ok(new GimansioLoginResponseDto
+            return Ok(new AuthLoginResponseDto
             {
                 Id = gimansio.Id,
-                AccessToken = token
+                AuthId = guidAuth,
+                AccessToken = token,
+                RefreshToken = refreshToken
             });
         }
 
@@ -70,11 +68,6 @@ namespace ProyectoFinal.API.Controllers
         public async Task<ActionResult> Create([FromBody] GimnasioCreateDto itemNuevo)
         {
             var guid = await _authBl.Create(itemNuevo, Rol.Gimnasio);
-
-            if (guid == null)
-            {
-                return Problem("Fallo al generar el usuario", null, 500);
-            }
 
             var item = await _gimnasioBl.Create(itemNuevo, (Guid) guid);
 

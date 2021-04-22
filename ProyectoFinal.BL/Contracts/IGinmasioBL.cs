@@ -10,9 +10,9 @@ namespace ProyectoFinal.BL.Contracts
         Task<GimnasioGetByIdResponseDto> Create(GimnasioCreateDto gimnasio, Guid authId);
         Task<IEnumerable<GimnasioGetAllResponseDto>> GetAll();
         Task<GimnasioGetByIdResponseDto> GetById(Guid id);
-        Task<bool> Update(Guid id, GimnasioUpdateDto gimnasio);
-        Task<bool> Delete(Guid id);
         Task<GimnasioGetByIdResponseDto> GetByAuthId(Guid guidAuth);
         Task<Guid> GetIdByAuthId(Guid guidAuth);
+        Task<bool> Update(Guid id, GimnasioUpdateDto gimnasio);
+        Task<bool> Delete(Guid id);
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using ProyectoFinal.API;
 using ProyectoFinal.BL.Contracts;
+using ProyectoFinal.BL.Exceptions;
 using ProyectoFinal.Core.DTO;
 using ProyectoFinal.DAL.Models.Auth;
 
@@ -23,7 +24,7 @@ namespace ProyectoFinal.BL.Implementations
             _mapper = mapper;
         }
 
-        public async Task<Guid?> Create(AuthSignUpDto authSignUpDto, string rol)
+        public async Task<Guid> Create(AuthSignUpDto authSignUpDto, string rol)
         {
             var auth = _mapper.Map<Auth>(authSignUpDto);
 
@@ -31,7 +32,7 @@ namespace ProyectoFinal.BL.Implementations
 
             if (!result.Succeeded)
             {
-                return null;
+                throw new UserCreationException();
             }
 
             await _userManager.AddToRoleAsync(auth, rol);
@@ -39,7 +40,7 @@ namespace ProyectoFinal.BL.Implementations
             return auth.Id;
         }
 
-        public async Task<Guid?> Login(AuthLoginDto authLoginDto, string rol)
+        public async Task<Guid> Login(AuthLoginDto authLoginDto, string rol)
         {
             var isEmail = authLoginDto.UserNameOrEmail.Contains("@");
             var auth = isEmail
@@ -48,7 +49,7 @@ namespace ProyectoFinal.BL.Implementations
 
             if (auth == null)
             {
-                return null;
+                throw new AuthenticationException();
             }
             
             // Comprobamos que el usuario que se ha encontrado es del rol que toca
@@ -56,7 +57,7 @@ namespace ProyectoFinal.BL.Implementations
 
             if (roles.First() != rol)
             {
-                return null;
+                throw new AuthenticationException();
             }
             
             var result = await _signInManager.PasswordSignInAsync(auth,
@@ -67,7 +68,7 @@ namespace ProyectoFinal.BL.Implementations
                 return auth.Id;
             }
 
-            return null;
+            throw new AuthenticationException();
         }
     }
 }

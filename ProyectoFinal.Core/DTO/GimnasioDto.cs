@@ -28,13 +28,6 @@ namespace ProyectoFinal.Core.DTO
         [Required] public int Tarifa { get; set; }
     }
 
-    public class GimansioLoginResponseDto
-    {
-        public Guid Id { get; set; }
-        public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }
-    }
-
     public class GimnasioGetByIdResponseDto
     {
         public Guid Id { get; set; }

@@ -51,12 +51,6 @@ namespace ProyectoFinal.API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProyectoFinal.API v1"));
                 cors = ServicesExtension.DevCors;
             }
-            
-            app.Use((context, next) =>
-            {
-                context.Request.EnableBuffering();
-                return next();
-            });
 
             app.UseHttpsRedirection();
             

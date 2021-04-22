@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoFinal.Core.DTO
 {
@@ -24,5 +25,13 @@ namespace ProyectoFinal.Core.DTO
 
         [Required]
         public bool RememberMe { get; set; }
+    }
+    
+    public class AuthLoginResponseDto
+    {
+        public Guid Id { get; init; }
+        public Guid AuthId { get; init; }
+        public string AccessToken { get; init; }
+        public string RefreshToken { get; init; }
     }
 }

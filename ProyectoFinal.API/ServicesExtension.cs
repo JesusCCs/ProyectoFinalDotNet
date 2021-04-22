@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +16,7 @@ using ProyectoFinal.API.Authorization.Handlers;
 using ProyectoFinal.API.Authorization.Requirements;
 using ProyectoFinal.BL.Contracts;
 using ProyectoFinal.BL.Implementations;
+using ProyectoFinal.BL.Providers;
 using ProyectoFinal.DAL;
 using ProyectoFinal.DAL.Models.Auth;
 using ProyectoFinal.DAL.Repositories.Contracts;
@@ -145,7 +145,8 @@ namespace ProyectoFinal.API
                     options.Password.RequireNonAlphanumeric = false;
                 })
                 .AddEntityFrameworkStores<DataBaseContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddTokenProvider<RefreshTokenProvider<Auth>>(App.RefreshTokenProvider);
 
             return services;
         }
@@ -153,9 +154,6 @@ namespace ProyectoFinal.API
         public static IServiceCollection AddJwt(this IServiceCollection services)
         {
             var jwtSettings = _configuration.GetSection("Jwt").Get<JwtSettings>();
-            services.AddSingleton(jwtSettings);
-
-            services.AddSingleton<IJwtTokenBl,JwtTokenBl>();
             
             // Se configura JWT
             services.AddAuthentication(options =>  
@@ -170,15 +168,27 @@ namespace ProyectoFinal.API
                     options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
-                        ValidateAudience = true,
-                        ValidAudience = jwtSettings.Audience,
                         ValidateIssuer = false,
                         ValidateLifetime = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
+                        ValidAudience = jwtSettings.Audience,
+
                         ClockSkew = TimeSpan.Zero
                     };
                 });
+            
+            // Configuración del tiempo de caducidad del RefreshToken
+            services.Configure<RefreshTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromDays(jwtSettings.RefreshTokenExpirationInDays);
+            });
+            
+            // Añadimos las inyecciones de dependencias relacionadas con los JWT tokens
+            services.AddSingleton(jwtSettings);
+            services.AddScoped<IJwtTokenBl,JwtTokenBl>();
 
             return services;
         }
