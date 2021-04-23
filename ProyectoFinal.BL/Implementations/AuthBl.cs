@@ -24,11 +24,11 @@ namespace ProyectoFinal.BL.Implementations
             _mapper = mapper;
         }
 
-        public async Task<Guid> Create(AuthSignUpDto authSignUpDto, string rol)
+        public async Task<Guid> Create(SignUpBaseRequest signUpBaseRequest, string rol)
         {
-            var auth = _mapper.Map<Auth>(authSignUpDto);
+            var auth = _mapper.Map<Auth>(signUpBaseRequest);
 
-            var result = await _userManager.CreateAsync(auth, authSignUpDto.Password);
+            var result = await _userManager.CreateAsync(auth, signUpBaseRequest.Password);
 
             if (!result.Succeeded)
             {
@@ -40,12 +40,12 @@ namespace ProyectoFinal.BL.Implementations
             return auth.Id;
         }
 
-        public async Task<Guid> Login(AuthLoginDto authLoginDto, string rol)
+        public async Task<Guid> Login(LoginRequest loginRequest, string rol)
         {
-            var isEmail = authLoginDto.UserNameOrEmail.Contains("@");
+            var isEmail = loginRequest.UserNameOrEmail.Contains("@");
             var auth = isEmail
-                ? await _userManager.FindByEmailAsync(authLoginDto.UserNameOrEmail)
-                : await _userManager.FindByNameAsync(authLoginDto.UserNameOrEmail);
+                ? await _userManager.FindByEmailAsync(loginRequest.UserNameOrEmail)
+                : await _userManager.FindByNameAsync(loginRequest.UserNameOrEmail);
 
             if (auth == null)
             {
@@ -61,7 +61,7 @@ namespace ProyectoFinal.BL.Implementations
             }
             
             var result = await _signInManager.PasswordSignInAsync(auth,
-                authLoginDto.Password, authLoginDto.RememberMe, auth.LockoutEnabled);
+                loginRequest.Password, loginRequest.RememberMe, auth.LockoutEnabled);
 
             if (result.Succeeded)
             {

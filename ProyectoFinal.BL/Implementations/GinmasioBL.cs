@@ -22,32 +22,32 @@ namespace ProyectoFinal.BL.Implementations
             _mapper = mapper;
         }
 
-        public async Task<GimnasioGetByIdResponseDto> Create(GimnasioCreateDto gimnasioCreate, Guid authId)
+        public async Task<GimnasioGetByIdResponse> Create(GimnasioCreateRequest gimnasioCreate, Guid authId)
         {
             var gimnasioInfo = _mapper.Map<Gimnasio>(gimnasioCreate);
             gimnasioInfo.AuthId = authId;
 
             var gimnasio = await _repository.Create(gimnasioInfo);
             
-            return _mapper.Map<GimnasioGetByIdResponseDto>(gimnasio);
+            return _mapper.Map<GimnasioGetByIdResponse>(gimnasio);
         }
 
-        public async Task<IEnumerable<GimnasioGetAllResponseDto>> GetAll()
+        public async Task<IEnumerable<GimnasioGetAllResponse>> GetAll()
         {
             var list = await _repository.GetAll();
-            return _mapper.Map<IEnumerable<GimnasioGetAllResponseDto>>(list);
+            return _mapper.Map<IEnumerable<GimnasioGetAllResponse>>(list);
         }
 
-        public async Task<GimnasioGetByIdResponseDto> GetById(Guid id)
+        public async Task<GimnasioGetByIdResponse> GetById(Guid id)
         {
             var entity = await _repository.GetById(id);
-            return _mapper.Map<GimnasioGetByIdResponseDto>(entity);
+            return _mapper.Map<GimnasioGetByIdResponse>(entity);
         }
         
-        public async Task<GimnasioGetByIdResponseDto> GetByAuthId(Guid guidAuth)
+        public async Task<GimnasioGetByIdResponse> GetByAuthId(Guid guidAuth)
         {
             var entity = await _repository.GetByCondition(gimnasio => gimnasio.AuthId == guidAuth);
-            return _mapper.Map<GimnasioGetByIdResponseDto>(entity);
+            return _mapper.Map<GimnasioGetByIdResponse>(entity);
         }
 
         public async Task<Guid> GetIdByAuthId(Guid guidAuth)
@@ -56,7 +56,7 @@ namespace ProyectoFinal.BL.Implementations
             return entity.Id;
         }
 
-        public async Task<bool> Update(Guid id, GimnasioUpdateDto gimnasio)
+        public async Task<bool> Update(Guid id, GimnasioUpdateRequest gimnasio)
         {
             try
             {

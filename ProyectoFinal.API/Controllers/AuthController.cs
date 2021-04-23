@@ -35,5 +35,14 @@ namespace ProyectoFinal.API.Controllers
                 RefreshToken = refreshToken
             });
         }
+        
+        [HttpPost]
+        [Route("forgot-password")]
+        public async Task<ActionResult> RefreshToken([FromBody] ForgotPasswordRequest forgotPasswordRequest)
+        {
+            bool result = _authBl.ForgotPassword(forgotPasswordRequest);
+
+            return Ok();
+        }
     }
 }

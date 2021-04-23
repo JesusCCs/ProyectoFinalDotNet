@@ -28,7 +28,7 @@ namespace ProyectoFinal.API.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("/gimnasio/login")]
-        public async Task<ActionResult> Login([FromBody] AuthLoginDto itemLogin)
+        public async Task<ActionResult> Login([FromBody] LoginRequest itemLogin)
         {
             var guidAuth = await _authBl.Login(itemLogin, Rol.Gimnasio);
 
@@ -37,7 +37,7 @@ namespace ProyectoFinal.API.Controllers
             var token = _jwtTokenBl.GenerateAccessToken(gimansio.Id, guidAuth, Rol.Gimnasio);
             var refreshToken = await _jwtTokenBl.GenerateRefreshToken(guidAuth);
 
-            return Ok(new AuthLoginResponseDto
+            return Ok(new LoginResponse
             {
                 Id = gimansio.Id,
                 AuthId = guidAuth,
@@ -65,7 +65,7 @@ namespace ProyectoFinal.API.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> Create([FromBody] GimnasioCreateDto itemNuevo)
+        public async Task<ActionResult> Create([FromBody] GimnasioCreateRequest itemNuevo)
         {
             var guid = await _authBl.Create(itemNuevo, Rol.Gimnasio);
 
@@ -77,7 +77,7 @@ namespace ProyectoFinal.API.Controllers
 
         [HttpPut("{id:guid}")]
         [Authorize(Roles = Rol.AdminOGimnasio, Policy = Policy.GymIsOwner)]
-        public async Task<ActionResult> Update(Guid id, [FromBody] GimnasioUpdateDto itemActualizado)
+        public async Task<ActionResult> Update(Guid id, [FromBody] GimnasioUpdateRequest itemActualizado)
         {
             var item = await _gimnasioBl.Update(id, itemActualizado);
             return Ok(item);

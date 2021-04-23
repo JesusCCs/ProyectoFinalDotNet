@@ -7,12 +7,12 @@ namespace ProyectoFinal.BL.Contracts
 {
     public interface IGinmasioBl
     {
-        Task<GimnasioGetByIdResponseDto> Create(GimnasioCreateDto gimnasio, Guid authId);
-        Task<IEnumerable<GimnasioGetAllResponseDto>> GetAll();
-        Task<GimnasioGetByIdResponseDto> GetById(Guid id);
-        Task<GimnasioGetByIdResponseDto> GetByAuthId(Guid guidAuth);
+        Task<GimnasioGetByIdResponse> Create(GimnasioCreateRequest gimnasio, Guid authId);
+        Task<IEnumerable<GimnasioGetAllResponse>> GetAll();
+        Task<GimnasioGetByIdResponse> GetById(Guid id);
+        Task<GimnasioGetByIdResponse> GetByAuthId(Guid guidAuth);
         Task<Guid> GetIdByAuthId(Guid guidAuth);
-        Task<bool> Update(Guid id, GimnasioUpdateDto gimnasio);
+        Task<bool> Update(Guid id, GimnasioUpdateRequest gimnasio);
         Task<bool> Delete(Guid id);
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoFinal.Core.DTO
 {
-    public class GimnasioCreateDto : AuthSignUpDto
+    public class GimnasioCreateRequest : SignUpBaseRequest
     {
         [Required, StringLength(9)] public string Cif { get; set; }
 
@@ -18,7 +18,7 @@ namespace ProyectoFinal.Core.DTO
         [Required] [Range(100, 50000)] public int Tarifa { get; set; }
     }
 
-    public class GimnasioUpdateDto
+    public class GimnasioUpdateRequest
     {
         [Required] public Guid Id { get; set; }
         [Required] public string Cif { get; set; }
@@ -28,7 +28,7 @@ namespace ProyectoFinal.Core.DTO
         [Required] public int Tarifa { get; set; }
     }
 
-    public class GimnasioGetByIdResponseDto
+    public class GimnasioGetByIdResponse
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }
@@ -41,7 +41,7 @@ namespace ProyectoFinal.Core.DTO
         public int Tarifa { get; set; }
     }
 
-    public class GimnasioGetAllResponseDto
+    public class GimnasioGetAllResponse
     {
         public Guid Id { get; set; }
         public string Nombre { get; set; }
