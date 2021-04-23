@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,7 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
             return await _context.Set<T>().ToListAsync();
         }
 
-        public async Task<T> Get(Guid id, string includes = "")
+        public async Task<T> GetById(Guid id, string includes = "")
         {
             IQueryable<T> query = _context.Set<T>();
             
@@ -33,6 +34,18 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
             }
             
             return await query.FirstOrDefaultAsync(i => i.Id == id);
+        }
+
+        public async Task<T> GetByCondition(Expression<Func<T, bool>> where, string includes = "")
+        {
+            IQueryable<T> query = _context.Set<T>();
+
+            foreach (var include in includes.Split(",",StringSplitOptions.RemoveEmptyEntries))
+            {
+                query.Include(include);
+            }
+
+            return await query.Where(where).FirstOrDefaultAsync();
         }
 
         public async ValueTask<T> Create(T entity)

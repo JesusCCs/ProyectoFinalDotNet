@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace ProyectoFinal.DAL.Repositories.Contracts
@@ -8,12 +9,14 @@ namespace ProyectoFinal.DAL.Repositories.Contracts
     {
         Task<IEnumerable<T>> GetAll();
 
-        Task<T> Get(Guid id, string includes = "");
-        
+        Task<T> GetById(Guid id, string includes = "");
+
+        Task<T> GetByCondition(Expression<Func<T, bool>> where, string includes = "");
+
         ValueTask<T> Create(T entity);
-        
+
         Task<bool> Update(T entity);
-        
+
         Task<bool> Delete(T entity);
     }
 }

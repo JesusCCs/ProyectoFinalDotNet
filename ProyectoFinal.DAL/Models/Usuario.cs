@@ -5,16 +5,20 @@ using System.Collections.Generic;
 
 namespace ProyectoFinal.DAL.Models
 {
-    public partial class Usuario : BaseAuth
+    public class Usuario : Base
     {
         public Usuario()
         {
-            AnunciosUsuarios = new HashSet<AnunciosUsuario>();
+            Anuncios = new HashSet<AnunciosUsuario>();
         }
+        
+        public Guid AuthId { get; set; }
         
         public string Nombre { get; set; }
         public string Apellidos { get; set; }
         public string Direccion { get; set; }
-        public virtual ICollection<AnunciosUsuario> AnunciosUsuarios { get; set; }
+        
+        public virtual ICollection<AnunciosUsuario> Anuncios { get; set; }
+        public Auth.Auth Auth { get; set; }
     }
 }

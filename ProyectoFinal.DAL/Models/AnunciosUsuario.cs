@@ -4,7 +4,7 @@
 
 namespace ProyectoFinal.DAL.Models
 {
-    public partial class AnunciosUsuario : Base
+    public class AnunciosUsuario : Base
     {
         public Guid AnucioId { get; set; }
         public Guid UsuarioId { get; set; }
