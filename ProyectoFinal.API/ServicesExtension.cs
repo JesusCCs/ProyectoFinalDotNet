@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Net;
+using System.Net.Mail;
 using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -153,7 +155,7 @@ namespace ProyectoFinal.API
         
         public static IServiceCollection AddJwt(this IServiceCollection services)
         {
-            var jwtSettings = _configuration.GetSection("Jwt").Get<JwtSettings>();
+            var jwtSettings = _configuration.GetSection("JwtSettings").Get<JwtSettings>();
             
             // Se configura JWT
             services.AddAuthentication(options =>  
@@ -205,6 +207,22 @@ namespace ProyectoFinal.API
                 });
             });
             
+            return services;
+        }
+
+        public static IServiceCollection AddEmailSender(this IServiceCollection services)
+        {
+            var mailtrap = _configuration.GetSection("MailtrapSettings");
+                
+            services
+                .AddFluentEmail(mailtrap["From"])
+                .AddRazorRenderer(Directory.GetCurrentDirectory())
+                .AddSmtpSender(new SmtpClient("smtp.mailtrap.io", 2525)
+                {
+                    Credentials = new NetworkCredential(mailtrap["User"], mailtrap["Key"]),
+                    EnableSsl = true
+                });
+
             return services;
         }
     }

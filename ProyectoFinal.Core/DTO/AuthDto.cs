@@ -38,6 +38,21 @@ namespace ProyectoFinal.Core.DTO
     public class ForgotPasswordRequest
     {
         [Required, EmailAddress]
-        public string email { get; set; }
+        public string Email { get; set; }
+    }
+    
+    public class ResetPasswordRequest
+    {
+        [Required, EmailAddress]
+        public string Email { get; set; }
+        
+        [Required, StringLength(200, MinimumLength = 6)]
+        public string Password { get; set; }
+        
+        [Compare("Password")]
+        public string ConfirmedPassword { get; set; }
+        
+        [Required]
+        public string Token { get; set; }
     }
 }

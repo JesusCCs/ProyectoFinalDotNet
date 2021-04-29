@@ -10,5 +10,7 @@ namespace ProyectoFinal.BL.Contracts
     {
         Task<Guid> Create(SignUpBaseRequest signUpBaseRequest, string rol);
         Task<Guid> Login(LoginRequest signUpRequest,string rol);
+        Task ForgotPassword(ForgotPasswordRequest forgotPasswordRequest);
+        Task ResetPassword(ResetPasswordRequest resetPasswordRequest);
     }
 }
