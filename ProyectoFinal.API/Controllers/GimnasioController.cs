@@ -72,7 +72,7 @@ namespace ProyectoFinal.API.Controllers
         }
         
         [HttpPut("{id:guid}")]
-        [Authorize(Roles = Rol.AdminOGimnasio, Policy = Policy.GymIsOwner)]
+        [Authorize(Roles = Rol.AdminOGimnasio, Policy = Policy.GymIsTarget)]
         public async Task<ActionResult> Update(Guid id, [FromBody] GimnasioUpdateRequest itemActualizado)
         {
             var item = await _gimnasioBl.Update(id, itemActualizado);

@@ -2,9 +2,9 @@
 
 namespace ProyectoFinal.API.Authorization.Requirements
 {
-    public class GymIsOwnerRequirement : IAuthorizationRequirement
+    public class GymIsTargetRequirement : IAuthorizationRequirement
     {
-        public bool SameId(string ownerId,string targetId)
+        public static bool SameId(string ownerId,string targetId)
         {
             return ownerId == targetId;
         }

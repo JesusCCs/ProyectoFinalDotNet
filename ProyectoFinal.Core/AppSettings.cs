@@ -12,7 +12,8 @@
 
     public static class Policy
     {
-        public const string GymIsOwner = "GymIsOwner";
+        public const string GymIsTarget = "GymIsTarget";
+        public const string AuthIsTarget = "AuthIsTarget";
     }
     
     public static class App

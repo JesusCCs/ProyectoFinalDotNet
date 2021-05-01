@@ -9,7 +9,7 @@ using ProyectoFinal.API.Authorization.Requirements;
 
 namespace ProyectoFinal.API.Authorization.Handlers
 {
-    public class GymIsOwnerHandler : AuthorizationHandler<GymIsOwnerRequirement>
+    public class GymIsOwnerHandler : AuthorizationHandler<GymIsTargetRequirement>
     {
         
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -19,7 +19,7 @@ namespace ProyectoFinal.API.Authorization.Handlers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, GymIsOwnerRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, GymIsTargetRequirement requirement)
         {
             if (!context.User.HasClaim(c => c.Type == ClaimTypes.NameIdentifier))
             {
@@ -32,7 +32,7 @@ namespace ProyectoFinal.API.Authorization.Handlers
 
             var requestId = routeData.Values["id"]?.ToString();
             
-            if (requirement.SameId(ownerId,requestId))
+            if (GymIsTargetRequirement.SameId(ownerId,requestId))
             {
                 context.Succeed(requirement);
             }

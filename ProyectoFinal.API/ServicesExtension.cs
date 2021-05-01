@@ -201,9 +201,9 @@ namespace ProyectoFinal.API
             
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(Policy.GymIsOwner, policy =>
+                options.AddPolicy(Policy.GymIsTarget, policy =>
                 {
-                    policy.Requirements.Add(new GymIsOwnerRequirement());
+                    policy.Requirements.Add(new GymIsTargetRequirement());
                 });
             });
             

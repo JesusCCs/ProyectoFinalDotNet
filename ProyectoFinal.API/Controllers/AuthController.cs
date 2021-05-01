@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProyectoFinal.BL.Contracts;
 using ProyectoFinal.Core.DTO;
+using ProyectoFinal.DAL.Models.Auth;
 
 namespace ProyectoFinal.API.Controllers
 {
@@ -62,6 +63,15 @@ namespace ProyectoFinal.API.Controllers
         [AllowAnonymous]
         [Route("confirm-email")]
         public async Task<ActionResult> ConfirmEmail([FromBody] ConfirmEmailRequest request)
+        {
+            await _authBl.ConfirmEmail(request);
+            return Accepted();
+        }
+        
+        [HttpPut]
+        [Route("change-password")]
+        [Authorize(Roles = Rol.Todos, Policy = Policy.AuthIsTarget)]
+        public async Task<ActionResult> ChangePassword([FromBody] ConfirmEmailRequest request)
         {
             await _authBl.ConfirmEmail(request);
             return Accepted();
