@@ -6,6 +6,7 @@ using System.Web;
 using AutoMapper;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity;
+using ProyectoFinal.API;
 using ProyectoFinal.BL.Contracts;
 using ProyectoFinal.BL.Exceptions;
 using ProyectoFinal.Core.DTO;
@@ -47,7 +48,8 @@ namespace ProyectoFinal.BL.Implementations
             var model = new 
             {
                 Name = auth.UserName,
-                Token = encodeToken
+                Token = encodeToken,
+                Time = App.TimeDefaultToken
             };
             
             await _email.To(auth.Email).Subject("Completar Registro")
@@ -123,7 +125,7 @@ namespace ProyectoFinal.BL.Implementations
             {
                 Name = user.UserName,
                 Url = encodeToken,
-                Time = 60
+                Time = App.TimeDefaultToken
             };
             
             await _email.To(user.Email).Subject("Contraseña olvidada")
