@@ -22,14 +22,13 @@ namespace ProyectoFinal.API.Controllers
             _authBl = authBl;
             _jwtTokenBl = jwtTokenBl;
         }
-
-
+        
         [HttpPost]
         [Route("refresh-token")]
-        public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest tokenRequest)
+        public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {
-            var infoUser = _jwtTokenBl.ValidateAccessToken(tokenRequest.AccessToken);
-            await _jwtTokenBl.ValidateRefreshToken(infoUser.AuthId, tokenRequest.RefreshToken);
+            var infoUser = _jwtTokenBl.ValidateAccessToken(request.AccessToken);
+            await _jwtTokenBl.ValidateRefreshToken(infoUser.AuthId, request.RefreshToken);
             
             var accessToken = _jwtTokenBl.GenerateAccessToken(Guid.Parse(infoUser.Id), Guid.Parse(infoUser.AuthId), infoUser.Rol);
             var refreshToken = await _jwtTokenBl.GenerateRefreshToken(Guid.Parse(infoUser.AuthId));
@@ -44,19 +43,28 @@ namespace ProyectoFinal.API.Controllers
         [HttpPut]
         [AllowAnonymous]
         [Route("forgot-password")]
-        public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordRequest forgotPasswordRequest)
+        public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
         {
-            await _authBl.ForgotPassword(forgotPasswordRequest);
+            await _authBl.ForgotPassword(request);
             return Accepted();
         }
         
         [HttpPut]
         [AllowAnonymous]
         [Route("reset-password")]
-        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordRequest resetPasswordRequest)
+        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
         {
-            await _authBl.ResetPassword(resetPasswordRequest);
+            await _authBl.ResetPassword(request);
             return NoContent();
+        }
+        
+        [HttpPut]
+        [AllowAnonymous]
+        [Route("confirm-email")]
+        public async Task<ActionResult> ConfirmEmail([FromBody] ConfirmEmailRequest request)
+        {
+            await _authBl.ConfirmEmail(request);
+            return Accepted();
         }
     }
 }

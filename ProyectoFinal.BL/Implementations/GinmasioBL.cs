@@ -22,14 +22,12 @@ namespace ProyectoFinal.BL.Implementations
             _mapper = mapper;
         }
 
-        public async Task<GimnasioGetByIdResponse> Create(GimnasioCreateRequest gimnasioCreate, Guid authId)
+        public async Task Create(GimnasioCreateRequest gimnasioCreate, Guid authId)
         {
             var gimnasioInfo = _mapper.Map<Gimnasio>(gimnasioCreate);
             gimnasioInfo.AuthId = authId;
 
-            var gimnasio = await _repository.Create(gimnasioInfo);
-            
-            return _mapper.Map<GimnasioGetByIdResponse>(gimnasio);
+            await _repository.Create(gimnasioInfo);
         }
 
         public async Task<IEnumerable<GimnasioGetAllResponse>> GetAll()

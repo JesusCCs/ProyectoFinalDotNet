@@ -8,9 +8,10 @@ namespace ProyectoFinal.BL.Contracts
 {
     public interface IAuthBl
     {
-        Task<Guid> Create(SignUpBaseRequest signUpBaseRequest, string rol);
-        Task<Guid> Login(LoginRequest signUpRequest,string rol);
-        Task ForgotPassword(ForgotPasswordRequest forgotPasswordRequest);
-        Task ResetPassword(ResetPasswordRequest resetPasswordRequest);
+        Task<Guid> Create(SignUpBaseRequest request, string rol);
+        Task<Guid> Login(LoginRequest request,string rol);
+        Task ForgotPassword(ForgotPasswordRequest request);
+        Task ResetPassword(ResetPasswordRequest request);
+        Task ConfirmEmail(ConfirmEmailRequest request);
     }
 }

@@ -28,11 +28,11 @@ namespace ProyectoFinal.BL.Implementations
             _mapper = mapper;
         }
 
-        public async Task<Guid> Create(SignUpBaseRequest signUpBaseRequest, string rol)
+        public async Task<Guid> Create(SignUpBaseRequest request, string rol)
         {
-            var auth = _mapper.Map<Auth>(signUpBaseRequest);
+            var auth = _mapper.Map<Auth>(request);
 
-            var result = await _userManager.CreateAsync(auth, signUpBaseRequest.Password);
+            var result = await _userManager.CreateAsync(auth, request.Password);
 
             if (!result.Succeeded)
             {
@@ -40,16 +40,48 @@ namespace ProyectoFinal.BL.Implementations
             }
 
             await _userManager.AddToRoleAsync(auth, rol);
+            
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(auth);
+            var encodeToken = HttpUtility.UrlEncode(token);
+            
+            var model = new 
+            {
+                Name = auth.UserName,
+                Token = encodeToken
+            };
+            
+            await _email.To(auth.Email).Subject("Completar Registro")
+                .UsingTemplateFromFile("wwwroot/templates/EmailConfimation.cshtml",model)
+                .SendAsync();
 
             return auth.Id;
         }
-
-        public async Task<Guid> Login(LoginRequest loginRequest, string rol)
+        
+        public async Task ConfirmEmail(ConfirmEmailRequest request)
         {
-            var isEmail = loginRequest.UserNameOrEmail.Contains("@");
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                throw new ConfirmEmailException();
+            }
+
+            var decodeToken = HttpUtility.UrlDecode(request.Token);
+            
+            var result = await _userManager.ConfirmEmailAsync(user, decodeToken);
+
+            if (!result.Succeeded)
+            {
+                throw new ConfirmEmailException();
+            }
+        }
+
+        public async Task<Guid> Login(LoginRequest request, string rol)
+        {
+            var isEmail = request.UserNameOrEmail.Contains("@");
             var auth = isEmail
-                ? await _userManager.FindByEmailAsync(loginRequest.UserNameOrEmail)
-                : await _userManager.FindByNameAsync(loginRequest.UserNameOrEmail);
+                ? await _userManager.FindByEmailAsync(request.UserNameOrEmail)
+                : await _userManager.FindByNameAsync(request.UserNameOrEmail);
 
             if (auth == null)
             {
@@ -65,7 +97,7 @@ namespace ProyectoFinal.BL.Implementations
             }
             
             var result = await _signInManager.PasswordSignInAsync(auth,
-                loginRequest.Password, loginRequest.RememberMe, auth.LockoutEnabled);
+                request.Password, request.RememberMe, auth.LockoutEnabled);
 
             if (result.Succeeded)
             {
@@ -75,9 +107,9 @@ namespace ProyectoFinal.BL.Implementations
             throw new AuthenticationException();
         }
 
-        public async Task ForgotPassword(ForgotPasswordRequest forgotPasswordRequest)
+        public async Task ForgotPassword(ForgotPasswordRequest request)
         {
-            var user = await _userManager.FindByEmailAsync(forgotPasswordRequest.Email);
+            var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
             {
@@ -90,7 +122,8 @@ namespace ProyectoFinal.BL.Implementations
             var model = new 
             {
                 Name = user.UserName,
-                Token = encodeToken
+                Url = encodeToken,
+                Time = 60
             };
             
             await _email.To(user.Email).Subject("Contraseña olvidada")
@@ -98,18 +131,18 @@ namespace ProyectoFinal.BL.Implementations
                 .SendAsync();
         }
 
-        public async Task ResetPassword(ResetPasswordRequest resetPasswordRequest)
+        public async Task ResetPassword(ResetPasswordRequest request)
         {
-            var user = await _userManager.FindByEmailAsync(resetPasswordRequest.Email);
+            var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null)
             {
                 throw new ResetPasswordException();
             }
 
-            var decodeToken = HttpUtility.UrlDecode(resetPasswordRequest.Token);
+            var decodeToken = HttpUtility.UrlDecode(request.Token);
             
-            var result = await _userManager.ResetPasswordAsync(user, decodeToken, resetPasswordRequest.Password);
+            var result = await _userManager.ResetPasswordAsync(user, decodeToken, request.Password);
 
             if (!result.Succeeded)
             {

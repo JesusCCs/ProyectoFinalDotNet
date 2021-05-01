@@ -139,7 +139,7 @@ namespace ProyectoFinal.API
 
                     if (_env.IsDevelopment())
                     {
-                        options.SignIn.RequireConfirmedEmail = false;
+                        options.SignIn.RequireConfirmedEmail = true;
                         options.Password.RequireDigit = false;
                         options.Password.RequireUppercase = false;
                     }

@@ -83,7 +83,7 @@ namespace ProyectoFinal.BL.Implementations
                 ValidAudience = _jwt.Audience
             }, out var validatedToken);
 
-            if (validatedToken is not JwtSecurityToken token || token.Header.Alg == Algorithm)
+            if (validatedToken is not JwtSecurityToken token || token.Header.Alg != Algorithm)
             {
                 throw new SecurityTokenException("Token no permitido");
             }

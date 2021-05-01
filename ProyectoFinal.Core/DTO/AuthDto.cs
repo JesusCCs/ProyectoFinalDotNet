@@ -55,4 +55,13 @@ namespace ProyectoFinal.Core.DTO
         [Required]
         public string Token { get; set; }
     }
+    
+    public class ConfirmEmailRequest
+    {
+        [Required, EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        public string Token { get; set; }
+    }
 }

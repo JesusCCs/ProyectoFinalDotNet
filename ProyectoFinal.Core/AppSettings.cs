@@ -9,6 +9,16 @@
         public int AccessTokenExpirationInMinutes { get; set; }
         public int RefreshTokenExpirationInDays { get; set; }
     }
+
+    public class ResetPasswordSettings
+    {
+        public int ResetPasswordTokenExpirationInMinutes { get; set; }
+    }
+    
+    public class ConfirmEmailSettings
+    {
+        public int ConfirmEmailTokenExpirationInMinutes { get; set; }
+    }
     
     public static class Policy
     {
