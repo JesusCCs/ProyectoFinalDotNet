@@ -9,30 +9,30 @@ using ProyectoFinal.API.Authorization.Requirements;
 
 namespace ProyectoFinal.API.Authorization.Handlers
 {
-    public class GymIsTargetHandler : AuthorizationHandler<GymIsTargetRequirement>
+    public class AuthIsTargetHandler : AuthorizationHandler<AuthIsTargetRequirement>
     {
-        
+                
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GymIsTargetHandler(IHttpContextAccessor httpContextAccessor)
+        public AuthIsTargetHandler(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }
 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, GymIsTargetRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AuthIsTargetRequirement requirement)
         {
-            if (!context.User.HasClaim(c => c.Type == ClaimTypes.NameIdentifier))
+            if (!context.User.HasClaim(c => c.Type == ClaimTypes.Sid))
             {
                 return Task.CompletedTask;
             }
 
-            var ownerId = context.User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var originAuthId = context.User.Claims.Single(c => c.Type == ClaimTypes.Sid).Value;
 
             var routeData = (_httpContextAccessor.HttpContext ?? throw new InvalidOperationException()).GetRouteData();
 
-            var requestId = routeData.Values["id"]?.ToString();
+            var targetAuthId = routeData.Values["AuthId"]?.ToString();
             
-            if (requirement.SameId(ownerId,requestId))
+            if (requirement.SameId(originAuthId,targetAuthId))
             {
                 context.Succeed(requirement);
             }

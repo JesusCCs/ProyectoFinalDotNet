@@ -12,7 +12,7 @@ namespace ProyectoFinal.API.Controllers
 {
     [ApiController]
     [Route("/auth")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Rol.Todos)]
     public class AuthController : ControllerBase
     {
         private readonly IAuthBl _authBl;
@@ -25,6 +25,7 @@ namespace ProyectoFinal.API.Controllers
         }
         
         [HttpPost]
+
         [Route("refresh-token")]
         public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {
@@ -65,16 +66,16 @@ namespace ProyectoFinal.API.Controllers
         public async Task<ActionResult> ConfirmEmail([FromBody] ConfirmEmailRequest request)
         {
             await _authBl.ConfirmEmail(request);
-            return Accepted();
+            return NoContent();
         }
         
         [HttpPut]
         [Route("change-password")]
-        [Authorize(Roles = Rol.Todos, Policy = Policy.AuthIsTarget)]
-        public async Task<ActionResult> ChangePassword([FromBody] ConfirmEmailRequest request)
+        [Authorize(Policy = Policy.AuthIsTarget)]
+        public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
-            await _authBl.ConfirmEmail(request);
-            return Accepted();
+            await _authBl.ChangePassword(request);
+            return NoContent();
         }
     }
 }

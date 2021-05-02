@@ -56,6 +56,21 @@ namespace ProyectoFinal.Core.DTO
         public string Token { get; set; }
     }
     
+    public class ChangePasswordRequest
+    {
+        [Required]
+        public Guid AuthId { get; set; }
+        
+        [Required, StringLength(200, MinimumLength = 6)]
+        public string CurrentPassword { get; set; }
+        
+        [Required, StringLength(200, MinimumLength = 6)]
+        public string NewPassword { get; set; }
+        
+        [Compare("NewPassword")]
+        public string ConfirmedNewPassword { get; set; }
+    }
+    
     public class ConfirmEmailRequest
     {
         [Required, EmailAddress]

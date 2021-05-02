@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ProyectoFinal.BL.Exceptions
+namespace ProyectoFinal.Core.Exceptions
 {
     public class ConfirmEmailException : Exception
     {

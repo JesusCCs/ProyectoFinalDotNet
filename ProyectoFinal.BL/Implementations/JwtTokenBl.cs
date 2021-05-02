@@ -10,8 +10,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using ProyectoFinal.API;
 using ProyectoFinal.BL.Contracts;
-using ProyectoFinal.BL.Exceptions;
 using ProyectoFinal.Core.DTO;
+using ProyectoFinal.Core.Exceptions;
 using ProyectoFinal.DAL.Models.Auth;
 
 namespace ProyectoFinal.BL.Implementations

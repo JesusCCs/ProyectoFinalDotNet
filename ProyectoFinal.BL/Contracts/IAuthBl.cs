@@ -13,5 +13,6 @@ namespace ProyectoFinal.BL.Contracts
         Task ForgotPassword(ForgotPasswordRequest request);
         Task ResetPassword(ResetPasswordRequest request);
         Task ConfirmEmail(ConfirmEmailRequest request);
+        Task ChangePassword(ChangePasswordRequest request);
     }
 }

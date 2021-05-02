@@ -8,8 +8,8 @@ using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity;
 using ProyectoFinal.API;
 using ProyectoFinal.BL.Contracts;
-using ProyectoFinal.BL.Exceptions;
 using ProyectoFinal.Core.DTO;
+using ProyectoFinal.Core.Exceptions;
 using ProyectoFinal.DAL.Models.Auth;
 
 namespace ProyectoFinal.BL.Implementations
@@ -139,7 +139,7 @@ namespace ProyectoFinal.BL.Implementations
 
             if (user == null)
             {
-                throw new ResetPasswordException();
+                throw new UserNotFoundException();
             }
 
             var decodeToken = HttpUtility.UrlDecode(request.Token);
@@ -149,6 +149,23 @@ namespace ProyectoFinal.BL.Implementations
             if (!result.Succeeded)
             {
                 throw new ResetPasswordException();
+            }
+        }
+        
+        public async Task ChangePassword(ChangePasswordRequest request)
+        {
+            var user = await _userManager.FindByIdAsync(request.AuthId.ToString());
+            
+            if (user == null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+            
+            if (!result.Succeeded)
+            {
+                throw new ChangePasswordException();
             }
         }
     }

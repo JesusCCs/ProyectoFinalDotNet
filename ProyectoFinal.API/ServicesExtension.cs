@@ -197,13 +197,19 @@ namespace ProyectoFinal.API
         
         public static IServiceCollection AddPolicies(this IServiceCollection services)
         {
-            services.AddSingleton<IAuthorizationHandler,GymIsOwnerHandler>();
+            services.AddSingleton<IAuthorizationHandler,GymIsTargetHandler>();
+            services.AddSingleton<IAuthorizationHandler,AuthIsTargetHandler>();
             
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(Policy.GymIsTarget, policy =>
                 {
                     policy.Requirements.Add(new GymIsTargetRequirement());
+                });
+                
+                options.AddPolicy(Policy.AuthIsTarget, policy =>
+                {
+                    policy.Requirements.Add(new AuthIsTargetRequirement());
                 });
             });
             

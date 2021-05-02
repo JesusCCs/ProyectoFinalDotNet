@@ -2,8 +2,8 @@
 
 namespace ProyectoFinal.API.Authorization.Requirements
 {
-    public class GymIsTargetRequirement : BaseRequirement
+    public class AuthIsTargetRequirement : BaseRequirement
     {
-
+        
     }
 }
