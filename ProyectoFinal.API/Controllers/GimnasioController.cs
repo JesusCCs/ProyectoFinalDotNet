@@ -49,11 +49,19 @@ namespace ProyectoFinal.API.Controllers
         
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> Create([FromBody] GimnasioCreateRequest itemNuevo)
+        public async Task<ActionResult> Create([FromForm] GimnasioCreateRequest request)
         {
-            var guid = await _authBl.Create(itemNuevo, Rol.Gimnasio);
-            await _gimnasioBl.Create(itemNuevo, guid);
-
+            var guid = await _authBl.Create(request, Rol.Gimnasio);
+            await _gimnasioBl.Create(request, guid);
+            
+            return Ok();
+        }
+        
+        [HttpPost]
+        [Route("subida")]
+        [AllowAnonymous]
+        public async Task<ActionResult> Upload([FromForm] UploadRequest request)
+        {
             return Ok();
         }
         
@@ -74,9 +82,9 @@ namespace ProyectoFinal.API.Controllers
         
         [HttpPut("{id:guid}")]
         [Authorize(Roles = Rol.AdminOGimnasio, Policy = Policy.GymIsTarget)]
-        public async Task<ActionResult> Update(Guid id, [FromBody] GimnasioUpdateRequest itemActualizado)
+        public async Task<ActionResult> Update(Guid id, [FromBody] GimnasioUpdateRequest request)
         {
-            var item = await _gimnasioBl.Update(id, itemActualizado);
+            var item = await _gimnasioBl.Update(id, request);
             return Ok(item);
         }
         
