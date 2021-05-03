@@ -215,6 +215,11 @@ namespace ProyectoFinal.DAL
                     .HasColumnName("tarifa")
                     .HasComment("Es en céntimos");
                 
+                entity.Property(e => e.Logo)
+                    .HasColumnType("varchar(255)")
+                    .HasColumnName("logo")
+                    .HasComment("Campo útil para tener una referencia al nombre con el que se guardó el fichero subido por el usuario en wwwroot");
+                
                 entity.HasOne(d => d.Auth);
             });
 
