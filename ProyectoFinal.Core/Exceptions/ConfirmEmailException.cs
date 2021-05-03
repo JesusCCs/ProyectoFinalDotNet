@@ -2,7 +2,7 @@
 
 namespace ProyectoFinal.Core.Exceptions
 {
-    public class UserCreationException : Exception
+    public class ConfirmEmailException : Exception
     {
         
     }

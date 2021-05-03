@@ -31,6 +31,9 @@ namespace ProyectoFinal.API
 
             // ...Sistema de seguridad
             services.AddIdentity().AddJwt().AddPolicies().AddCors();
+            
+            // ...Emails
+            services.AddEmailSender();
 
             // ...Swagger para pruebas y documentación visual
             services.AddSwagger();

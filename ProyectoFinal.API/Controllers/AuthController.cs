@@ -1,13 +1,19 @@
 ﻿
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProyectoFinal.BL.Contracts;
+using ProyectoFinal.Core;
 using ProyectoFinal.Core.DTO;
+using ProyectoFinal.DAL.Models.Auth;
 
 namespace ProyectoFinal.API.Controllers
 {
+    [ApiController]
     [Route("/auth")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Rol.Todos)]
     public class AuthController : ControllerBase
     {
         private readonly IAuthBl _authBl;
@@ -18,22 +24,76 @@ namespace ProyectoFinal.API.Controllers
             _authBl = authBl;
             _jwtTokenBl = jwtTokenBl;
         }
-
-
+        
         [HttpPost]
         [Route("refresh-token")]
-        public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest tokenRequest)
+        public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {
-            var infoUser = _jwtTokenBl.ValidateAccessToken(tokenRequest.AccessToken);
-            var refreshToken = await _jwtTokenBl.ValidateRefreshToken(infoUser.AuthId, tokenRequest.RefreshToken);
+            var infoUser = _jwtTokenBl.ValidateAccessToken(request.AccessToken);
+            await _jwtTokenBl.ValidateRefreshToken(infoUser.AuthId, request.RefreshToken);
             
             var accessToken = _jwtTokenBl.GenerateAccessToken(Guid.Parse(infoUser.Id), Guid.Parse(infoUser.AuthId), infoUser.Rol);
+            var refreshToken = await _jwtTokenBl.GenerateRefreshToken(Guid.Parse(infoUser.AuthId));
 
             return Ok(new RefreshTokenResponse
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken
             });
+        }
+        
+        [HttpPut]
+        [AllowAnonymous]
+        [Route("forgot-password")]
+        public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+        {
+            await _authBl.ForgotPassword(request);
+            return Accepted();
+        }
+        
+        [HttpPut]
+        [AllowAnonymous]
+        [Route("reset-password")]
+        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+            await _authBl.ResetPassword(request);
+            return NoContent();
+        }
+        
+        [HttpPut]
+        [AllowAnonymous]
+        [Route("confirm-email")]
+        public async Task<ActionResult> ConfirmEmail([FromBody] ConfirmEmailRequest request)
+        {
+            await _authBl.ConfirmEmail(request);
+            return NoContent();
+        }
+        
+        [HttpPut]
+        [Route("change-password")]
+        [Authorize(Policy = Policy.AuthIsTarget)]
+        public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            await _authBl.ChangePassword(request);
+            return NoContent();
+        }
+        
+        [HttpPut]
+        [Route("change-email")]
+        [Authorize(Policy = Policy.AuthIsTarget)]
+        public async Task<ActionResult> ChangeEmail([FromBody] ChangeEmailRequest request)
+        {
+            await _authBl.ChangeEmail(request);
+            return Accepted();
+        }
+        
+        [HttpPut]
+        [AllowAnonymous]
+        [Route("confirm-new-email")]
+        public async Task<ActionResult> ConfirmNewEmail([FromBody] ConfirmNewEmailRequest request)
+        {
+            await _authBl.ConfirmNewEmail(request);
+            return NoContent();
         }
     }
 }

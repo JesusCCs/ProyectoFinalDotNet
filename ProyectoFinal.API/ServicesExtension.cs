@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Net;
+using System.Net.Mail;
 using System.Reflection;
 using System.Text;
+using FluentEmail.Razor;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +20,7 @@ using ProyectoFinal.API.Authorization.Requirements;
 using ProyectoFinal.BL.Contracts;
 using ProyectoFinal.BL.Implementations;
 using ProyectoFinal.BL.Providers;
+using ProyectoFinal.Core;
 using ProyectoFinal.DAL;
 using ProyectoFinal.DAL.Models.Auth;
 using ProyectoFinal.DAL.Repositories.Contracts;
@@ -137,7 +141,7 @@ namespace ProyectoFinal.API
 
                     if (_env.IsDevelopment())
                     {
-                        options.SignIn.RequireConfirmedEmail = false;
+                        options.SignIn.RequireConfirmedEmail = true;
                         options.Password.RequireDigit = false;
                         options.Password.RequireUppercase = false;
                     }
@@ -153,7 +157,7 @@ namespace ProyectoFinal.API
         
         public static IServiceCollection AddJwt(this IServiceCollection services)
         {
-            var jwtSettings = _configuration.GetSection("Jwt").Get<JwtSettings>();
+            var jwtSettings = _configuration.GetSection("JwtSettings").Get<JwtSettings>();
             
             // Se configura JWT
             services.AddAuthentication(options =>  
@@ -195,16 +199,38 @@ namespace ProyectoFinal.API
         
         public static IServiceCollection AddPolicies(this IServiceCollection services)
         {
-            services.AddSingleton<IAuthorizationHandler,GymIsOwnerHandler>();
+            services.AddSingleton<IAuthorizationHandler,GymIsTargetHandler>();
+            services.AddSingleton<IAuthorizationHandler,AuthIsTargetHandler>();
             
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(Policy.GymIsOwner, policy =>
+                options.AddPolicy(Policy.GymIsTarget, policy =>
                 {
-                    policy.Requirements.Add(new GymIsOwnerRequirement());
+                    policy.Requirements.Add(new GymIsTargetRequirement());
+                });
+                
+                options.AddPolicy(Policy.AuthIsTarget, policy =>
+                {
+                    policy.Requirements.Add(new AuthIsTargetRequirement());
                 });
             });
             
+            return services;
+        }
+
+        public static IServiceCollection AddEmailSender(this IServiceCollection services)
+        {
+            var mailtrap = _configuration.GetSection("MailtrapSettings");
+                
+            services
+                .AddFluentEmail(mailtrap["From"])
+                .AddRazorRenderer()
+                .AddSmtpSender(new SmtpClient("smtp.mailtrap.io", 2525)
+                {
+                    Credentials = new NetworkCredential(mailtrap["User"], mailtrap["Key"]),
+                    EnableSsl = true
+                });
+
             return services;
         }
     }

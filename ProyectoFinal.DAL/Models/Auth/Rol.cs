@@ -8,7 +8,9 @@ namespace ProyectoFinal.DAL.Models.Auth
         public const string Gimnasio = "Gimnasio";
         public const string Usuario = "Usuario";
         public const string Admin = "Admin";
-        public const string AdminOGimnasio = "Admin,Gimnasio";
         
+        public const string AdminOGimnasio = Admin + "," + Gimnasio;
+        
+        public const string Todos = Admin + "," + Gimnasio + "," + Usuario;
     }
 }

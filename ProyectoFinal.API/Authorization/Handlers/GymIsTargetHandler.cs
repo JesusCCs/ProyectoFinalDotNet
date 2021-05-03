@@ -9,17 +9,17 @@ using ProyectoFinal.API.Authorization.Requirements;
 
 namespace ProyectoFinal.API.Authorization.Handlers
 {
-    public class GymIsOwnerHandler : AuthorizationHandler<GymIsOwnerRequirement>
+    public class GymIsTargetHandler : AuthorizationHandler<GymIsTargetRequirement>
     {
         
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GymIsOwnerHandler(IHttpContextAccessor httpContextAccessor)
+        public GymIsTargetHandler(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }
 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, GymIsOwnerRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, GymIsTargetRequirement requirement)
         {
             if (!context.User.HasClaim(c => c.Type == ClaimTypes.NameIdentifier))
             {

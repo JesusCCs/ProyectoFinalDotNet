@@ -14,18 +14,18 @@ namespace ProyectoFinal.API
         public MappingProfile()
         {
             //  ---------  Auth  -----------
-            CreateMap<AuthSignUpDto, Auth>();
+            CreateMap<SignUpBaseRequest, Auth>();
             
             //  ------- Gimnasios ----------
 
             // Mapeo Model --> DTO
-            CreateMap<Gimnasio, GimnasioGetAllResponseDto>();
-            CreateMap<Gimnasio, GimnasioGetByIdResponseDto>();
+            CreateMap<Gimnasio, GimnasioGetAllResponse>();
+            CreateMap<Gimnasio, GimnasioGetByIdResponse>();
 
             // Mapeo DTO   --> Model
-            CreateMap<GimnasioCreateDto, Gimnasio>();
-            CreateMap<GimnasioCreateDto, Auth>();
-            CreateMap<GimnasioUpdateDto, Gimnasio>()
+            CreateMap<GimnasioCreateRequest, Gimnasio>();
+            CreateMap<GimnasioCreateRequest, Auth>();
+            CreateMap<GimnasioUpdateRequest, Gimnasio>()
                 .ForMember(x => x.FechaCreado, opt => opt.Ignore());
 
 

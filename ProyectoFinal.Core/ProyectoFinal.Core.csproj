@@ -10,4 +10,23 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="FluentEmail.Razor" Version="3.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Templates\ConfirmNewEmail.cshtml" />
+      <EmbeddedResource Include="Templates\ConfirmNewEmail.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Templates\ResetPassword.cshtml" />
+        <EmbeddedResource Include="Templates\ResetPassword.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Templates\ConfirmEmail.cshtml" />
+        <EmbeddedResource Include="Templates\ConfirmEmail.cshtml" />
+    </ItemGroup>
+
 </Project>

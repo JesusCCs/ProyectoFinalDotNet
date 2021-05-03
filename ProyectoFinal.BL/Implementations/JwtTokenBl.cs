@@ -8,10 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using ProyectoFinal.API;
 using ProyectoFinal.BL.Contracts;
-using ProyectoFinal.BL.Exceptions;
+using ProyectoFinal.Core;
 using ProyectoFinal.Core.DTO;
+using ProyectoFinal.Core.Exceptions;
 using ProyectoFinal.DAL.Models.Auth;
 
 namespace ProyectoFinal.BL.Implementations
@@ -83,7 +83,7 @@ namespace ProyectoFinal.BL.Implementations
                 ValidAudience = _jwt.Audience
             }, out var validatedToken);
 
-            if (validatedToken is not JwtSecurityToken token || token.Header.Alg == Algorithm)
+            if (validatedToken is not JwtSecurityToken token || token.Header.Alg != Algorithm)
             {
                 throw new SecurityTokenException("Token no permitido");
             }
