@@ -66,7 +66,7 @@ namespace ProyectoFinal.API.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Upload([FromForm] UploadRequest request)
         {
-            await _uploadBl.Upload(request.Logo);
+            await _uploadBl.Upload(request.Logo, FileType.Logo);
             return Ok();
         }
         
