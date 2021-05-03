@@ -93,12 +93,31 @@ namespace ProyectoFinal.BL.Implementations
 
             if (user == null)
             {
-                throw new ConfirmEmailException();
+                throw new UserNotFoundException();
             }
 
             var decodeToken = HttpUtility.UrlDecode(request.Token);
 
             var result = await _userManager.ConfirmEmailAsync(user, decodeToken);
+
+            if (!result.Succeeded)
+            {
+                throw new ConfirmEmailException();
+            }
+        }
+        
+        public async Task ConfirmNewEmail(ConfirmNewEmailRequest request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.CurrentEmail);
+
+            if (user == null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            var decodeToken = HttpUtility.UrlDecode(request.Token);
+
+            var result = await _userManager.ChangeEmailAsync(user, request.NewEmail, decodeToken);
 
             if (!result.Succeeded)
             {

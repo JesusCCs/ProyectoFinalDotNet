@@ -86,5 +86,14 @@ namespace ProyectoFinal.API.Controllers
             await _authBl.ChangeEmail(request);
             return Accepted();
         }
+        
+        [HttpPut]
+        [AllowAnonymous]
+        [Route("confirm-new-email")]
+        public async Task<ActionResult> ConfirmNewEmail([FromBody] ConfirmNewEmailRequest request)
+        {
+            await _authBl.ConfirmNewEmail(request);
+            return NoContent();
+        }
     }
 }

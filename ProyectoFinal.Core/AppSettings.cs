@@ -21,7 +21,7 @@
         public const string RefreshToken = "RefreshToken";
         public const string RefreshTokenProvider = "RefreshTokenProvider";
 
-        public const string TimeDefaultToken = "24 horas";
+        public const int TimeDefaultToken = 24;
     }
 
     public enum EmailType

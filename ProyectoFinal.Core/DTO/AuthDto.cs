@@ -80,6 +80,18 @@ namespace ProyectoFinal.Core.DTO
         public string NewEmail { get; set; }
     }
     
+    public class ConfirmNewEmailRequest
+    {
+        [Required, EmailAddress]
+        public string CurrentEmail { get; set; }
+        
+        [Required, EmailAddress]
+        public string NewEmail { get; set; }
+        
+        [Required]
+        public string Token { get; set; }
+    }
+    
     public class ConfirmEmailRequest
     {
         [Required, EmailAddress]

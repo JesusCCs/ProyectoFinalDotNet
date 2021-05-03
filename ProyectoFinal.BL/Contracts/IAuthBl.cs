@@ -10,8 +10,9 @@ namespace ProyectoFinal.BL.Contracts
         Task<Guid> Login(LoginRequest request,string rol);
         Task ForgotPassword(ForgotPasswordRequest request);
         Task ResetPassword(ResetPasswordRequest request);
-        Task ConfirmEmail(ConfirmEmailRequest request);
         Task ChangePassword(ChangePasswordRequest request);
+        Task ConfirmEmail(ConfirmEmailRequest request);
         Task ChangeEmail(ChangeEmailRequest request);
+        Task ConfirmNewEmail(ConfirmNewEmailRequest request);
     }
 }
