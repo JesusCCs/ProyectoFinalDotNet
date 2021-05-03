@@ -20,14 +20,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="Templates\ConfirmEmail.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </EmbeddedResource>
-      <EmbeddedResource Include="Templates\ResetPassword.cshtml">
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </EmbeddedResource>
+        <None Remove="Templates\ResetPassword.cshtml" />
+        <EmbeddedResource Include="Templates\ResetPassword.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Templates\ConfirmEmail.cshtml" />
+        <EmbeddedResource Include="Templates\ConfirmEmail.cshtml" />
     </ItemGroup>
 
 </Project>
