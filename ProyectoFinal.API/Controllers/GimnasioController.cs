@@ -1,7 +1,9 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using ProyectoFinal.BL.Contracts;
 using ProyectoFinal.Core;
@@ -16,13 +18,15 @@ namespace ProyectoFinal.API.Controllers
     public class GimnasioController : ControllerBase
     {
         private readonly IAuthBl _authBl;
+        private readonly IUploadBl _uploadBl;
         private readonly IGinmasioBl _gimnasioBl;
         private readonly IJwtTokenBl _jwtTokenBl;
 
-        public GimnasioController(IGinmasioBl gimnasioBl, IAuthBl authBl, IJwtTokenBl jwtTokenBl)
+        public GimnasioController(IGinmasioBl gimnasioBl, IAuthBl authBl, IJwtTokenBl jwtTokenBl, IUploadBl uploadBl)
         {
             _authBl = authBl;
             _jwtTokenBl = jwtTokenBl;
+            _uploadBl = uploadBl;
             _gimnasioBl = gimnasioBl;
         }
 
@@ -62,6 +66,7 @@ namespace ProyectoFinal.API.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Upload([FromForm] UploadRequest request)
         {
+            await _uploadBl.Upload(request.Logo);
             return Ok();
         }
         
