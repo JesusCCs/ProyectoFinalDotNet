@@ -1,4 +1,4 @@
-﻿namespace ProyectoFinal.API
+﻿namespace ProyectoFinal.Core
 {
     public class JwtSettings
     {
@@ -22,5 +22,12 @@
         public const string RefreshTokenProvider = "RefreshTokenProvider";
 
         public const string TimeDefaultToken = "24 horas";
+    }
+
+    public enum EmailType
+    {
+        ConfirmEmail,
+        ConfirmNewEmail,
+        ResetPassword
     }
 }

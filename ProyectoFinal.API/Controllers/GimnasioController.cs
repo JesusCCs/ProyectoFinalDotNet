@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProyectoFinal.BL.Contracts;
+using ProyectoFinal.Core;
 using ProyectoFinal.Core.DTO;
 using ProyectoFinal.DAL.Models.Auth;
 

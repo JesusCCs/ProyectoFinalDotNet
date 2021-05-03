@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using ProyectoFinal.Core.DTO;
 
 namespace ProyectoFinal.BL.Contracts
@@ -14,5 +12,6 @@ namespace ProyectoFinal.BL.Contracts
         Task ResetPassword(ResetPasswordRequest request);
         Task ConfirmEmail(ConfirmEmailRequest request);
         Task ChangePassword(ChangePasswordRequest request);
+        Task ChangeEmail(ChangeEmailRequest request);
     }
 }

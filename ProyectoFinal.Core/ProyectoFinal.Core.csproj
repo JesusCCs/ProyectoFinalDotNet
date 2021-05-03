@@ -10,4 +10,24 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="FluentEmail.Razor" Version="3.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Templates\ConfirmNewEmail.cshtml" />
+      <EmbeddedResource Include="Templates\ConfirmNewEmail.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Templates\ConfirmEmail.cshtml">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="Templates\ResetPassword.cshtml">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+
 </Project>

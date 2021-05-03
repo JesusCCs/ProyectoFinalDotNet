@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProyectoFinal.BL.Contracts;
+using ProyectoFinal.Core;
 using ProyectoFinal.Core.DTO;
 using ProyectoFinal.DAL.Models.Auth;
 
@@ -25,7 +26,6 @@ namespace ProyectoFinal.API.Controllers
         }
         
         [HttpPost]
-
         [Route("refresh-token")]
         public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {
@@ -76,6 +76,15 @@ namespace ProyectoFinal.API.Controllers
         {
             await _authBl.ChangePassword(request);
             return NoContent();
+        }
+        
+        [HttpPut]
+        [Route("change-email")]
+        [Authorize(Policy = Policy.AuthIsTarget)]
+        public async Task<ActionResult> ChangeEmail([FromBody] ChangeEmailRequest request)
+        {
+            await _authBl.ChangeEmail(request);
+            return Accepted();
         }
     }
 }

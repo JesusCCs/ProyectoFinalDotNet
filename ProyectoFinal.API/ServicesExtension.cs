@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Reflection;
 using System.Text;
+using FluentEmail.Razor;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,7 @@ using ProyectoFinal.API.Authorization.Requirements;
 using ProyectoFinal.BL.Contracts;
 using ProyectoFinal.BL.Implementations;
 using ProyectoFinal.BL.Providers;
+using ProyectoFinal.Core;
 using ProyectoFinal.DAL;
 using ProyectoFinal.DAL.Models.Auth;
 using ProyectoFinal.DAL.Repositories.Contracts;
@@ -222,7 +224,7 @@ namespace ProyectoFinal.API
                 
             services
                 .AddFluentEmail(mailtrap["From"])
-                .AddRazorRenderer(Directory.GetCurrentDirectory())
+                .AddRazorRenderer()
                 .AddSmtpSender(new SmtpClient("smtp.mailtrap.io", 2525)
                 {
                     Credentials = new NetworkCredential(mailtrap["User"], mailtrap["Key"]),

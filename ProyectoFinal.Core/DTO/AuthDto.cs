@@ -71,6 +71,15 @@ namespace ProyectoFinal.Core.DTO
         public string ConfirmedNewPassword { get; set; }
     }
     
+    public class ChangeEmailRequest
+    {
+        [Required]
+        public Guid AuthId { get; set; }
+        
+        [Required, EmailAddress]
+        public string NewEmail { get; set; }
+    }
+    
     public class ConfirmEmailRequest
     {
         [Required, EmailAddress]

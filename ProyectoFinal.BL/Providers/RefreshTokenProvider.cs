@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ProyectoFinal.API;
 using ProyectoFinal.DAL.Models.Auth;
 
 namespace ProyectoFinal.BL.Providers

@@ -6,22 +6,26 @@ using System.Web;
 using AutoMapper;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity;
-using ProyectoFinal.API;
 using ProyectoFinal.BL.Contracts;
+using ProyectoFinal.Core;
 using ProyectoFinal.Core.DTO;
 using ProyectoFinal.Core.Exceptions;
 using ProyectoFinal.DAL.Models.Auth;
+using static System.String;
 
 namespace ProyectoFinal.BL.Implementations
 {
     public class AuthBl : IAuthBl
     {
+        private const string TemplateEmailPath = "ProyectoFinal.Core.Templates.{0}.cshtml";
+        
         private readonly UserManager<Auth> _userManager;
         private readonly SignInManager<Auth> _signInManager;
         private readonly IFluentEmail _email;
         private readonly IMapper _mapper;
 
-        public AuthBl(UserManager<Auth> userManager, SignInManager<Auth> signInManager,IFluentEmail email, IMapper mapper)
+        public AuthBl(UserManager<Auth> userManager, SignInManager<Auth> signInManager, IFluentEmail email,
+            IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -41,22 +45,46 @@ namespace ProyectoFinal.BL.Implementations
             }
 
             await _userManager.AddToRoleAsync(auth, rol);
-            
+
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(auth);
             var encodeToken = HttpUtility.UrlEncode(token);
-            
-            var model = new 
+
+            var model = new
             {
                 Name = auth.UserName,
                 Token = encodeToken,
                 Time = App.TimeDefaultToken
             };
-            
+
             await _email.To(auth.Email).Subject("Completar Registro")
-                .UsingTemplateFromFile("wwwroot/templates/EmailConfimation.cshtml",model)
+                .UsingTemplateFromEmbedded(Format(TemplateEmailPath, EmailType.ConfirmEmail), model, typeof(App).Assembly)
                 .SendAsync();
 
             return auth.Id;
+        }
+        
+        public async Task ChangeEmail(ChangeEmailRequest request)
+        {
+            var user = await _userManager.FindByIdAsync(request.AuthId.ToString());
+
+            if (user == null)
+            {
+                throw new UserNotFoundException();
+            }
+
+            var token = await _userManager.GenerateChangeEmailTokenAsync(user, request.NewEmail);
+            var encodeToken = HttpUtility.UrlEncode(token);
+
+            var model = new
+            {
+                Name = user.UserName,
+                Url = encodeToken,
+                Time = App.TimeDefaultToken
+            };
+
+            await _email.To(user.Email).Subject("Confirmar nuevo email")
+                .UsingTemplateFromEmbedded(Format(TemplateEmailPath, EmailType.ConfirmNewEmail), model, typeof(App).Assembly)
+                .SendAsync();
         }
         
         public async Task ConfirmEmail(ConfirmEmailRequest request)
@@ -69,7 +97,7 @@ namespace ProyectoFinal.BL.Implementations
             }
 
             var decodeToken = HttpUtility.UrlDecode(request.Token);
-            
+
             var result = await _userManager.ConfirmEmailAsync(user, decodeToken);
 
             if (!result.Succeeded)
@@ -89,7 +117,7 @@ namespace ProyectoFinal.BL.Implementations
             {
                 throw new AuthenticationException();
             }
-            
+
             // Comprobamos que el usuario que se ha encontrado es del rol que toca
             var roles = await _userManager.GetRolesAsync(auth);
 
@@ -97,7 +125,7 @@ namespace ProyectoFinal.BL.Implementations
             {
                 throw new AuthenticationException();
             }
-            
+
             var result = await _signInManager.PasswordSignInAsync(auth,
                 request.Password, request.RememberMe, auth.LockoutEnabled);
 
@@ -108,7 +136,7 @@ namespace ProyectoFinal.BL.Implementations
 
             throw new AuthenticationException();
         }
-
+        
         public async Task ForgotPassword(ForgotPasswordRequest request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
@@ -117,19 +145,19 @@ namespace ProyectoFinal.BL.Implementations
             {
                 return;
             }
-                
+
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodeToken = HttpUtility.UrlEncode(token);
-            
-            var model = new 
+
+            var model = new
             {
                 Name = user.UserName,
                 Url = encodeToken,
                 Time = App.TimeDefaultToken
             };
-            
+
             await _email.To(user.Email).Subject("Contraseña olvidada")
-                .UsingTemplateFromFile("wwwroot/templates/ResetPassword.cshtml",model)
+                .UsingTemplateFromEmbedded(Format(TemplateEmailPath, EmailType.ResetPassword), model, typeof(App).Assembly)
                 .SendAsync();
         }
 
@@ -143,7 +171,7 @@ namespace ProyectoFinal.BL.Implementations
             }
 
             var decodeToken = HttpUtility.UrlDecode(request.Token);
-            
+
             var result = await _userManager.ResetPasswordAsync(user, decodeToken, request.Password);
 
             if (!result.Succeeded)
@@ -151,18 +179,18 @@ namespace ProyectoFinal.BL.Implementations
                 throw new ResetPasswordException();
             }
         }
-        
+
         public async Task ChangePassword(ChangePasswordRequest request)
         {
             var user = await _userManager.FindByIdAsync(request.AuthId.ToString());
-            
+
             if (user == null)
             {
                 throw new UserNotFoundException();
             }
 
             var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
-            
+
             if (!result.Succeeded)
             {
                 throw new ChangePasswordException();
