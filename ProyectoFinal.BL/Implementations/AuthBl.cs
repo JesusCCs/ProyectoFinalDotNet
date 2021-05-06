@@ -33,7 +33,7 @@ namespace ProyectoFinal.BL.Implementations
             _mapper = mapper;
         }
 
-        public async Task<Guid> Create(SignUpBaseRequest request, string rol)
+        public async Task<Guid> Create(AuthBaseRequest request, string rol)
         {
             var auth = _mapper.Map<Auth>(request);
 
@@ -46,6 +46,9 @@ namespace ProyectoFinal.BL.Implementations
 
             await _userManager.AddToRoleAsync(auth, rol);
 
+            if (rol == Rol.Admin) return auth.Id;
+
+            // En el caso de que no sea un administrador, se envía correo de confirmación
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(auth);
             var encodeToken = HttpUtility.UrlEncode(token);
 
