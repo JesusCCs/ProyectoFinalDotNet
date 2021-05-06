@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Authentication;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Web;
 using AutoMapper;
@@ -52,7 +53,7 @@ namespace ProyectoFinal.BL.Implementations
             var model = new
             {
                 Name = auth.UserName,
-                Token = encodeToken,
+                Url = encodeToken,
                 Time = App.TimeDefaultToken
             };
 
@@ -132,28 +133,19 @@ namespace ProyectoFinal.BL.Implementations
                 ? await _userManager.FindByEmailAsync(request.UserNameOrEmail)
                 : await _userManager.FindByNameAsync(request.UserNameOrEmail);
 
-            if (auth == null)
-            {
-                throw new AuthenticationException();
-            }
-
+            if (auth == null) throw new AuthenticationException();
+            
             // Comprobamos que el usuario que se ha encontrado es del rol que toca
             var roles = await _userManager.GetRolesAsync(auth);
 
-            if (roles.First() != rol)
-            {
-                throw new AuthenticationException();
-            }
-
+            if (roles.First() != rol) throw new AuthenticationException();
+            
             var result = await _signInManager.PasswordSignInAsync(auth,
                 request.Password, request.RememberMe, auth.LockoutEnabled);
 
-            if (result.Succeeded)
-            {
-                return auth.Id;
-            }
-
-            throw new AuthenticationException();
+            if (!result.Succeeded) throw new AuthenticationException();
+            
+            return auth.Id;
         }
         
         public async Task ForgotPassword(ForgotPasswordRequest request)

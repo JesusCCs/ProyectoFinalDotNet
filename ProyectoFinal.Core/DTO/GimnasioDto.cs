@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Http;
 using ProyectoFinal.Core.Validation;
 
@@ -23,13 +22,7 @@ namespace ProyectoFinal.Core.DTO
         [Required, Range(100, 999999)] 
         public int Tarifa { get; set; }
         
-        [MaxFileSize(5), AllowedMimeType("jpg,jpeg,png")]
-        public IFormFile Logo { get; set; }
-    }
-
-    public class UploadRequest
-    {
-        [MaxFileSize(5), AllowedMimeType(".jpg,.jpeg,.png")]
+        [MaxFileSize(2), AllowedMimeType(".jpg,.jpeg,.png")]
         public IFormFile Logo { get; set; }
     }
 

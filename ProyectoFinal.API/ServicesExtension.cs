@@ -4,7 +4,6 @@ using System.Net;
 using System.Net.Mail;
 using System.Reflection;
 using System.Text;
-using FluentEmail.Razor;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +17,7 @@ using Microsoft.OpenApi.Models;
 using ProyectoFinal.API.Authorization.Handlers;
 using ProyectoFinal.API.Authorization.Requirements;
 using ProyectoFinal.BL.Contracts;
+using ProyectoFinal.BL.Helpers;
 using ProyectoFinal.BL.Implementations;
 using ProyectoFinal.BL.Providers;
 using ProyectoFinal.Core;
@@ -66,7 +66,7 @@ namespace ProyectoFinal.API
             // Se añade inyección de dependencias de bl
             services.AddScoped<IGinmasioBl, GinmasioBl>();
             services.AddScoped<IAuthBl, AuthBl>();
-            services.AddScoped<IUploadBl, UploadBl>();
+            services.AddSingleton<FileUpload>();
 
             // Se añade inyección de dependencias de repositories
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -140,14 +140,17 @@ namespace ProyectoFinal.API
                     options.User.AllowedUserNameCharacters =
                         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-                    if (_env.IsDevelopment())
-                    {
-                        options.SignIn.RequireConfirmedEmail = true;
-                        options.Password.RequireDigit = false;
-                        options.Password.RequireUppercase = false;
-                    }
-
+                    if (!_env.IsDevelopment()) return;
+                    
+                    options.SignIn.RequireConfirmedEmail = true;
+                    
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
+                    
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequiredUniqueChars = 0;
                 })
                 .AddEntityFrameworkStores<DataBaseContext>()
                 .AddDefaultTokenProviders()
