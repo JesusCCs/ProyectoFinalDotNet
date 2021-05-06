@@ -66,15 +66,21 @@ namespace ProyectoFinal.BL.Implementations
             return entity.Id;
         }
 
-        public async Task Update(Guid id, GimnasioUpdateRequest gimnasio)
+        public async Task Update(Guid id, GimnasioUpdateRequest request)
         {
-            var entity = _mapper.Map<Gimnasio>(gimnasio);
+            var gimnasio = await _repository.GetById(request.Id);
+            var gimnasioModificado = _mapper.Map<Gimnasio>(request);
             
-            var actualizacionExitosa = await _repository.Update(entity);
+            if (request.Logo != null && !request.DeleteLogo)
+            {
+                if (gimnasio.Logo != null) _fileManager.Remove(gimnasio.Logo, FileType.Logo);
+                await _fileManager.Upload(request.Logo, FileType.Logo);
+            }
+            
+            var actualizacionExitosa = await _repository.Update(gimnasioModificado);
+            if (request.DeleteLogo) _fileManager.Remove(gimnasio.Logo, FileType.Logo);
 
             if (!actualizacionExitosa) throw new UpdateFailedException();
-            
-            if (gimnasio.DeleteLogo) _fileManager.Remove(entity.Logo, FileType.Logo);
         }
 
         public async Task<bool> Delete(Guid id)
