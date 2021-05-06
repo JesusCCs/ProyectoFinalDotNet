@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using ProyectoFinal.DAL.Models;
 using ProyectoFinal.DAL.Models.Auth;
 using ProyectoFinal.DAL.Repositories.Contracts;
 

@@ -19,6 +19,7 @@ namespace ProyectoFinal.DAL.Models
         public string Direccion { get; set; }
         public int Tarifa { get; set; }
         public string Descripcion { get; set; }
+        public string Logo { get; set; }
         
         public ICollection<Anuncio> Anuncios { get; set; }
         public Auth.Auth Auth { get; set; }

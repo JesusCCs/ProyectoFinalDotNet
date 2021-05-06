@@ -2,32 +2,44 @@
 using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using ProyectoFinal.BL.Contracts;
+using ProyectoFinal.BL.Helpers;
+using ProyectoFinal.Core;
 using ProyectoFinal.Core.DTO;
+using ProyectoFinal.Core.Exceptions;
 using ProyectoFinal.DAL.Models;
-using ProyectoFinal.DAL.Models.Auth;
 using ProyectoFinal.DAL.Repositories.Contracts;
 
 namespace ProyectoFinal.BL.Implementations
 {
     public class GinmasioBl : IGinmasioBl
     {
-        private readonly IRepository<Gimnasio> _repository;
         private readonly IMapper _mapper;
+        private readonly FileManager _fileManager;
+        private readonly IRepository<Gimnasio> _repository;
 
-        public GinmasioBl(IRepository<Gimnasio> repository, IMapper mapper)
+        public GinmasioBl(IRepository<Gimnasio> repository, IMapper mapper, FileManager fileManager)
         {
-            _repository = repository;
             _mapper = mapper;
+            _fileManager = fileManager;
+            _repository = repository;
         }
 
-        public async Task Create(GimnasioCreateRequest gimnasioCreate, Guid authId)
+        public async Task<Gimnasio> Create(GimnasioCreateRequest request, Guid authId)
         {
-            var gimnasioInfo = _mapper.Map<Gimnasio>(gimnasioCreate);
+            var gimnasioInfo = _mapper.Map<Gimnasio>(request);
             gimnasioInfo.AuthId = authId;
+            
+            var gimnasio = await _repository.Create(gimnasioInfo);
 
-            await _repository.Create(gimnasioInfo);
+            if (request.Logo is null) return gimnasio;
+            
+            // Si hay logo se tiene que subir y añadirlo al gimnasio
+            var logo = await _fileManager.Upload(request.Logo, FileType.Logo);
+            gimnasio.Logo = logo;
+            await _repository.Update(gimnasio);
+            
+            return gimnasio;
         }
 
         public async Task<IEnumerable<GimnasioGetAllResponse>> GetAll()
@@ -54,17 +66,21 @@ namespace ProyectoFinal.BL.Implementations
             return entity.Id;
         }
 
-        public async Task<bool> Update(Guid id, GimnasioUpdateRequest gimnasio)
+        public async Task Update(Guid id, GimnasioUpdateRequest request)
         {
-            try
+            var gimnasio = await _repository.GetById(request.Id);
+            var gimnasioModificado = _mapper.Map<Gimnasio>(request);
+            
+            if (request.Logo != null && !request.DeleteLogo)
             {
-                var entity = _mapper.Map<Gimnasio>(gimnasio);
-                return await _repository.Update(entity);
+                if (gimnasio.Logo != null) _fileManager.Remove(gimnasio.Logo, FileType.Logo);
+                await _fileManager.Upload(request.Logo, FileType.Logo);
             }
-            catch (Exception)
-            {
-                return false;
-            }
+            
+            var actualizacionExitosa = await _repository.Update(gimnasioModificado);
+            if (request.DeleteLogo) _fileManager.Remove(gimnasio.Logo, FileType.Logo);
+
+            if (!actualizacionExitosa) throw new UpdateFailedException();
         }
 
         public async Task<bool> Delete(Guid id)

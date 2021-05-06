@@ -30,4 +30,10 @@
         ConfirmNewEmail,
         ResetPassword
     }
+    
+    public enum FileType
+    {
+        Logo,
+        Anuncio
+    }
 }

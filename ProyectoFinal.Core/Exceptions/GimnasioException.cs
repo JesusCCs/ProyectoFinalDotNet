@@ -2,7 +2,7 @@
 
 namespace ProyectoFinal.Core.Exceptions
 {
-    public class ConfirmEmailException : Exception
+    public class UpdateFailedException : ApplicationException
     {
         
     }
