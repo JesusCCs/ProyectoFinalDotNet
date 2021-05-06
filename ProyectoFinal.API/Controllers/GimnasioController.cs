@@ -76,8 +76,8 @@ namespace ProyectoFinal.API.Controllers
         [Authorize(Roles = Rol.AdminOGimnasio, Policy = Policy.GymIsTarget)]
         public async Task<ActionResult> Update(Guid id, [FromBody] GimnasioUpdateRequest request)
         {
-            var item = await _gimnasioBl.Update(id, request);
-            return Ok(item);
+            await _gimnasioBl.Update(id, request);
+            return NoContent();
         }
         
         [HttpDelete("{id:guid}")]

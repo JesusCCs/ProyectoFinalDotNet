@@ -66,7 +66,7 @@ namespace ProyectoFinal.API
             // Se añade inyección de dependencias de bl
             services.AddScoped<IGinmasioBl, GinmasioBl>();
             services.AddScoped<IAuthBl, AuthBl>();
-            services.AddSingleton<FileUpload>();
+            services.AddSingleton<FileManager>();
 
             // Se añade inyección de dependencias de repositories
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

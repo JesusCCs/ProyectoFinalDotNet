@@ -6,6 +6,7 @@ using ProyectoFinal.BL.Contracts;
 using ProyectoFinal.BL.Helpers;
 using ProyectoFinal.Core;
 using ProyectoFinal.Core.DTO;
+using ProyectoFinal.Core.Exceptions;
 using ProyectoFinal.DAL.Models;
 using ProyectoFinal.DAL.Repositories.Contracts;
 
@@ -15,13 +16,13 @@ namespace ProyectoFinal.BL.Implementations
     {
         private readonly IRepository<Gimnasio> _repository;
         private readonly IMapper _mapper;
-        private readonly FileUpload _fileUpload;
+        private readonly FileManager _fileManager;
 
-        public GinmasioBl(IRepository<Gimnasio> repository, IMapper mapper, FileUpload fileUpload)
+        public GinmasioBl(IRepository<Gimnasio> repository, IMapper mapper, FileManager fileManager)
         {
             _repository = repository;
             _mapper = mapper;
-            _fileUpload = fileUpload;
+            _fileManager = fileManager;
         }
 
         public async Task<Gimnasio> Create(GimnasioCreateRequest request, Guid authId)
@@ -34,7 +35,7 @@ namespace ProyectoFinal.BL.Implementations
             if (request.Logo is null) return gimnasio;
             
             // Si hay logo se tiene que subir y añadirlo al gimnasio
-            var logo = await _fileUpload.Upload(request.Logo, FileType.Logo);
+            var logo = await _fileManager.Upload(request.Logo, FileType.Logo);
             gimnasio.Logo = logo;
             await _repository.Update(gimnasio);
             
@@ -65,17 +66,15 @@ namespace ProyectoFinal.BL.Implementations
             return entity.Id;
         }
 
-        public async Task<bool> Update(Guid id, GimnasioUpdateRequest gimnasio)
+        public async Task Update(Guid id, GimnasioUpdateRequest gimnasio)
         {
-            try
-            {
-                var entity = _mapper.Map<Gimnasio>(gimnasio);
-                return await _repository.Update(entity);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            var entity = _mapper.Map<Gimnasio>(gimnasio);
+            
+            var actualizacionExitosa = await _repository.Update(entity);
+
+            if (!actualizacionExitosa) throw new UpdateFailedException();
+            
+            if (gimnasio.DeleteLogo) _fileManager.Remove(entity.Logo, FileType.Logo);
         }
 
         public async Task<bool> Delete(Guid id)

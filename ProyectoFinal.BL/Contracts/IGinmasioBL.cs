@@ -13,7 +13,7 @@ namespace ProyectoFinal.BL.Contracts
         Task<GimnasioGetByIdResponse> GetById(Guid id);
         Task<GimnasioGetByIdResponse> GetByAuthId(Guid guidAuth);
         Task<Guid> GetIdByAuthId(Guid guidAuth);
-        Task<bool> Update(Guid id, GimnasioUpdateRequest gimnasio);
+        Task Update(Guid id, GimnasioUpdateRequest gimnasio);
         Task<bool> Delete(Guid id);
     }
 }

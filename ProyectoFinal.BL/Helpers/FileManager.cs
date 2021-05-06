@@ -6,11 +6,11 @@ using ProyectoFinal.Core;
 
 namespace ProyectoFinal.BL.Helpers
 {
-    public class FileUpload
+    public class FileManager
     {
         private readonly IWebHostEnvironment _env;
 
-        public FileUpload(IWebHostEnvironment env)
+        public FileManager(IWebHostEnvironment env)
         {
             _env = env;
         }
@@ -26,6 +26,12 @@ namespace ProyectoFinal.BL.Helpers
             await file.CopyToAsync(fileStream);
 
             return fileName;
+        }
+        
+        public void Remove(string fileName, FileType type)
+        {
+            var path = Path.Combine(CreateDestiny(type), fileName);
+            File.Delete(path);
         }
 
         private string CreateDestiny(FileType type)
