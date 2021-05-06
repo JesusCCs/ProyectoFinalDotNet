@@ -46,7 +46,13 @@ namespace ProyectoFinal.BL.Implementations
 
             await _userManager.AddToRoleAsync(auth, rol);
 
-            if (rol == Rol.Admin) return auth.Id;
+            // Si es administrador, verificamos automáticamente el correo
+            if (rol == Rol.Admin)
+            {
+                auth.EmailConfirmed = true;
+                await _userManager.UpdateAsync(auth);
+                return auth.Id;
+            }
 
             // En el caso de que no sea un administrador, se envía correo de confirmación
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(auth);
@@ -144,7 +150,7 @@ namespace ProyectoFinal.BL.Implementations
             
             var result = await _signInManager.PasswordSignInAsync(auth,
                 request.Password, request.RememberMe, auth.LockoutEnabled);
-
+            
             if (!result.Succeeded) throw new AuthenticationException();
             
             return auth.Id;

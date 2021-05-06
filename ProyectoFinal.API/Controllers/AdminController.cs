@@ -29,9 +29,9 @@ namespace ProyectoFinal.API.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("login")]
-        public async Task<ActionResult> Login([FromBody] LoginRequest itemLogin)
+        public async Task<ActionResult> Login([FromBody] LoginRequest request)
         {
-            var guidAuth = await _authBl.Login(itemLogin, Rol.Admin);
+            var guidAuth = await _authBl.Login(request, Rol.Admin);
 
             var token = _jwtTokenBl.GenerateAccessToken(guidAuth, guidAuth, Rol.Admin);
             var refreshToken = await _jwtTokenBl.GenerateRefreshToken(guidAuth);
