@@ -13,5 +13,6 @@ namespace ProyectoFinal.BL.Contracts
         Task<UsuarioDetallesDto> GetById(Guid id);
         Task<bool> Update(Guid id, UsuarioUpdateDto dto);
         Task<bool> Delete(Guid id);
+        Task<Guid> GetIdByAuthId(Guid authId);
     }
 }

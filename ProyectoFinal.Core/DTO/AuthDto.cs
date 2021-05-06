@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoFinal.Core.DTO
 {
-    public class SignUpBaseRequest
+    public class AuthBaseRequest
     {
         [Required, StringLength(50, MinimumLength = 3)]
         public string UserName { get; set; }
@@ -29,10 +29,10 @@ namespace ProyectoFinal.Core.DTO
     
     public class LoginResponse
     {
-        public Guid Id { get; init; }
+        public Guid Id { get; set; }
         public Guid AuthId { get; init; }
-        public string AccessToken { get; init; }
-        public string RefreshToken { get; init; }
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
     }
     
     public class ForgotPasswordRequest

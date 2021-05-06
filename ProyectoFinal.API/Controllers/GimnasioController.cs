@@ -28,7 +28,7 @@ namespace ProyectoFinal.API.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("/gimnasio/login")]
+        [Route("login")]
         public async Task<ActionResult> Login([FromBody] LoginRequest itemLogin)
         {
             var guidAuth = await _authBl.Login(itemLogin, Rol.Gimnasio);

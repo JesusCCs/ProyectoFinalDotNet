@@ -14,7 +14,7 @@ namespace ProyectoFinal.API
         public MappingProfile()
         {
             //  ---------  Auth  -----------
-            CreateMap<SignUpBaseRequest, Auth>();
+            CreateMap<AuthBaseRequest, Auth>();
             
             //  ------- Gimnasios ----------
 

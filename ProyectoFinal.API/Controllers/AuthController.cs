@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -41,8 +40,8 @@ namespace ProyectoFinal.API.Controllers
                 RefreshToken = refreshToken
             });
         }
-        
-        [HttpPut]
+
+        [HttpPost]
         [AllowAnonymous]
         [Route("forgot-password")]
         public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
@@ -50,7 +49,7 @@ namespace ProyectoFinal.API.Controllers
             await _authBl.ForgotPassword(request);
             return Accepted();
         }
-        
+
         [HttpPut]
         [AllowAnonymous]
         [Route("reset-password")]
@@ -59,7 +58,7 @@ namespace ProyectoFinal.API.Controllers
             await _authBl.ResetPassword(request);
             return NoContent();
         }
-        
+
         [HttpPut]
         [AllowAnonymous]
         [Route("confirm-email")]
@@ -68,7 +67,7 @@ namespace ProyectoFinal.API.Controllers
             await _authBl.ConfirmEmail(request);
             return NoContent();
         }
-        
+
         [HttpPut]
         [Route("change-password")]
         [Authorize(Policy = Policy.AuthIsTarget)]
@@ -77,8 +76,8 @@ namespace ProyectoFinal.API.Controllers
             await _authBl.ChangePassword(request);
             return NoContent();
         }
-        
-        [HttpPut]
+
+        [HttpPost]
         [Route("change-email")]
         [Authorize(Policy = Policy.AuthIsTarget)]
         public async Task<ActionResult> ChangeEmail([FromBody] ChangeEmailRequest request)
@@ -86,7 +85,7 @@ namespace ProyectoFinal.API.Controllers
             await _authBl.ChangeEmail(request);
             return Accepted();
         }
-        
+
         [HttpPut]
         [AllowAnonymous]
         [Route("confirm-new-email")]

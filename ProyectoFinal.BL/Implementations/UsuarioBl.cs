@@ -79,5 +79,10 @@ namespace ProyectoFinal.BL.Implementations
                 return false;
             }
         }
+
+        public async Task<Guid> GetIdByAuthId(Guid authId)
+        {
+            return (await _repository.GetByCondition(usuario => usuario.AuthId == authId)).Id;
+        }
     }
 }

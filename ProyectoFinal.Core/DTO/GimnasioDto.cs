@@ -5,7 +5,7 @@ using ProyectoFinal.Core.Validation;
 
 namespace ProyectoFinal.Core.DTO
 {
-    public class GimnasioCreateRequest : SignUpBaseRequest
+    public class GimnasioCreateRequest : AuthBaseRequest
     {
         [Required, StringLength(9)] 
         public string Cif { get; set; }
@@ -68,8 +68,12 @@ namespace ProyectoFinal.Core.DTO
     public class GimnasioGetAllResponse
     {
         public Guid Id { get; set; }
+        
+        public string Logo { get; set; }
+        
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
+        
         public int Tarifa { get; set; }
     }
 }
