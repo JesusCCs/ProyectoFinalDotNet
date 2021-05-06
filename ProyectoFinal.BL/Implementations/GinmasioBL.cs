@@ -14,15 +14,15 @@ namespace ProyectoFinal.BL.Implementations
 {
     public class GinmasioBl : IGinmasioBl
     {
-        private readonly IRepository<Gimnasio> _repository;
         private readonly IMapper _mapper;
         private readonly FileManager _fileManager;
+        private readonly IRepository<Gimnasio> _repository;
 
         public GinmasioBl(IRepository<Gimnasio> repository, IMapper mapper, FileManager fileManager)
         {
-            _repository = repository;
             _mapper = mapper;
             _fileManager = fileManager;
+            _repository = repository;
         }
 
         public async Task<Gimnasio> Create(GimnasioCreateRequest request, Guid authId)
