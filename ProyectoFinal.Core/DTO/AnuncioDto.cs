@@ -19,7 +19,7 @@ namespace ProyectoFinal.Core.DTO
         [Required, MinLength(10)] 
         public DateTime FechaFin { get; set; }
             
-        [MaxFileSize(2), AllowedMimeType(".jpg,.jpeg,.png,.gif,.mp4,.avi,.webm")]
+        [Required, MaxFileSize(30), AllowedMimeType(".jpg,.jpeg,.png,.gif,.mp4,.avi,.webm")]
         public IFormFile Recurso { get; set; }
     }
         
