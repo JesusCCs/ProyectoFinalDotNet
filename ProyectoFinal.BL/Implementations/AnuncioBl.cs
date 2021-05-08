@@ -11,20 +11,20 @@ using ProyectoFinal.DAL.Repositories.Contracts;
 
 namespace ProyectoFinal.BL.Implementations
 {
-    public class AnucioBl : IAnucioBl
+    public class AnuncioBl : IAnuncioBl
     {
         private readonly IMapper _mapper;
         private readonly FileManager _fileManager;
         private readonly IRepository<Anuncio> _repository;
 
-        public AnucioBl(IMapper mapper, FileManager fileManager, IRepository<Anuncio> repository)
+        public AnuncioBl(IMapper mapper, FileManager fileManager, IRepository<Anuncio> repository)
         {
             _mapper = mapper;
             _fileManager = fileManager;
             _repository = repository;
         }
         
-        public async Task<Anuncio> Create(AnuncioCreateRequest request)
+        public async Task<AnuncioDetallesResponse> Create(AnuncioCreateRequest request)
         {
             var anuncioInfo = _mapper.Map<Anuncio>(request);
             
@@ -33,19 +33,19 @@ namespace ProyectoFinal.BL.Implementations
             anuncio.Recurso = await _fileManager.Upload(request.Recurso, FileType.Anuncio);
             await _repository.Update(anuncio);
             
-            return anuncio;
+            return _mapper.Map<AnuncioDetallesResponse>(anuncio);
         }
 
-        public async Task<IEnumerable<AnuncioCheckAllResponse>> CheckDates()
+        public async Task<IEnumerable<AnuncioDatesResponse>> GetDates()
         {
             var list = await _repository.GetAll();
-            return _mapper.Map<IEnumerable<AnuncioCheckAllResponse>>(list);
+            return _mapper.Map<IEnumerable<AnuncioDatesResponse>>(list);
         }
 
-        public async Task<AnuncioGetByIdResponse> GetById(Guid id)
+        public async Task<AnuncioDetallesResponse> GetById(Guid id)
         {
             var entity = await _repository.GetById(id);
-            return _mapper.Map<AnuncioGetByIdResponse>(entity);
+            return _mapper.Map<AnuncioDetallesResponse>(entity);
         }
     }
 }

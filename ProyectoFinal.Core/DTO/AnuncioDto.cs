@@ -23,7 +23,7 @@ namespace ProyectoFinal.Core.DTO
         public IFormFile Recurso { get; set; }
     }
         
-    public class AnuncioGetByIdResponse
+    public class AnuncioDetallesResponse
     {
         public Guid Id { get; set; }
             
@@ -36,7 +36,7 @@ namespace ProyectoFinal.Core.DTO
         public string Recurso { get; set; }
     }
         
-    public class AnuncioCheckAllResponse
+    public class AnuncioDatesResponse
     {
         public DateTime FechaInicio { get; set; }
             

@@ -63,15 +63,18 @@ namespace ProyectoFinal.API
 
         public static IServiceCollection AddDependencies(this IServiceCollection services)
         {
-            // Se añade inyección de dependencias de bl
+            // Se añade inyección de dependencias de BL
             services.AddScoped<IGinmasioBl, GinmasioBl>();
+            services.AddScoped<IAnuncioBl, AnuncioBl>();
             services.AddScoped<IAuthBl, AuthBl>();
-            services.AddSingleton<FileManager>();
-
+            
             // Se añade inyección de dependencias de repositories
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IRepositoryAuth<>), typeof(RepositoryAuth<>));
-
+            
+            // Se añaden los Helpers
+            services.AddSingleton<FileManager>();
+            
             return services;
         }
 
