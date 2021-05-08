@@ -86,6 +86,12 @@ namespace ProyectoFinal.DAL
                     .HasColumnName("tipo")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_unicode_ci");
+                
+                entity.Property(e => e.Recurso)
+                    .IsRequired()
+                    .HasColumnType("varchar(255)")
+                    .HasColumnName("recurso")
+                    .HasComment("Se guarda la referencia al archivo en la carpeta anuncios");
 
                 entity.HasOne(d => d.Gimnasio)
                     .WithMany(p => p.Anuncios)
