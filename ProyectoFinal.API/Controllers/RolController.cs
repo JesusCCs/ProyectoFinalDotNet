@@ -12,7 +12,7 @@ using ProyectoFinal.DAL.Models.Auth;
 namespace ProyectoFinal.API.Controllers
 {
     [ApiController]
-    [Route("rol")]
+    [Route("roles")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Rol.Admin)]
     public class RolController : ControllerBase
     {

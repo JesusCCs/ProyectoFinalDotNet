@@ -15,8 +15,11 @@ namespace ProyectoFinal.DAL.Models
         public Guid GimnasioId { get; set; }
         
         public string Tipo { get; set; }
+        public string Recurso { get; set; }
+        
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
+        
         public int ReproduccionesLimite { get; set; }
         
         public Gimnasio Gimnasio { get; set; }

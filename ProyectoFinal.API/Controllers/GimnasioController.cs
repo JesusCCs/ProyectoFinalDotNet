@@ -11,7 +11,7 @@ using ProyectoFinal.DAL.Models.Auth;
 namespace ProyectoFinal.API.Controllers
 {
     [ApiController]
-    [Route("/gimnasio")]
+    [Route("/gimnasios")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class GimnasioController : ControllerBase
     {
