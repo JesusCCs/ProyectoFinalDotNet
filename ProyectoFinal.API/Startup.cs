@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProyectoFinal.API.Extensions;
 
 namespace ProyectoFinal.API
 {
@@ -27,7 +28,7 @@ namespace ProyectoFinal.API
             services.AddControllers();
 
             // ...Sistema de seguridad
-            services.AddIdentity().AddJwt().AddPolicies().AddCors();
+            ServicesExtension.AddCors(services.AddIdentity().AddJwt().AddPolicies());
             
             // ...Emails
             services.AddEmailSender();

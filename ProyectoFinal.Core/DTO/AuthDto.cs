@@ -11,7 +11,7 @@ namespace ProyectoFinal.Core.DTO
         [Required, EmailAddress, StringLength(200, MinimumLength = 6)]
         public string Email { get; set; }
 
-        [Required, StringLength(200, MinimumLength = 6)]
+        [Required, StringLength(200, MinimumLength = 5)]
         public string Password { get; set; }
     }
     
@@ -20,7 +20,7 @@ namespace ProyectoFinal.Core.DTO
         [Required, StringLength(200, MinimumLength = 3)]
         public string UserNameOrEmail { get; set; }
 
-        [Required, StringLength(200, MinimumLength = 6)]
+        [Required, StringLength(200, MinimumLength = 5)]
         public string Password { get; set; }
 
         [Required]
@@ -46,7 +46,7 @@ namespace ProyectoFinal.Core.DTO
         [Required, EmailAddress]
         public string Email { get; set; }
         
-        [Required, StringLength(200, MinimumLength = 6)]
+        [Required, StringLength(200, MinimumLength = 5)]
         public string Password { get; set; }
         
         [Compare("Password")]
@@ -61,10 +61,10 @@ namespace ProyectoFinal.Core.DTO
         [Required]
         public Guid AuthId { get; set; }
         
-        [Required, StringLength(200, MinimumLength = 6)]
+        [Required, StringLength(200, MinimumLength = 5)]
         public string CurrentPassword { get; set; }
         
-        [Required, StringLength(200, MinimumLength = 6)]
+        [Required, StringLength(200, MinimumLength = 5)]
         public string NewPassword { get; set; }
         
         [Compare("NewPassword")]

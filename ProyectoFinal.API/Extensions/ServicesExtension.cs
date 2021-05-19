@@ -6,10 +6,10 @@ using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
@@ -26,7 +26,7 @@ using ProyectoFinal.DAL.Models.Auth;
 using ProyectoFinal.DAL.Repositories.Contracts;
 using ProyectoFinal.DAL.Repositories.Implementations;
 
-namespace ProyectoFinal.API
+namespace ProyectoFinal.API.Extensions
 {
     public static class ServicesExtension
     {
@@ -152,7 +152,7 @@ namespace ProyectoFinal.API
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
                     
-                    options.Password.RequiredLength = 6;
+                    options.Password.RequiredLength = 4;
                     options.Password.RequiredUniqueChars = 0;
                 })
                 .AddEntityFrameworkStores<DataBaseContext>()

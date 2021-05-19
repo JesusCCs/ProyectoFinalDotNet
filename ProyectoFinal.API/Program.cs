@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using ProyectoFinal.API.Extensions;
 
 namespace ProyectoFinal.API
 {

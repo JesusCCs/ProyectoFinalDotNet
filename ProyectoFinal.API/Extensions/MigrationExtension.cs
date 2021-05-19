@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProyectoFinal.DAL;
 
-namespace ProyectoFinal.API
+namespace ProyectoFinal.API.Extensions
 {
     public static class MigrationExtension
     {
