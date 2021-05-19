@@ -292,7 +292,8 @@ namespace ProyectoFinal.DAL
                     NormalizedUserName = "admin".Normalize(),
                     PasswordHash = hasher.HashPassword(null, "admin"),
                     Email = "admin@email.es",
-                    NormalizedEmail = "admin@email.es".Normalize()
+                    NormalizedEmail = "admin@email.es".Normalize(),
+                    SecurityStamp = Guid.NewGuid().ToString()
                 });
 
 
