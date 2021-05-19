@@ -5,24 +5,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ProyectoFinal.DAL\ProyectoFinal.DAL.csproj" />
+        <ProjectReference Include="..\ProyectoFinal.DAL\ProyectoFinal.DAL.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-      <PackageReference Include="FluentEmail.Core" Version="3.0.0" />
-      <PackageReference Include="FluentEmail.Razor" Version="3.0.0" />
-      <PackageReference Include="FluentEmail.SendGrid" Version="3.0.0" />
-      <PackageReference Include="FluentEmail.Smtp" Version="3.0.0" />
-      <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="5.0.5" />
-      <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.5" />
-      <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.5" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore.Identity, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
-        <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\5.0.4\Microsoft.AspNetCore.Identity.dll</HintPath>
-      </Reference>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1"/>
+        <PackageReference Include="FluentEmail.Core" Version="3.0.0"/>
+        <PackageReference Include="FluentEmail.Razor" Version="3.0.0"/>
+        <PackageReference Include="FluentEmail.SendGrid" Version="3.0.0"/>
+        <PackageReference Include="FluentEmail.Smtp" Version="3.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="5.0.5"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.5"/>
+        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="5.0.5"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.5"/>
     </ItemGroup>
 
 </Project>
