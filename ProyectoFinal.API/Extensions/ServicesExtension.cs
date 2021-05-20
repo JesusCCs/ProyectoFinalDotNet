@@ -75,6 +75,10 @@ namespace ProyectoFinal.API.Extensions
             // Se añaden los Helpers
             services.AddSingleton<FileManager>();
             
+            // Se añaden las clases singleton wrappers de appsettings
+            var frontEnd = _configuration.GetSection("FrontEnd").Get<FrontEnd>();
+            services.AddSingleton(frontEnd);
+            
             return services;
         }
 
@@ -141,7 +145,7 @@ namespace ProyectoFinal.API.Extensions
                     options.SignIn.RequireConfirmedEmail = true;
                     options.User.RequireUniqueEmail = true;
                     options.User.AllowedUserNameCharacters =
-                        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
 
                     if (!_env.IsDevelopment()) return;
                     
