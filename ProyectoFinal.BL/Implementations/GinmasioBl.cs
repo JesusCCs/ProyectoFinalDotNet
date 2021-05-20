@@ -30,6 +30,9 @@ namespace ProyectoFinal.BL.Implementations
             var gimnasioInfo = _mapper.Map<Gimnasio>(request);
             gimnasioInfo.AuthId = authId;
             
+            // Guardamos la tarifa en céntimos (la cantidad que llega es en €)
+            gimnasioInfo.Tarifa *= 100;
+            
             var gimnasio = await _repository.Create(gimnasioInfo);
 
             if (request.Logo is null) return gimnasio;

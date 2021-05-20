@@ -1,9 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace ProyectoFinal.Core.Exceptions
 {
     public class UserCreationException : ApplicationException
     {
+        private readonly IEnumerable<IdentityError> _errors;
+        
+        public UserCreationException(IEnumerable<IdentityError> errors)
+        {
+            _errors = errors;
+        }
     }
 
     public class UserNotFoundException : ApplicationException

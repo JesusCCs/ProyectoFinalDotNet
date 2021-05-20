@@ -15,7 +15,7 @@ namespace ProyectoFinal.API
         {
             //  ---------  Auth  -----------
             CreateMap<AuthBaseRequest, Auth>();
-            
+
             //  ------- Gimnasios ----------
 
             // Mapeo Model --> DTO
@@ -23,7 +23,8 @@ namespace ProyectoFinal.API
             CreateMap<Gimnasio, GimnasioGetByIdResponse>();
 
             // Mapeo DTO   --> Model
-            CreateMap<GimnasioCreateRequest, Gimnasio>();
+            CreateMap<GimnasioCreateRequest, Gimnasio>()
+                .ForMember(x => x.Tarifa, opt => opt.AddTransform(i => i * 100));
             CreateMap<GimnasioCreateRequest, Auth>();
             CreateMap<GimnasioUpdateRequest, Gimnasio>()
                 .ForMember(x => x.FechaCreado, opt => opt.Ignore());
@@ -40,14 +41,14 @@ namespace ProyectoFinal.API
             CreateMap<UsuarioCreateDto, Usuario>();
             CreateMap<UsuarioUpdateDto, Usuario>()
                 .ForMember(x => x.FechaCreado, opt => opt.Ignore());
-            
-            
+
+
             //  ------- Anuncios ----------
-            
+
             // Mapeo Model --> DTO
             CreateMap<Anuncio, AnuncioDetallesResponse>();
             CreateMap<Anuncio, AnuncioDatesResponse>();
-            
+
             // Mapeo DTO   --> Model
             CreateMap<AnuncioCreateRequest, Anuncio>();
         }

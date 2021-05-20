@@ -13,6 +13,9 @@ namespace ProyectoFinal.Core.DTO
 
         [Required, StringLength(200, MinimumLength = 6)]
         public string Password { get; set; }
+        
+        [Required, Compare("Password")]
+        public string ConfirmedPassword { get; set; }
     }
     
     public class LoginRequest

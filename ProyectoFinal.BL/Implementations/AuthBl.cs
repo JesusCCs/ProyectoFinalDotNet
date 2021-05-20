@@ -41,7 +41,7 @@ namespace ProyectoFinal.BL.Implementations
 
             if (!result.Succeeded)
             {
-                throw new UserCreationException();
+                throw new UserCreationException(result.Errors);
             }
 
             await _userManager.AddToRoleAsync(auth, rol);

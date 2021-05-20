@@ -19,8 +19,8 @@ namespace ProyectoFinal.Core.DTO
         [Required, MinLength(10)] 
         public string Descripcion { get; set; }
 
-        [Required, Range(100, 999999)] 
-        public int Tarifa { get; set; }
+        [Required, Range(1, 999)] 
+        public float Tarifa { get; set; }
         
         [MaxFileSize(2), AllowedMimeType(".jpg,.jpeg,.png")]
         public IFormFile Logo { get; set; }
