@@ -61,7 +61,7 @@ namespace ProyectoFinal.BL.Implementations
             var model = new
             {
                 Name = auth.UserName,
-                Url = encodeToken,
+                Url = "{hola}?Param1=7890",
                 Time = App.TimeDefaultToken
             };
 
