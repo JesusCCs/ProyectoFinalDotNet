@@ -9,6 +9,11 @@
         public int AccessTokenExpirationInMinutes { get; set; }
         public int RefreshTokenExpirationInDays { get; set; }
     }
+    
+    public class FrontEnd
+    {
+        public string Url { get; set; }
+    }
 
     public static class Policy
     {

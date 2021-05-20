@@ -41,7 +41,7 @@ namespace ProyectoFinal.BL.Implementations
 
             if (!result.Succeeded)
             {
-                throw new UserCreationException();
+                throw new UserCreationException(result.Errors);
             }
 
             await _userManager.AddToRoleAsync(auth, rol);
@@ -61,7 +61,7 @@ namespace ProyectoFinal.BL.Implementations
             var model = new
             {
                 Name = auth.UserName,
-                Url = encodeToken,
+                Url = "{hola}?Param1=7890",
                 Time = App.TimeDefaultToken
             };
 
