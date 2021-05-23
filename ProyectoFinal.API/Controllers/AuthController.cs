@@ -25,6 +25,7 @@ namespace ProyectoFinal.API.Controllers
         }
         
         [HttpPost]
+        [AllowAnonymous]
         [Route("refresh-token")]
         public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {
