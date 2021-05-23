@@ -175,7 +175,7 @@ namespace ProyectoFinal.BL.Implementations
             var model = new
             {
                 Name = user.UserName,
-                Url = encodeToken,
+                Url = new Uri(_frontEnd.Url + "/auth/reset-password").AddQuery("token", encodeToken).AddQuery("email",user.Email),
                 Time = App.TimeDefaultToken
             };
 
@@ -186,7 +186,8 @@ namespace ProyectoFinal.BL.Implementations
 
         public async Task ResetPassword(ResetPasswordRequest request)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var email = HttpUtility.UrlDecode(request.Email);
+            var user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)
             {
