@@ -163,9 +163,6 @@ namespace ProyectoFinal.DAL
             {
                 entity.ToTable("gimnasios");
 
-                entity.HasIndex(e => e.Cif, "gimnasios_cif_uindex")
-                    .IsUnique();
-
                 entity.HasIndex(e => e.AuthId, "FK_auth_gimnasios");
 
                 entity.Property(e => e.Id)
@@ -178,6 +175,13 @@ namespace ProyectoFinal.DAL
                     .IsRequired()
                     .HasColumnName("activo")
                     .HasDefaultValueSql("'1'");
+                
+                entity.Property(e => e.Identificador)
+                    .IsRequired()
+                    .HasColumnType("varchar(10)")
+                    .HasColumnName("identificador")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_unicode_ci");
 
                 entity.Property(e => e.Cif)
                     .IsRequired()
@@ -228,6 +232,11 @@ namespace ProyectoFinal.DAL
                     .HasColumnName("logo")
                     .HasComment(
                         "Campo útil para tener una referencia al nombre con el que se guardó el fichero subido por el usuario en wwwroot");
+                
+                entity.Property(e => e.RecibidoTour)
+                    .IsRequired()
+                    .HasColumnName("recibido_tour")
+                    .HasDefaultValueSql("'0'");
 
                 entity.HasOne(d => d.Auth);
             });
