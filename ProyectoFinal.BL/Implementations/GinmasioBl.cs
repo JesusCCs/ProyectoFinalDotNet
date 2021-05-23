@@ -53,7 +53,7 @@ namespace ProyectoFinal.BL.Implementations
 
         public async Task<GimnasioGetByIdResponse> GetById(Guid id)
         {
-            var entity = await _repository.GetById(id);
+            var entity = await _repository.GetById(id, "Auth");
             return _mapper.Map<GimnasioGetByIdResponse>(entity);
         }
         

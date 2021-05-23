@@ -26,12 +26,10 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
         public async Task<T> GetById(Guid id, string includes = "")
         {
             IQueryable<T> query = _context.Set<T>();
-            
-            foreach (var include in includes.Split(",",StringSplitOptions.RemoveEmptyEntries))
-            {
-                query.Include(include);
-            }
-            
+
+            query = includes.Split(",", StringSplitOptions.RemoveEmptyEntries)
+                .Aggregate(query, (current, include) => current.Include(include));
+
             return await query.FirstOrDefaultAsync(i => i.Id == id);
         }
 

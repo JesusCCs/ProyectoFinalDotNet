@@ -20,11 +20,16 @@ namespace ProyectoFinal.API
 
             // Mapeo Model --> DTO
             CreateMap<Gimnasio, GimnasioGetAllResponse>();
-            CreateMap<Gimnasio, GimnasioGetByIdResponse>();
+            CreateMap<Gimnasio, GimnasioGetByIdResponse>()
+                .ForMember(destino => destino.Tarifa,
+                    opt => opt.MapFrom(src => src.Tarifa / 100))
+                .ForMember(destino => destino.UserName,
+                    opt => opt.MapFrom(src => src.Auth.UserName))
+                .ForMember(destino => destino.Email,
+                    opt => opt.MapFrom(src => src.Auth.Email));
 
             // Mapeo DTO   --> Model
-            CreateMap<GimnasioCreateRequest, Gimnasio>()
-                .ForMember(x => x.Tarifa, opt => opt.AddTransform(i => i * 100));
+            CreateMap<GimnasioCreateRequest, Gimnasio>();
             CreateMap<GimnasioCreateRequest, Auth>();
             CreateMap<GimnasioUpdateRequest, Gimnasio>()
                 .ForMember(x => x.FechaCreado, opt => opt.Ignore());

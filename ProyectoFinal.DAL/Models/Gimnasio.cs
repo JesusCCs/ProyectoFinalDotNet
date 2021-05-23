@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace ProyectoFinal.DAL.Models
 {
     public class Gimnasio : Base
