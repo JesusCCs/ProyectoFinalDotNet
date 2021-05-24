@@ -30,9 +30,13 @@ namespace ProyectoFinal.BL.Implementations
             var gimnasioInfo = _mapper.Map<Gimnasio>(request);
             gimnasioInfo.AuthId = authId;
             
-            // Guardamos la tarifa en céntimos (la cantidad que llega es en €)
-            gimnasioInfo.Tarifa *= 100;
-            
+            // Creamos identificador público
+            var now = DateTime.Now;
+            var zeroDate = DateTime.MinValue.AddHours(now.Hour).AddMinutes(now.Minute).AddSeconds(now.Second).AddMilliseconds(now.Millisecond);
+            var identificador = "#" + (zeroDate.Ticks / 10000).ToString().PadLeft(9,'0');
+
+            gimnasioInfo.Identificador = identificador;
+
             var gimnasio = await _repository.Create(gimnasioInfo);
 
             if (request.Logo is null) return gimnasio;

@@ -29,9 +29,13 @@ namespace ProyectoFinal.API
                     opt => opt.MapFrom(src => src.Auth.Email));
 
             // Mapeo DTO   --> Model
-            CreateMap<GimnasioCreateRequest, Gimnasio>();
+            CreateMap<GimnasioCreateRequest, Gimnasio>()
+                .ForMember(destino => destino.Tarifa,
+                    opt => opt.MapFrom(src => src.Tarifa * 100));
             CreateMap<GimnasioCreateRequest, Auth>();
             CreateMap<GimnasioUpdateRequest, Gimnasio>()
+                .ForMember(destino => destino.Tarifa,
+                    opt => opt.MapFrom(src => src.Tarifa * 100))
                 .ForMember(x => x.FechaCreado, opt => opt.Ignore());
 
 
