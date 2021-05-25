@@ -64,6 +64,8 @@ namespace ProyectoFinal.API
             app.UseAuthentication();
             
             app.UseAuthorization();
+
+            app.UseSpanishLocalization();
             
             app.UseEndpoints(endpoints =>  endpoints.MapControllers() );
         }

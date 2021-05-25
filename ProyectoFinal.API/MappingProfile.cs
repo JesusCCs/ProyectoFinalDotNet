@@ -23,7 +23,7 @@ namespace ProyectoFinal.API
             CreateMap<Gimnasio, GimnasioGetAllResponse>();
             CreateMap<Gimnasio, GimnasioGetByIdResponse>()
                 .ForMember(destino => destino.Tarifa,
-                    opt => opt.MapFrom(src => src.Tarifa / 100))
+                    opt => opt.MapFrom(src => src.Tarifa / 100.0f))
                 .ForMember(destino => destino.UserName,
                     opt => opt.MapFrom(src => src.Auth.UserName))
                 .ForMember(destino => destino.Email,
