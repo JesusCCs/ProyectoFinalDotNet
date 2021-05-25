@@ -1,17 +1,16 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using ProyectoFinal.API.Authorization.Requirements;
+using ProyectoFinal.Core.DTO;
+using Request.Body.Peeker;
 
 namespace ProyectoFinal.API.Authorization.Handlers
 {
     public class AuthIsTargetHandler : AuthorizationHandler<AuthIsTargetRequirement>
     {
-                
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AuthIsTargetHandler(IHttpContextAccessor httpContextAccessor)
@@ -19,7 +18,8 @@ namespace ProyectoFinal.API.Authorization.Handlers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AuthIsTargetRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
+            AuthIsTargetRequirement requirement)
         {
             if (!context.User.HasClaim(c => c.Type == ClaimTypes.Sid))
             {
@@ -28,15 +28,15 @@ namespace ProyectoFinal.API.Authorization.Handlers
 
             var originAuthId = context.User.Claims.Single(c => c.Type == ClaimTypes.Sid).Value;
 
-            var routeData = (_httpContextAccessor.HttpContext ?? throw new InvalidOperationException()).GetRouteData();
+            var request = _httpContextAccessor.HttpContext?.Request.PeekBody<ChangePasswordRequest>();
 
-            var targetAuthId = routeData.Values["AuthId"]?.ToString();
-            
-            if (requirement.SameId(originAuthId,targetAuthId))
+            var targetAuthId = request?.AuthId;
+
+            if (requirement.SameId(originAuthId, targetAuthId.ToString()))
             {
                 context.Succeed(requirement);
             }
-            
+
             return Task.CompletedTask;
         }
     }

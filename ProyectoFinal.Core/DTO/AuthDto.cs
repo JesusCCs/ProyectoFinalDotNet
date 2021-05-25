@@ -64,7 +64,7 @@ namespace ProyectoFinal.Core.DTO
         [Required]
         public Guid AuthId { get; set; }
         
-        [Required, StringLength(200, MinimumLength = 5)]
+        [Required]
         public string CurrentPassword { get; set; }
         
         [Required, StringLength(200, MinimumLength = 5)]
