@@ -90,7 +90,10 @@ namespace ProyectoFinal.BL.Implementations
             var model = new
             {
                 Name = user.UserName,
-                Url = encodeToken,
+                Url = new Uri(_frontEnd.Url + "/auth/confirm-new-email")
+                    .AddQuery("token", encodeToken)
+                    .AddQuery("currentEmail",user.Email)
+                    .AddQuery("newEmail",request.NewEmail),
                 Time = App.TimeDefaultToken
             };
 
