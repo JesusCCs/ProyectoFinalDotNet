@@ -8,6 +8,7 @@ namespace ProyectoFinal.DAL.Models
         public Gimnasio()
         {
             Anuncios = new HashSet<Anuncio>();
+            Auth = new Auth.Auth();
         }
         
         public Guid AuthId { get; set; }

@@ -74,7 +74,7 @@ namespace ProyectoFinal.API.Controllers
         
         [HttpPut("{id:guid}")]
         [Authorize(Roles = Rol.AdminOGimnasio, Policy = Policy.GymIsTarget)]
-        public async Task<ActionResult> Update(Guid id, [FromBody] GimnasioUpdateRequest request)
+        public async Task<ActionResult> Update(Guid id, [FromForm] GimnasioUpdateRequest request)
         {
             await _gimnasioBl.Update(id, request);
             return NoContent();

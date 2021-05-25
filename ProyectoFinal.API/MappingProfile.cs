@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using ProyectoFinal.Core.DTO;
 using ProyectoFinal.DAL.Models;
 using ProyectoFinal.DAL.Models.Auth;
@@ -36,7 +37,10 @@ namespace ProyectoFinal.API
             CreateMap<GimnasioUpdateRequest, Gimnasio>()
                 .ForMember(destino => destino.Tarifa,
                     opt => opt.MapFrom(src => src.Tarifa * 100))
-                .ForMember(x => x.FechaCreado, opt => opt.Ignore());
+                .ForMember(x => x.FechaCreado, 
+                    opt => opt.Ignore())
+                .ForMember(x => x.FechaActualizado, 
+                    opt => opt.MapFrom(src => DateTime.Now));
 
 
             //  ------- Usuarios ----------

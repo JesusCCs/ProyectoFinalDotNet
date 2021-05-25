@@ -76,16 +76,16 @@ namespace ProyectoFinal.BL.Implementations
         public async Task Update(Guid id, GimnasioUpdateRequest request)
         {
             var gimnasio = await _repository.GetById(request.Id);
-            var gimnasioModificado = _mapper.Map<Gimnasio>(request);
             
-            if (request.Logo != null && !request.DeleteLogo)
+            if (request.Logo != null)
             {
                 if (gimnasio.Logo != null) _fileManager.Remove(gimnasio.Logo, FileType.Logo);
                 await _fileManager.Upload(request.Logo, FileType.Logo);
             }
+
+            gimnasio = _mapper.Map(request, gimnasio);
             
-            var actualizacionExitosa = await _repository.Update(gimnasioModificado);
-            if (request.DeleteLogo) _fileManager.Remove(gimnasio.Logo, FileType.Logo);
+            var actualizacionExitosa = await _repository.Update(gimnasio);
 
             if (!actualizacionExitosa) throw new UpdateFailedException();
         }

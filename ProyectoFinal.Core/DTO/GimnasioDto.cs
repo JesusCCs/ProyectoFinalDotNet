@@ -44,12 +44,10 @@ namespace ProyectoFinal.Core.DTO
         public string Descripcion { get; set; }
 
         [Required, Range(1, 999)] 
-        public int Tarifa { get; set; }
+        public float Tarifa { get; set; }
         
         [MaxFileSize(2), AllowedMimeType(".jpg,.jpeg,.png")]
         public IFormFile Logo { get; set; }
-        
-        public bool DeleteLogo { get; set; }
     }
 
     public class GimnasioGetByIdResponse
