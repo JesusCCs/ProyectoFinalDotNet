@@ -19,7 +19,7 @@ namespace ProyectoFinal.Core.DTO
         [Required, MinLength(10)] 
         public string Descripcion { get; set; }
 
-        [Required, Range(1, 999)] 
+        [Required, Range(1, 9999)] 
         public float Tarifa { get; set; }
         
         [MaxFileSize(2), AllowedMimeType(".jpg,.jpeg,.png")]
@@ -43,7 +43,7 @@ namespace ProyectoFinal.Core.DTO
         [Required, MinLength(10)] 
         public string Descripcion { get; set; }
 
-        [Required, Range(1, 999)] 
+        [Required, Range(1, 9999)] 
         public float Tarifa { get; set; }
         
         [MaxFileSize(2), AllowedMimeType(".jpg,.jpeg,.png")]

@@ -39,8 +39,10 @@ namespace ProyectoFinal.API
                     opt => opt.MapFrom(src => src.Tarifa * 100))
                 .ForMember(x => x.FechaCreado, 
                     opt => opt.Ignore())
+                .ForMember(x => x.Auth, 
+                    opt => opt.Ignore())
                 .ForMember(x => x.FechaActualizado, 
-                    opt => opt.MapFrom(src => DateTime.Now));
+                    opt => opt.Ignore());
 
 
             //  ------- Usuarios ----------

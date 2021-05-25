@@ -75,7 +75,7 @@ namespace ProyectoFinal.BL.Implementations
 
         public async Task Update(Guid id, GimnasioUpdateRequest request)
         {
-            var gimnasio = await _repository.GetById(request.Id);
+            var gimnasio = await _repository.GetById(request.Id, "Auth");
             
             if (request.Logo != null)
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProyectoFinal.DAL.Models
 {
@@ -8,7 +9,6 @@ namespace ProyectoFinal.DAL.Models
         public Gimnasio()
         {
             Anuncios = new HashSet<Anuncio>();
-            Auth = new Auth.Auth();
         }
         
         public Guid AuthId { get; set; }
