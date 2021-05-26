@@ -62,6 +62,7 @@ namespace ProyectoFinal.Core.DTO
         public string Nombre { get; set; }
         public string Direccion { get; set; }
         public string Descripcion { get; set; }
+        public string Logo { get; set; }
         
         public float Tarifa { get; set; }
         

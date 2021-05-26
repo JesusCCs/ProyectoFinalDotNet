@@ -9,10 +9,12 @@ namespace ProyectoFinal.BL.Helpers
     public class FileManager
     {
         private readonly IWebHostEnvironment _env;
+        private readonly Server _server;
 
-        public FileManager(IWebHostEnvironment env)
+        public FileManager(IWebHostEnvironment env, Server server)
         {
             _env = env;
+            _server = server;
         }
 
         public async Task<string> Upload(IFormFile file, FileType type)
@@ -34,12 +36,29 @@ namespace ProyectoFinal.BL.Helpers
             File.Delete(path);
         }
 
+        public string Get(string? fileName, FileType type)
+        {
+            return fileName is null
+                ? Path.Combine(CreateOrigin(FileType.Logo), "default.jpg")
+                : Path.Combine(CreateOrigin(type), fileName);
+        }
+
         private string CreateDestiny(FileType type)
         {
             return type switch
             {
                 FileType.Logo => Path.Combine(_env.WebRootPath, "logos"),
                 FileType.Anuncio => Path.Combine(_env.WebRootPath, "anuncios"),
+                _ => null
+            };
+        }
+        
+        private string CreateOrigin(FileType type)
+        {
+            return type switch
+            {
+                FileType.Logo => Path.Combine(_server.Url, "logos"),
+                FileType.Anuncio => Path.Combine(_server.Url, "anuncios"),
                 _ => null
             };
         }

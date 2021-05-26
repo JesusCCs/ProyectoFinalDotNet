@@ -58,6 +58,9 @@ namespace ProyectoFinal.BL.Implementations
         public async Task<GimnasioGetByIdResponse> GetById(Guid id)
         {
             var entity = await _repository.GetById(id, "Auth");
+
+            entity.Logo = _fileManager.Get(entity.Logo, FileType.Logo);
+            
             return _mapper.Map<GimnasioGetByIdResponse>(entity);
         }
         
@@ -77,13 +80,14 @@ namespace ProyectoFinal.BL.Implementations
         {
             var gimnasio = await _repository.GetById(request.Id, "Auth");
             
+            gimnasio = _mapper.Map(request, gimnasio);
+            
             if (request.Logo != null)
             {
                 if (gimnasio.Logo != null) _fileManager.Remove(gimnasio.Logo, FileType.Logo);
-                await _fileManager.Upload(request.Logo, FileType.Logo);
+                var logo = await _fileManager.Upload(request.Logo, FileType.Logo);
+                gimnasio.Logo = logo;
             }
-
-            gimnasio = _mapper.Map(request, gimnasio);
             
             var actualizacionExitosa = await _repository.Update(gimnasio);
 

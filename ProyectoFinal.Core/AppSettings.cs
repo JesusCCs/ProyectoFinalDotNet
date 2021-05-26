@@ -14,6 +14,11 @@
     {
         public string Url { get; set; }
     }
+    
+    public class Server
+    {
+        public string Url { get; set; }
+    }
 
     public static class Policy
     {

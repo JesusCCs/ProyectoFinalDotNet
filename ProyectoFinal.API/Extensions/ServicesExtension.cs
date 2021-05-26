@@ -76,8 +76,8 @@ namespace ProyectoFinal.API.Extensions
             services.AddSingleton<FileManager>();
             
             // Se añaden las clases singleton wrappers de appsettings
-            var frontEnd = _configuration.GetSection("FrontEnd").Get<FrontEnd>();
-            services.AddSingleton(frontEnd);
+            services.AddSingleton(_configuration.GetSection("FrontEnd").Get<FrontEnd>());
+            services.AddSingleton(_configuration.GetSection("Server").Get<Server>());
             
             return services;
         }
