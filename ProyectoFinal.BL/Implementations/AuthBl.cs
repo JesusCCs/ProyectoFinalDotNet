@@ -64,7 +64,9 @@ namespace ProyectoFinal.BL.Implementations
             var model = new
             {
                 Name = auth.UserName,
-                Url = new Uri(_frontEnd.Url + "/auth/confirm-email").AddQuery("token", encodeToken).AddQuery("email",auth.Email),
+                Url = new Uri(_frontEnd.Url + "/auth/confirm-email")
+                    .AddQuery("token", encodeToken)
+                    .AddQuery("email",auth.Email),
                 Time = App.TimeDefaultToken
             };
 
@@ -178,7 +180,9 @@ namespace ProyectoFinal.BL.Implementations
             var model = new
             {
                 Name = user.UserName,
-                Url = new Uri(_frontEnd.Url + "/auth/reset-password").AddQuery("token", encodeToken).AddQuery("email",user.Email),
+                Url = new Uri(_frontEnd.Url + "/auth/reset-password")
+                    .AddQuery("token", encodeToken)
+                    .AddQuery("email",user.Email),
                 Time = App.TimeDefaultToken
             };
 
