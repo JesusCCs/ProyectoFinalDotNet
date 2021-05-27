@@ -5,6 +5,8 @@ riderModule.iml
 /_ReSharper.Caches/
 ProyectoFinal.API/appsettings.Development.json
 .idea
-ProyectoFinal.API/wwwroot/anuncios
-ProyectoFinal.API/wwwroot/logos
-!wwwroot/logos/default.jpg
+ProyectoFinal.API/wwwroot/anuncios/*
+ProyectoFinal.API/wwwroot/logos/*
+!ProyectoFinal.API/wwwroot/logos/.gitkeep
+!ProyectoFinal.API/wwwroot/anuncios/.gitkeep
+!ProyectoFinal.API/wwwroot/logos/default.jpg
