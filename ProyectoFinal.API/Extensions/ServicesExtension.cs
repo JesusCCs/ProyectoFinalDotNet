@@ -212,6 +212,7 @@ namespace ProyectoFinal.API.Extensions
         {
             services.AddSingleton<IAuthorizationHandler,GymIsTargetHandler>();
             services.AddSingleton<IAuthorizationHandler,AuthIsTargetHandler>();
+            services.AddSingleton<IAuthorizationHandler,GymIsOwnerHandler>();
             
             services.AddAuthorization(options =>
             {
@@ -223,6 +224,11 @@ namespace ProyectoFinal.API.Extensions
                 options.AddPolicy(Policy.AuthIsTarget, policy =>
                 {
                     policy.Requirements.Add(new AuthIsTargetRequirement());
+                });
+                
+                options.AddPolicy(Policy.GymIsOwner, policy =>
+                {
+                    policy.Requirements.Add(new GymIsOwnerRequirement());
                 });
             });
             

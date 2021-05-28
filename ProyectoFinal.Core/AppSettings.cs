@@ -24,6 +24,7 @@
     {
         public const string GymIsTarget = "GymIsTarget";
         public const string AuthIsTarget = "AuthIsTarget";
+        public const string GymIsOwner = "GymIsOwner";
     }
     
     public static class App
