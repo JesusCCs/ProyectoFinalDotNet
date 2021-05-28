@@ -7,6 +7,7 @@ using AutoMapper;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity;
 using ProyectoFinal.BL.Contracts;
+using ProyectoFinal.BL.Helpers;
 using ProyectoFinal.Core;
 using ProyectoFinal.Core.DTO;
 using ProyectoFinal.Core.Exceptions;
@@ -23,14 +24,16 @@ namespace ProyectoFinal.BL.Implementations
         private readonly SignInManager<Auth> _signInManager;
         private readonly IFluentEmail _email;
         private readonly IMapper _mapper;
+        private readonly FrontEnd _frontEnd;
 
         public AuthBl(UserManager<Auth> userManager, SignInManager<Auth> signInManager, IFluentEmail email,
-            IMapper mapper)
+            IMapper mapper, FrontEnd frontEnd)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _email = email;
             _mapper = mapper;
+            _frontEnd = frontEnd;
         }
 
         public async Task<Guid> Create(AuthBaseRequest request, string rol)
@@ -61,7 +64,9 @@ namespace ProyectoFinal.BL.Implementations
             var model = new
             {
                 Name = auth.UserName,
-                Url = "{hola}?Param1=7890",
+                Url = new Uri(_frontEnd.Url + "/auth/confirm-email")
+                    .AddQuery("token", encodeToken)
+                    .AddQuery("email",auth.Email),
                 Time = App.TimeDefaultToken
             };
 
@@ -87,7 +92,10 @@ namespace ProyectoFinal.BL.Implementations
             var model = new
             {
                 Name = user.UserName,
-                Url = encodeToken,
+                Url = new Uri(_frontEnd.Url + "/auth/confirm-new-email")
+                    .AddQuery("token", encodeToken)
+                    .AddQuery("currentEmail",user.Email)
+                    .AddQuery("newEmail",request.NewEmail),
                 Time = App.TimeDefaultToken
             };
 
@@ -98,7 +106,8 @@ namespace ProyectoFinal.BL.Implementations
         
         public async Task ConfirmEmail(ConfirmEmailRequest request)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var email = HttpUtility.UrlDecode(request.Email);
+            var user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)
             {
@@ -141,17 +150,17 @@ namespace ProyectoFinal.BL.Implementations
                 ? await _userManager.FindByEmailAsync(request.UserNameOrEmail)
                 : await _userManager.FindByNameAsync(request.UserNameOrEmail);
 
-            if (auth == null) throw new AuthenticationException();
+            if (auth == null) throw new LoginException();
             
             // Comprobamos que el usuario que se ha encontrado es del rol que toca
             var roles = await _userManager.GetRolesAsync(auth);
 
-            if (roles.First() != rol) throw new AuthenticationException();
+            if (roles.First() != rol) throw new LoginException();
             
             var result = await _signInManager.PasswordSignInAsync(auth,
                 request.Password, request.RememberMe, auth.LockoutEnabled);
             
-            if (!result.Succeeded) throw new AuthenticationException();
+            if (!result.Succeeded) throw new LoginException();
             
             return auth.Id;
         }
@@ -171,7 +180,9 @@ namespace ProyectoFinal.BL.Implementations
             var model = new
             {
                 Name = user.UserName,
-                Url = encodeToken,
+                Url = new Uri(_frontEnd.Url + "/auth/reset-password")
+                    .AddQuery("token", encodeToken)
+                    .AddQuery("email",user.Email),
                 Time = App.TimeDefaultToken
             };
 
@@ -182,7 +193,8 @@ namespace ProyectoFinal.BL.Implementations
 
         public async Task ResetPassword(ResetPasswordRequest request)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var email = HttpUtility.UrlDecode(request.Email);
+            var user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)
             {

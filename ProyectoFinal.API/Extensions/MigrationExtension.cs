@@ -10,8 +10,14 @@ namespace ProyectoFinal.API.Extensions
         public static IHost MigrateDatabase(this IHost host)
         {
             using var scope = host.Services.CreateScope();
-            using var appContext = scope.ServiceProvider.GetRequiredService<DataBaseContext>();
-            appContext.Database.Migrate();
+            using var dbContext = scope.ServiceProvider.GetRequiredService<DataBaseContext>();
+
+            if (dbContext.Database.CanConnect())
+            {
+                return host;
+            }
+
+            dbContext.Database.Migrate();
             return host;
         }
     }

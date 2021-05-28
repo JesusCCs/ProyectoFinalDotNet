@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
-#nullable disable
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProyectoFinal.DAL.Models
 {
@@ -15,11 +14,13 @@ namespace ProyectoFinal.DAL.Models
         public Guid AuthId { get; set; }
         
         public string Cif { get; set; }
+        public string Identificador { get; set; }
         public string Nombre { get; set; }
         public string Direccion { get; set; }
         public int Tarifa { get; set; }
         public string Descripcion { get; set; }
         public string Logo { get; set; }
+        public bool RecibidoTour { get; set; }
         
         public ICollection<Anuncio> Anuncios { get; set; }
         public Auth.Auth Auth { get; set; }

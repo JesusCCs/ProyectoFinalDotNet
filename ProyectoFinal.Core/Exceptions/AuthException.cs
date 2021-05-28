@@ -1,31 +1,58 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Identity;
 
 namespace ProyectoFinal.Core.Exceptions
 {
-    public class UserCreationException : ApplicationException
+    public class LoginException : AppException
     {
-        private readonly IEnumerable<IdentityError> _errors;
-        
-        public UserCreationException(IEnumerable<IdentityError> errors)
+        public LoginException(): base(new Dictionary<string, string[]>
         {
-            _errors = errors;
-        }
-    }
-
-    public class UserNotFoundException : ApplicationException
-    {
-        public UserNotFoundException() : base("Excepción - El usuario no ha podido encontrarse")
+            ["UserNameOrEmail"] = new []{ "O el usuario o la contraseña son inválidos" },
+            ["Password"] = new []{ "O el usuario o la contraseña son inválidos" }
+        })
         {
         }
     }
-
-    public class ResetPasswordException : ApplicationException
+    
+    public class UserCreationException : AppException
     {
+        public UserCreationException(IEnumerable<IdentityError> errors): base(new Dictionary<string, string[]>
+        {
+            ["UserName"] = new []{ errors.First().Description }
+        })
+        {
+        }
     }
 
-    public class ChangePasswordException : ApplicationException
+    public class UserNotFoundException : AppException
     {
+        public UserNotFoundException(): base(new Dictionary<string, string[]>
+        {
+            ["General"] = new []{ "Hubo un error a la hora de gestionar su solicitud" }
+        })
+        {
+        }
+    }
+
+    public class ResetPasswordException : AppException
+    {
+        public ResetPasswordException(): base(new Dictionary<string, string[]>
+        {
+            ["General"] = new []{ "Hubo un problema a la hora de cambiar su contraseña." }
+        })
+        {
+        }
+    }
+
+    public class ChangePasswordException : AppException
+    {
+        public ChangePasswordException(): base(new Dictionary<string, string[]>
+        {
+            ["General"] = new []{ "Hubo un problema a la hora de cambiar su contraseña." }
+        })
+        {
+        }
     }
 }

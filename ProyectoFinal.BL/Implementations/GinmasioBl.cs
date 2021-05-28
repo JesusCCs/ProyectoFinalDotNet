@@ -30,9 +30,13 @@ namespace ProyectoFinal.BL.Implementations
             var gimnasioInfo = _mapper.Map<Gimnasio>(request);
             gimnasioInfo.AuthId = authId;
             
-            // Guardamos la tarifa en céntimos (la cantidad que llega es en €)
-            gimnasioInfo.Tarifa *= 100;
-            
+            // Creamos identificador público
+            var now = DateTime.Now;
+            var zeroDate = DateTime.MinValue.AddHours(now.Hour).AddMinutes(now.Minute).AddSeconds(now.Second).AddMilliseconds(now.Millisecond);
+            var identificador = "#" + (zeroDate.Ticks / 10000).ToString().PadLeft(9,'0');
+
+            gimnasioInfo.Identificador = identificador;
+
             var gimnasio = await _repository.Create(gimnasioInfo);
 
             if (request.Logo is null) return gimnasio;
@@ -53,7 +57,10 @@ namespace ProyectoFinal.BL.Implementations
 
         public async Task<GimnasioGetByIdResponse> GetById(Guid id)
         {
-            var entity = await _repository.GetById(id);
+            var entity = await _repository.GetById(id, "Auth");
+
+            entity.Logo = _fileManager.Get(entity.Logo, FileType.Logo);
+            
             return _mapper.Map<GimnasioGetByIdResponse>(entity);
         }
         
@@ -71,17 +78,18 @@ namespace ProyectoFinal.BL.Implementations
 
         public async Task Update(Guid id, GimnasioUpdateRequest request)
         {
-            var gimnasio = await _repository.GetById(request.Id);
-            var gimnasioModificado = _mapper.Map<Gimnasio>(request);
+            var gimnasio = await _repository.GetById(request.Id, "Auth");
             
-            if (request.Logo != null && !request.DeleteLogo)
+            gimnasio = _mapper.Map(request, gimnasio);
+            
+            if (request.Logo != null)
             {
                 if (gimnasio.Logo != null) _fileManager.Remove(gimnasio.Logo, FileType.Logo);
-                await _fileManager.Upload(request.Logo, FileType.Logo);
+                var logo = await _fileManager.Upload(request.Logo, FileType.Logo);
+                gimnasio.Logo = logo;
             }
             
-            var actualizacionExitosa = await _repository.Update(gimnasioModificado);
-            if (request.DeleteLogo) _fileManager.Remove(gimnasio.Logo, FileType.Logo);
+            var actualizacionExitosa = await _repository.Update(gimnasio);
 
             if (!actualizacionExitosa) throw new UpdateFailedException();
         }

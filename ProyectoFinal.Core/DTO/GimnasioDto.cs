@@ -19,7 +19,7 @@ namespace ProyectoFinal.Core.DTO
         [Required, MinLength(10)] 
         public string Descripcion { get; set; }
 
-        [Required, Range(1, 999)] 
+        [Required, Range(1, 9999)] 
         public float Tarifa { get; set; }
         
         [MaxFileSize(2), AllowedMimeType(".jpg,.jpeg,.png")]
@@ -43,26 +43,32 @@ namespace ProyectoFinal.Core.DTO
         [Required, MinLength(10)] 
         public string Descripcion { get; set; }
 
-        [Required, Range(100, 999999)] 
-        public int Tarifa { get; set; }
+        [Required, Range(1, 9999)] 
+        public float Tarifa { get; set; }
         
         [MaxFileSize(2), AllowedMimeType(".jpg,.jpeg,.png")]
         public IFormFile Logo { get; set; }
-        
-        public bool DeleteLogo { get; set; }
     }
 
     public class GimnasioGetByIdResponse
     {
         public Guid Id { get; set; }
+        
         public string UserName { get; set; }
         public string Email { get; set; }
+        public string Identificador { get; set; }
+        
         public string Cif { get; set; }
         public string Nombre { get; set; }
         public string Direccion { get; set; }
         public string Descripcion { get; set; }
+        public string Logo { get; set; }
+        
+        public float Tarifa { get; set; }
+        
         public DateTime FechaCreado { get; set; }
-        public int Tarifa { get; set; }
+        
+        public bool RecibidoTour { get; set; }
     }
 
     public class GimnasioGetAllResponse
