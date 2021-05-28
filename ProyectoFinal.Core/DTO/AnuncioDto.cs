@@ -10,14 +10,14 @@ namespace ProyectoFinal.Core.DTO
         [Required] 
         public Guid GimnasioId { get; set; }
 
-        [Required, StringLength(200, MinimumLength = 6)]
+        [Required]
         public int ReproduccionesLimite { get; set; }
 
-        [Required, StringLength(200, MinimumLength = 5)]
-        public DateTime FechaInicio { get; set; }
+        [Required]
+        public DateTime Inicio { get; set; }
 
-        [Required, MinLength(10)] 
-        public DateTime FechaFin { get; set; }
+        [Required] 
+        public DateTime Fin { get; set; }
             
         [Required, MaxFileSize(30), AllowedMimeType(".jpg,.jpeg,.png,.gif,.mp4,.avi,.webm")]
         public IFormFile Recurso { get; set; }
@@ -29,17 +29,17 @@ namespace ProyectoFinal.Core.DTO
             
         public int ReproduccionesLimite { get; set; }
             
-        public DateTime FechaInicio { get; set; }
+        public DateTime Inicio { get; set; }
             
-        public DateTime FechaFin { get; set; }
+        public DateTime Fin { get; set; }
             
         public string Recurso { get; set; }
     }
         
     public class AnuncioDatesResponse
     {
-        public DateTime FechaInicio { get; set; }
+        public DateTime Inicio { get; set; }
             
-        public DateTime FechaFin { get; set; }
+        public DateTime Fin { get; set; }
     }
 }

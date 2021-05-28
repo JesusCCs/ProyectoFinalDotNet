@@ -66,6 +66,7 @@ namespace ProyectoFinal.API.Controllers
         }
         
         [HttpGet("{id:guid}")]
+        [Authorize(Roles = Rol.Todos)]
         public async Task<ActionResult> GetById(Guid id)
         {
             var item = await _gimnasioBl.GetById(id);

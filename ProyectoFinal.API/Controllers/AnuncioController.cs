@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +21,7 @@ namespace ProyectoFinal.API.Controllers
         }
         
         [HttpPost]
+        [Authorize(Roles = Rol.Gimnasio)]
         public async Task<ActionResult> Create([FromForm] AnuncioCreateRequest request)
         {
             var anuncio = await _anuncioBl.Create(request);
@@ -29,6 +29,7 @@ namespace ProyectoFinal.API.Controllers
         }
         
         [HttpGet]
+        [Authorize(Roles = Rol.Gimnasio)]
         public async Task<ActionResult> GetForCheck([FromQuery] bool forCheckDates)
         {
             if (!forCheckDates) return NoContent();
