@@ -28,10 +28,31 @@ namespace ProyectoFinal.Core.DTO
         public Guid Id { get; set; }
             
         public int ReproduccionesLimite { get; set; }
+        
+        public string Tipo { get; set; }
             
         public DateTime Inicio { get; set; }
             
         public DateTime Fin { get; set; }
+        
+        public bool Activo { get; set; }
+            
+        public string Recurso { get; set; }
+    }
+    
+    public class AnunciosGimnasioResponse
+    {
+        public Guid Id { get; set; }
+            
+        public int ReproduccionesLimite { get; set; }
+        
+        public string Tipo { get; set; }
+            
+        public DateTime Inicio { get; set; }
+            
+        public DateTime Fin { get; set; }
+        
+        public bool Activo { get; set; }
             
         public string Recurso { get; set; }
     }

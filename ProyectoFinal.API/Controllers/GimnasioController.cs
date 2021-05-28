@@ -17,6 +17,7 @@ namespace ProyectoFinal.API.Controllers
     {
         private readonly IAuthBl _authBl;
         private readonly IGinmasioBl _gimnasioBl;
+        private readonly IAnuncioBl _anuncioBl;
         private readonly IJwtTokenBl _jwtTokenBl;
 
         public GimnasioController(IGinmasioBl gimnasioBl, IAuthBl authBl, IJwtTokenBl jwtTokenBl)
@@ -71,6 +72,14 @@ namespace ProyectoFinal.API.Controllers
         {
             var item = await _gimnasioBl.GetById(id);
             return Ok(item);
+        }
+        
+        [Route("/gimnasios/{id:guid}/anuncios")]
+        [Authorize(Roles = Rol.Todos)]
+        public async Task<ActionResult> Anuncios(Guid id)
+        {
+            var lista = await _anuncioBl.GetAllFrom(id);
+            return Ok(lista);
         }
         
         [HttpPut("{id:guid}")]

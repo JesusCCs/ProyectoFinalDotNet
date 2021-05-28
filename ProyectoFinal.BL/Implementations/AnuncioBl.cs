@@ -47,5 +47,11 @@ namespace ProyectoFinal.BL.Implementations
             var entity = await _repository.GetById(id);
             return _mapper.Map<AnuncioDetallesResponse>(entity);
         }
+
+        public async Task<IEnumerable<AnunciosGimnasioResponse>> GetAllFrom(Guid id)
+        {
+            var lista = await _repository.GetByCondition(anuncio => anuncio.GimnasioId == id);
+            return _mapper.Map<IEnumerable<AnunciosGimnasioResponse>>(lista);
+        }
     }
 }
