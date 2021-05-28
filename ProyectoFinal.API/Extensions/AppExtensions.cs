@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
+using ProyectoFinal.API.Middlewares;
 
 namespace ProyectoFinal.API.Extensions
 {
@@ -27,6 +28,13 @@ namespace ProyectoFinal.API.Extensions
                     es,
                 }
             });
+            
+            return app;
+        }
+        
+        public static IApplicationBuilder UseMiddlewares(this IApplicationBuilder app)
+        {
+            app.UseMiddleware<ExceptionMiddleware>();
             
             return app;
         }

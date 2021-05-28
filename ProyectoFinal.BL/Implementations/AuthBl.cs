@@ -150,17 +150,17 @@ namespace ProyectoFinal.BL.Implementations
                 ? await _userManager.FindByEmailAsync(request.UserNameOrEmail)
                 : await _userManager.FindByNameAsync(request.UserNameOrEmail);
 
-            if (auth == null) throw new AuthenticationException();
+            if (auth == null) throw new LoginException();
             
             // Comprobamos que el usuario que se ha encontrado es del rol que toca
             var roles = await _userManager.GetRolesAsync(auth);
 
-            if (roles.First() != rol) throw new AuthenticationException();
+            if (roles.First() != rol) throw new LoginException();
             
             var result = await _signInManager.PasswordSignInAsync(auth,
                 request.Password, request.RememberMe, auth.LockoutEnabled);
             
-            if (!result.Succeeded) throw new AuthenticationException();
+            if (!result.Succeeded) throw new LoginException();
             
             return auth.Id;
         }

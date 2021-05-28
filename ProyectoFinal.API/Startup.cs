@@ -67,6 +67,8 @@ namespace ProyectoFinal.API
 
             app.UseSpanishLocalization();
             
+            app.UseMiddlewares();
+            
             app.UseEndpoints(endpoints =>  endpoints.MapControllers() );
         }
     }
