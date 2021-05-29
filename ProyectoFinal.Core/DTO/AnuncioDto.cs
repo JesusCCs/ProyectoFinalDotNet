@@ -5,20 +5,11 @@ using ProyectoFinal.Core.Validation;
 
 namespace ProyectoFinal.Core.DTO
 {
-    public class AnuncioCreateRequest
+    public class AnuncioCreateStep1Request
     {
         [Required] 
         public Guid GimnasioId { get; set; }
 
-        [Required]
-        public int ReproduccionesLimite { get; set; }
-
-        [Required]
-        public DateTime Inicio { get; set; }
-
-        [Required] 
-        public DateTime Fin { get; set; }
-            
         [Required, MaxFileSize(30), AllowedMimeType(".jpg,.jpeg,.png,.gif,.mp4,.avi,.webm")]
         public IFormFile Recurso { get; set; }
     }

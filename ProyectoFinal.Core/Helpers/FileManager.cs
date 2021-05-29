@@ -2,9 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using ProyectoFinal.Core;
 
-namespace ProyectoFinal.BL.Helpers
+namespace ProyectoFinal.Core.Helpers
 {
     public class FileManager
     {

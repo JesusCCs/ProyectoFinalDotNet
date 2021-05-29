@@ -34,6 +34,13 @@
 
         public const int TimeDefaultToken = 24;
     }
+    
+    public static class AnunciosTipo
+    {
+        public const string Imagen = "imagen";
+        public const string Gif = "gif";
+        public const string Video = "video";
+    }
 
     public enum EmailType
     {

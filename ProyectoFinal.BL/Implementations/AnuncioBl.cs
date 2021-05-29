@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using ProyectoFinal.BL.Contracts;
-using ProyectoFinal.BL.Helpers;
 using ProyectoFinal.Core;
 using ProyectoFinal.Core.DTO;
+using ProyectoFinal.Core.Helpers;
 using ProyectoFinal.DAL.Models;
 using ProyectoFinal.DAL.Repositories.Contracts;
 
@@ -24,16 +24,18 @@ namespace ProyectoFinal.BL.Implementations
             _repository = repository;
         }
         
-        public async Task<AnuncioDetallesResponse> Create(AnuncioCreateRequest request)
+        public async Task<Guid> Create(AnuncioCreateStep1Request request)
         {
-            var anuncioInfo = _mapper.Map<Anuncio>(request);
+            var recurso = await _fileManager.Upload(request.Recurso, FileType.Anuncio);
+
+            var anuncio = await _repository.Create(new Anuncio
+            {
+                GimnasioId = request.GimnasioId,
+                Recurso = recurso,
+                Tipo = request.Recurso.GetTipo()
+            });
             
-            var anuncio = await _repository.Create(anuncioInfo);
-            
-            anuncio.Recurso = await _fileManager.Upload(request.Recurso, FileType.Anuncio);
-            await _repository.Update(anuncio);
-            
-            return _mapper.Map<AnuncioDetallesResponse>(anuncio);
+            return anuncio.Id;
         }
 
         public async Task<IEnumerable<AnuncioDatesResponse>> GetDates()

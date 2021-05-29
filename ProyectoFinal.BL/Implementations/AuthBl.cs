@@ -7,10 +7,10 @@ using AutoMapper;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity;
 using ProyectoFinal.BL.Contracts;
-using ProyectoFinal.BL.Helpers;
 using ProyectoFinal.Core;
 using ProyectoFinal.Core.DTO;
 using ProyectoFinal.Core.Exceptions;
+using ProyectoFinal.Core.Helpers;
 using ProyectoFinal.DAL.Models.Auth;
 using static System.String;
 

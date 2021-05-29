@@ -22,7 +22,7 @@ namespace ProyectoFinal.API.Controllers
         
         [HttpPost]
         [Authorize(Roles = Rol.Gimnasio)]
-        public async Task<ActionResult> Create([FromForm] AnuncioCreateRequest request)
+        public async Task<ActionResult> Create([FromForm] AnuncioCreateStep1Request request)
         {
             var anuncio = await _anuncioBl.Create(request);
             return Ok(anuncio);

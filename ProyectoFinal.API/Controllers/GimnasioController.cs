@@ -20,10 +20,11 @@ namespace ProyectoFinal.API.Controllers
         private readonly IAnuncioBl _anuncioBl;
         private readonly IJwtTokenBl _jwtTokenBl;
 
-        public GimnasioController(IGinmasioBl gimnasioBl, IAuthBl authBl, IJwtTokenBl jwtTokenBl)
+        public GimnasioController(IGinmasioBl gimnasioBl, IAuthBl authBl, IJwtTokenBl jwtTokenBl, IAnuncioBl anuncioBl)
         {
             _authBl = authBl;
             _jwtTokenBl = jwtTokenBl;
+            _anuncioBl = anuncioBl;
             _gimnasioBl = gimnasioBl;
         }
 
@@ -74,7 +75,7 @@ namespace ProyectoFinal.API.Controllers
             return Ok(item);
         }
         
-        [Route("/gimnasios/{id:guid}/anuncios")]
+        [HttpGet("/gimnasios/{id:guid}/anuncios")]
         [Authorize(Roles = Rol.Todos)]
         public async Task<ActionResult> Anuncios(Guid id)
         {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 
-namespace ProyectoFinal.BL.Helpers
+namespace ProyectoFinal.Core.Helpers
 {
     public static class UriExtension
     {
