@@ -49,6 +49,12 @@ namespace ProyectoFinal.DAL
                     .IsRequired()
                     .HasColumnName("activo")
                     .HasDefaultValueSql("'1'");
+                
+                entity.Property(e => e.Finalizado)
+                    .HasComment("Nos indica si este registro es de un anuncio cuya creación ha sido finalizada o no")
+                    .IsRequired()
+                    .HasColumnName("finalizado")
+                    .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.FechaActualizado)
                     .HasColumnType("datetime")
@@ -62,10 +68,12 @@ namespace ProyectoFinal.DAL
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.Property(e => e.Inicio)
+                    .IsRequired(false)
                     .HasColumnType("datetime")
                     .HasColumnName("fin");
 
                 entity.Property(e => e.Fin)
+                    .IsRequired(false)
                     .HasColumnType("datetime")
                     .HasColumnName("inicio");
 
@@ -77,6 +85,7 @@ namespace ProyectoFinal.DAL
 
                 entity.Property(e => e.ReproduccionesLimite)
                     .HasColumnType("int(2)")
+                    .IsRequired(false)
                     .HasColumnName("reproduccionesLimite");
 
                 entity.Property(e => e.Tipo)

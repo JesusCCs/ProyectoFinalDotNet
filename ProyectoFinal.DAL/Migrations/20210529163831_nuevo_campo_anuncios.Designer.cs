@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProyectoFinal.DAL;
 
 namespace ProyectoFinal.DAL.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210529163831_nuevo_campo_anuncios")]
+    partial class nuevo_campo_anuncios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,7 +156,7 @@ namespace ProyectoFinal.DAL.Migrations
                         .HasColumnName("fechaCreado")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<DateTime?>("Fin")
+                    b.Property<DateTime>("Fin")
                         .HasColumnType("datetime")
                         .HasColumnName("inicio");
 
@@ -173,7 +175,7 @@ namespace ProyectoFinal.DAL.Migrations
                         .UseCollation("utf8mb4_unicode_ci")
                         .HasCharSet("utf8mb4");
 
-                    b.Property<DateTime?>("Inicio")
+                    b.Property<DateTime>("Inicio")
                         .HasColumnType("datetime")
                         .HasColumnName("fin");
 
@@ -183,7 +185,7 @@ namespace ProyectoFinal.DAL.Migrations
                         .HasColumnName("recurso")
                         .HasComment("Se guarda la referencia al archivo en la carpeta anuncios");
 
-                    b.Property<int?>("ReproduccionesLimite")
+                    b.Property<int>("ReproduccionesLimite")
                         .HasColumnType("int(2)")
                         .HasColumnName("reproduccionesLimite");
 
@@ -322,15 +324,15 @@ namespace ProyectoFinal.DAL.Migrations
                         {
                             Id = new Guid("76148582-7877-4b91-be8e-22e34376045a"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5d000d5d-0b96-4a1b-a214-9904d9d232d1",
+                            ConcurrencyStamp = "c46c143f-5940-461f-8625-59c487cb624a",
                             Email = "admin@email.es",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@email.es",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBwW0m8jYuTXd7zv9VBFlURFYBue0zma2Qcu8OIZ2aH0+gpqki5TOQE5+BTS13+sdQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECpVcmdkzkSppM/kQch9QSJa9iFa2FDbfPySwrTVTXY7EoZnoUEWQeg8c1nUfGu+kg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "22e83ec5-bfdc-4839-b1d8-f285eb546eef",
+                            SecurityStamp = "af7437eb-658c-48e3-af81-aa27d4fb06d0",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -366,21 +368,21 @@ namespace ProyectoFinal.DAL.Migrations
                         new
                         {
                             Id = new Guid("893feaeb-af9f-400c-8779-4c783f3986b4"),
-                            ConcurrencyStamp = "65792b89-679f-4057-ab25-4f251c9c8de7",
+                            ConcurrencyStamp = "11c09e61-f0c1-41b6-86eb-6dfc86518dd1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("1896c21f-eebe-427d-a2ac-29416eb3432c"),
-                            ConcurrencyStamp = "731d9180-5b54-4e11-af56-d0ef6a0fb227",
+                            Id = new Guid("9edc4db8-690f-48d9-989c-8f20aac3ad4d"),
+                            ConcurrencyStamp = "07bf6e9b-e853-4766-8cdb-3d42bfa40b88",
                             Name = "Gimnasio",
                             NormalizedName = "GIMNASIO"
                         },
                         new
                         {
-                            Id = new Guid("b3707a12-3297-4b3b-845f-6758db4b4484"),
-                            ConcurrencyStamp = "cec9bab3-e9c4-41bc-a13c-6286b003716e",
+                            Id = new Guid("dcc87d86-1910-4027-b97c-d1adf53375f6"),
+                            ConcurrencyStamp = "fdfad6e1-9c46-43be-a72c-827e434ea634",
                             Name = "Usuario",
                             NormalizedName = "USUARIO"
                         });
