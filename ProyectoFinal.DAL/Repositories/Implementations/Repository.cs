@@ -18,9 +18,28 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
             _context = context;
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<IEnumerable<T>> GetAll(
+            Expression<Func<T, bool>> where = null, string includes = "",
+            Expression<Func<T, object>> orderBy = null)
         {
-            return await _context.Set<T>().ToListAsync();
+            IQueryable<T> query = _context.Set<T>();
+
+            foreach (var include in includes.Split(",", StringSplitOptions.RemoveEmptyEntries))
+            {
+                query.Include(include);
+            }
+
+            if (where is not null)
+            {
+                query = query.Where(where);
+            }
+
+            if (orderBy is not null)
+            {
+                query = query.OrderBy(orderBy);
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<T> GetById(Guid id, string includes = "")
@@ -37,7 +56,7 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
         {
             IQueryable<T> query = _context.Set<T>();
 
-            foreach (var include in includes.Split(",",StringSplitOptions.RemoveEmptyEntries))
+            foreach (var include in includes.Split(",", StringSplitOptions.RemoveEmptyEntries))
             {
                 query.Include(include);
             }
@@ -50,7 +69,7 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
             entity.Id = Guid.NewGuid();
             await _context.Set<T>().AddAsync(entity);
             await _context.SaveChangesAsync();
-            
+
             return entity;
         }
 
@@ -59,7 +78,7 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
             _context.Set<T>().Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
             var entry = _context.Entry(entity);
-            
+
             var properties = typeof(T).GetProperties();
             foreach (var property in properties)
             {

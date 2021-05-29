@@ -53,7 +53,11 @@ namespace ProyectoFinal.BL.Implementations
 
         public async Task<IEnumerable<AnuncioDatesResponse>> GetDates()
         {
-            var list = await _repository.GetAll();
+            var list = await _repository
+                .GetAll(anuncio => anuncio.Finalizado 
+                                   && anuncio.Activo.Value 
+                                   && anuncio.Inicio.Value > DateTime.Today, "",
+                    anuncio => anuncio.Inicio);
             return _mapper.Map<IEnumerable<AnuncioDatesResponse>>(list);
         }
 

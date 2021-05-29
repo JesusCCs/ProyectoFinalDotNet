@@ -7,7 +7,8 @@ namespace ProyectoFinal.DAL.Repositories.Contracts
 {
     public interface IRepository<T> where T : class
     {
-        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>> where = null, string includes = "",
+            Expression<Func<T, object>> orderBy = null);
 
         Task<T> GetById(Guid id, string includes = "");
 
