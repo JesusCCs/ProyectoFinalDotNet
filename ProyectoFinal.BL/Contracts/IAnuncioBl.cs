@@ -11,6 +11,7 @@ namespace ProyectoFinal.BL.Contracts
         Task<Guid> Create(AnuncioCreateStep1Request request);
         Task<IEnumerable<AnuncioDatesResponse>> GetDates();
         Task<AnuncioDetallesResponse> GetById(Guid id);
-        Task<IEnumerable<AnunciosGimnasioResponse>> GetAllFrom(Guid id);
+        Task<IEnumerable<AnuncioBaseResponse>> GetAllFrom(Guid id);
+        Task<AnuncioBaseResponse> UpdateCreation(Guid id, AnuncioCreateStep2Request request);
     }
 }

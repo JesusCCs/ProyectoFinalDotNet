@@ -37,6 +37,19 @@ namespace ProyectoFinal.BL.Implementations
             
             return anuncio.Id;
         }
+        
+        public async Task<AnuncioBaseResponse> UpdateCreation(Guid id, AnuncioCreateStep2Request request)
+        {
+            var anuncio = await _repository.GetById(id);
+
+            anuncio.Inicio = request.Inicio;
+            anuncio.Fin = request.Fin;
+            anuncio.ReproduccionesLimite = request.ReproduccionesLimite;
+
+            await _repository.Update(anuncio);
+
+            return _mapper.Map<AnuncioBaseResponse>(anuncio);
+        }
 
         public async Task<IEnumerable<AnuncioDatesResponse>> GetDates()
         {
@@ -50,10 +63,10 @@ namespace ProyectoFinal.BL.Implementations
             return _mapper.Map<AnuncioDetallesResponse>(entity);
         }
 
-        public async Task<IEnumerable<AnunciosGimnasioResponse>> GetAllFrom(Guid id)
+        public async Task<IEnumerable<AnuncioBaseResponse>> GetAllFrom(Guid id)
         {
             var lista = await _repository.GetByCondition(anuncio => anuncio.GimnasioId == id);
-            return _mapper.Map<IEnumerable<AnunciosGimnasioResponse>>(lista);
+            return _mapper.Map<IEnumerable<AnuncioBaseResponse>>(lista);
         }
     }
 }

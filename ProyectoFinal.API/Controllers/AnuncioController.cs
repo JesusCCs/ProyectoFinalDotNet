@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,14 @@ namespace ProyectoFinal.API.Controllers
         public async Task<ActionResult> Create([FromForm] AnuncioCreateStep1Request request)
         {
             var anuncio = await _anuncioBl.Create(request);
+            return Ok(anuncio);
+        }
+        
+        [HttpPost("/anuncios/{id:guid}")]
+        [Authorize(Roles = Rol.Gimnasio)]
+        public async Task<ActionResult> UpdateCreation(Guid id, [FromBody] AnuncioCreateStep2Request request)
+        {
+            var anuncio = await _anuncioBl.UpdateCreation(id, request);
             return Ok(anuncio);
         }
         

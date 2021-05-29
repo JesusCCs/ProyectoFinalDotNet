@@ -13,25 +13,25 @@ namespace ProyectoFinal.Core.DTO
         [Required, MaxFileSize(30), AllowedMimeType(".jpg,.jpeg,.png,.gif,.mp4,.avi,.webm")]
         public IFormFile Recurso { get; set; }
     }
-        
-    public class AnuncioDetallesResponse
+
+    public class AnuncioCreateStep2Request
     {
-        public Guid Id { get; set; }
-            
+        [Required]
         public int ReproduccionesLimite { get; set; }
         
-        public string Tipo { get; set; }
-            
+        [Required] 
         public DateTime Inicio { get; set; }
             
+        [Required]
         public DateTime Fin { get; set; }
+    }
         
-        public bool Activo { get; set; }
-            
-        public string Recurso { get; set; }
+    public class AnuncioDetallesResponse: AnuncioBaseResponse
+    {
+        
     }
     
-    public class AnunciosGimnasioResponse
+    public class AnuncioBaseResponse
     {
         public Guid Id { get; set; }
             
