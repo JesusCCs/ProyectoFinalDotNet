@@ -12,6 +12,7 @@
 
     <ItemGroup>
       <PackageReference Include="FluentEmail.Razor" Version="3.0.0" />
+      <PackageReference Include="NReco.VideoInfo.LT" Version="1.1.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -27,6 +28,10 @@
     <ItemGroup>
         <None Remove="Templates\ConfirmEmail.cshtml" />
         <EmbeddedResource Include="Templates\ConfirmEmail.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Helpers\FFProbe" />
     </ItemGroup>
 
 </Project>

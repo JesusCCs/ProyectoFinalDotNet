@@ -1,7 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using ProyectoFinal.Core.Exceptions;
 
 namespace ProyectoFinal.Core.Helpers
 {
@@ -23,12 +25,23 @@ namespace ProyectoFinal.Core.Helpers
 
             var savePath = Path.Combine(CreateDestiny(type), fileName);
 
-            await using var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write);
-            await file.CopyToAsync(fileStream);
+            await using (var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write))
+            {
+                await file.CopyToAsync(fileStream);
+            }
 
-            return fileName;
+            if (type != FileType.Anuncio || file.GetTipo() != AnunciosTipo.Video) return fileName;
+            
+            var ruta = _env.ContentRootPath + "\\..\\ProyectoFinal.Core\\Helpers\\FFProbe";
+            var ffProbe = new NReco.VideoInfo.FFProbe {ToolPath = ruta};
+            var videoInfo = ffProbe.GetMediaInfo(savePath);
+
+            if (videoInfo.Duration < TimeSpan.FromSeconds(31)) return fileName;
+
+            Remove(savePath, FileType.Anuncio);
+            throw new TimeVideoExceeded();
         }
-        
+
         public void Remove(string fileName, FileType type)
         {
             var path = Path.Combine(CreateDestiny(type), fileName);
@@ -51,7 +64,7 @@ namespace ProyectoFinal.Core.Helpers
                 _ => null
             };
         }
-        
+
         private string CreateOrigin(FileType type)
         {
             return type switch
