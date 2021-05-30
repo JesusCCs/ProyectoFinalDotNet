@@ -45,6 +45,14 @@ namespace ProyectoFinal.API.Controllers
             return Ok(anuncio);
         }
         
+        [HttpPut("/anuncios/{id:guid}/finalizado")]
+        [Authorize(Roles = Rol.Gimnasio)]
+        public async Task<ActionResult> ConfirmCreation(Guid id, [FromBody] AnuncioConfirmRequest request)
+        {
+            var anuncio = await _anuncioBl.ConfirmCreation(id, request.Finalizado);
+            return Ok(anuncio);
+        }
+        
         [HttpGet("/anuncios/{inicio:DateTime}/{fin:DateTime}")]
         [Authorize(Roles = Rol.Gimnasio)]
         public async Task<ActionResult> GetForCheck(DateTime inicio, DateTime fin)

@@ -14,5 +14,6 @@ namespace ProyectoFinal.BL.Contracts
         Task<IEnumerable<AnuncioBaseResponse>> GetAllFrom(Guid id);
         Task<AnuncioBaseResponse> UpdateDetails(Guid id, AnuncioUpdateDetailsRequest request);
         Task<Guid> UpdateRecurso(Guid id, AnuncioUpdateRecursoRequest request);
+        Task<AnuncioBaseResponse> ConfirmCreation(Guid id, bool finalizado);
     }
 }

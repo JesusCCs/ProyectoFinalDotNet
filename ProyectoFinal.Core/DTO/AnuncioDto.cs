@@ -19,6 +19,12 @@ namespace ProyectoFinal.Core.DTO
         
     }
 
+    public class AnuncioConfirmRequest
+    {
+        [Required] 
+        public bool Finalizado { get; set; }
+    }
+
     public class AnuncioUpdateDetailsRequest
     {
         [Required]

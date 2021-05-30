@@ -67,6 +67,16 @@ namespace ProyectoFinal.BL.Implementations
             return anuncio.Id;
         }
 
+        public async Task<AnuncioBaseResponse> ConfirmCreation(Guid id, bool finalizado)
+        {
+            var anuncio = await _repository.GetById(id);
+
+            anuncio.Finalizado = finalizado;
+            await _repository.Update(anuncio);
+            
+            return _mapper.Map<AnuncioBaseResponse>(anuncio);
+        }
+
         public async Task<bool> CheckDates(DateTime inicio, DateTime fin)
         {
             var list = await _repository.GetAll(anuncio => anuncio.Finalizado && anuncio.Activo.Value 
