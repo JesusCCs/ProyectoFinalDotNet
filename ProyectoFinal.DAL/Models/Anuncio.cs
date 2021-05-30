@@ -12,7 +12,7 @@ namespace ProyectoFinal.DAL.Models
             AnunciosUsuarios = new HashSet<AnunciosUsuario>();
         }
         
-        public Guid GimnasioId { get; set; }
+        public Guid GimnasioId { get; init; }
         
         public bool Finalizado { get; set; }
         

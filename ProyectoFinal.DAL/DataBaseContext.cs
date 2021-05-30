@@ -67,12 +67,12 @@ namespace ProyectoFinal.DAL
                     .HasColumnName("fechaCreado")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.Inicio)
+                entity.Property(e => e.Fin)
                     .IsRequired(false)
                     .HasColumnType("datetime")
                     .HasColumnName("fin");
 
-                entity.Property(e => e.Fin)
+                entity.Property(e => e.Inicio)
                     .IsRequired(false)
                     .HasColumnType("datetime")
                     .HasColumnName("inicio");

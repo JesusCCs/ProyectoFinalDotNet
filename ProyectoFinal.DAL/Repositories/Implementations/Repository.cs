@@ -78,14 +78,19 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
             _context.Set<T>().Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
             var entry = _context.Entry(entity);
+            
+            entry.Entity.FechaActualizado = DateTime.Now;
 
             var properties = typeof(T).GetProperties();
             foreach (var property in properties)
             {
-                if (property.GetValue(entity, null) == null)
+                if (property.GetValue(entity, null) != null) continue;
+
+                try
                 {
                     entry.Property(property.Name).IsModified = false;
                 }
+                catch (InvalidOperationException) { }
             }
 
             var count = await _context.SaveChangesAsync();

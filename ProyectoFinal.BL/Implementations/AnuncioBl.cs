@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using ProyectoFinal.BL.Contracts;
@@ -38,7 +39,7 @@ namespace ProyectoFinal.BL.Implementations
             return anuncio.Id;
         }
 
-        public async Task<AnuncioBaseResponse> UpdateCreation(Guid id, AnuncioUpdateDetailsRequest request)
+        public async Task<AnuncioBaseResponse> UpdateDetails(Guid id, AnuncioUpdateDetailsRequest request)
         {
             var anuncio = await _repository.GetById(id);
 
@@ -60,19 +61,18 @@ namespace ProyectoFinal.BL.Implementations
             _fileManager.Remove(anuncio.Recurso, FileType.Anuncio);
 
             anuncio.Recurso = nuevoRecurso;
+            anuncio.Tipo = request.Recurso.GetTipo();
             await _repository.Update(anuncio);
 
             return anuncio.Id;
         }
 
-        public async Task<IEnumerable<AnuncioDatesResponse>> GetDates()
+        public async Task<bool> CheckDates(DateTime inicio, DateTime fin)
         {
-            var list = await _repository
-                .GetAll(anuncio => anuncio.Finalizado
-                                   && anuncio.Activo.Value
-                                   && anuncio.Inicio.Value > DateTime.Today, "",
-                    anuncio => anuncio.Inicio);
-            return _mapper.Map<IEnumerable<AnuncioDatesResponse>>(list);
+            var list = await _repository.GetAll(anuncio => anuncio.Finalizado && anuncio.Activo.Value 
+                        && ( (anuncio.Inicio > inicio && inicio < anuncio.Fin) || (anuncio.Inicio > fin && fin < anuncio.Fin) ));
+            
+            return !list.Any();
         }
 
         public async Task<AnuncioDetallesResponse> GetById(Guid id)
