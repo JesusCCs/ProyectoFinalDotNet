@@ -93,7 +93,7 @@ namespace ProyectoFinal.BL.Implementations
 
         public async Task<IEnumerable<AnuncioBaseResponse>> GetAllFrom(Guid id)
         {
-            var lista = await _repository.GetByCondition(anuncio => anuncio.GimnasioId == id && anuncio.Finalizado);
+            var lista = await _repository.GetAll(anuncio => anuncio.GimnasioId == id && anuncio.Finalizado);
             return _mapper.Map<IEnumerable<AnuncioBaseResponse>>(lista);
         }
     }
