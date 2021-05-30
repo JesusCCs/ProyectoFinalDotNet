@@ -36,7 +36,7 @@ namespace ProyectoFinal.Core.Helpers
             var ffProbe = new NReco.VideoInfo.FFProbe {ToolPath = ruta};
             var videoInfo = ffProbe.GetMediaInfo(savePath);
 
-            if (videoInfo.Duration < TimeSpan.FromSeconds(31)) return fileName;
+            if (videoInfo.Duration < TimeSpan.FromSeconds(21)) return fileName;
 
             Remove(savePath, FileType.Anuncio);
             throw new TimeVideoExceeded();

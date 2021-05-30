@@ -23,17 +23,25 @@ namespace ProyectoFinal.API.Controllers
         
         [HttpPost]
         [Authorize(Roles = Rol.Gimnasio)]
-        public async Task<ActionResult> Create([FromForm] AnuncioCreateStep1Request request)
+        public async Task<ActionResult> Create([FromForm] AnuncioCreateRequest request)
         {
             var anuncio = await _anuncioBl.Create(request);
             return Ok(anuncio);
         }
         
-        [HttpPost("/anuncios/{id:guid}")]
+        [HttpPut("/anuncios/{id:guid}/details")]
         [Authorize(Roles = Rol.Gimnasio)]
-        public async Task<ActionResult> UpdateCreation(Guid id, [FromBody] AnuncioCreateStep2Request request)
+        public async Task<ActionResult> UpdateCreation(Guid id, [FromBody] AnuncioUpdateDetailsRequest request)
         {
             var anuncio = await _anuncioBl.UpdateCreation(id, request);
+            return Ok(anuncio);
+        }
+        
+        [HttpPut("/anuncios/{id:guid}/recurso")]
+        [Authorize(Roles = Rol.Gimnasio)]
+        public async Task<ActionResult> UpdateFile(Guid id, [FromBody] AnuncioUpdateRecursoRequest request)
+        {
+            var anuncio = await _anuncioBl.UpdateRecurso(id, request);
             return Ok(anuncio);
         }
         

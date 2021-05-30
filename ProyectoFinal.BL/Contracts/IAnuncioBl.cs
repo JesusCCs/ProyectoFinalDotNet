@@ -8,10 +8,11 @@ namespace ProyectoFinal.BL.Contracts
 {
     public interface IAnuncioBl
     {
-        Task<Guid> Create(AnuncioCreateStep1Request request);
+        Task<Guid> Create(AnuncioCreateRequest request);
         Task<IEnumerable<AnuncioDatesResponse>> GetDates();
         Task<AnuncioDetallesResponse> GetById(Guid id);
         Task<IEnumerable<AnuncioBaseResponse>> GetAllFrom(Guid id);
-        Task<AnuncioBaseResponse> UpdateCreation(Guid id, AnuncioCreateStep2Request request);
+        Task<AnuncioBaseResponse> UpdateCreation(Guid id, AnuncioUpdateDetailsRequest request);
+        Task<Guid> UpdateRecurso(Guid id, AnuncioUpdateRecursoRequest request);
     }
 }

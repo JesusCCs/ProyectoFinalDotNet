@@ -23,8 +23,8 @@ namespace ProyectoFinal.BL.Implementations
             _fileManager = fileManager;
             _repository = repository;
         }
-        
-        public async Task<Guid> Create(AnuncioCreateStep1Request request)
+
+        public async Task<Guid> Create(AnuncioCreateRequest request)
         {
             var recurso = await _fileManager.Upload(request.Recurso, FileType.Anuncio);
 
@@ -34,11 +34,11 @@ namespace ProyectoFinal.BL.Implementations
                 Recurso = recurso,
                 Tipo = request.Recurso.GetTipo()
             });
-            
+
             return anuncio.Id;
         }
-        
-        public async Task<AnuncioBaseResponse> UpdateCreation(Guid id, AnuncioCreateStep2Request request)
+
+        public async Task<AnuncioBaseResponse> UpdateCreation(Guid id, AnuncioUpdateDetailsRequest request)
         {
             var anuncio = await _repository.GetById(id);
 
@@ -51,11 +51,25 @@ namespace ProyectoFinal.BL.Implementations
             return _mapper.Map<AnuncioBaseResponse>(anuncio);
         }
 
+        public async Task<Guid> UpdateRecurso(Guid id, AnuncioUpdateRecursoRequest request)
+        {
+            var anuncio = await _repository.GetById(id);
+
+            var nuevoRecurso = await _fileManager.Upload(request.Recurso, FileType.Anuncio);
+
+            _fileManager.Remove(anuncio.Recurso, FileType.Anuncio);
+
+            anuncio.Recurso = nuevoRecurso;
+            await _repository.Update(anuncio);
+
+            return anuncio.Id;
+        }
+
         public async Task<IEnumerable<AnuncioDatesResponse>> GetDates()
         {
             var list = await _repository
-                .GetAll(anuncio => anuncio.Finalizado 
-                                   && anuncio.Activo.Value 
+                .GetAll(anuncio => anuncio.Finalizado
+                                   && anuncio.Activo.Value
                                    && anuncio.Inicio.Value > DateTime.Today, "",
                     anuncio => anuncio.Inicio);
             return _mapper.Map<IEnumerable<AnuncioDatesResponse>>(list);
@@ -69,7 +83,7 @@ namespace ProyectoFinal.BL.Implementations
 
         public async Task<IEnumerable<AnuncioBaseResponse>> GetAllFrom(Guid id)
         {
-            var lista = await _repository.GetByCondition(anuncio => anuncio.GimnasioId == id);
+            var lista = await _repository.GetByCondition(anuncio => anuncio.GimnasioId == id && anuncio.Finalizado);
             return _mapper.Map<IEnumerable<AnuncioBaseResponse>>(lista);
         }
     }

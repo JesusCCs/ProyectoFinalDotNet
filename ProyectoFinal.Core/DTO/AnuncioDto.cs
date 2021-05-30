@@ -5,7 +5,7 @@ using ProyectoFinal.Core.Validation;
 
 namespace ProyectoFinal.Core.DTO
 {
-    public class AnuncioCreateStep1Request
+    public class AnuncioCreateRequest
     {
         [Required] 
         public Guid GimnasioId { get; set; }
@@ -13,8 +13,13 @@ namespace ProyectoFinal.Core.DTO
         [Required, MaxFileSize(30), AllowedMimeType(".jpg,.jpeg,.png,.gif,.mp4,.avi,.webm")]
         public IFormFile Recurso { get; set; }
     }
+    
+    public class AnuncioUpdateRecursoRequest : AnuncioCreateRequest
+    {
+        
+    }
 
-    public class AnuncioCreateStep2Request
+    public class AnuncioUpdateDetailsRequest
     {
         [Required]
         public int ReproduccionesLimite { get; set; }
