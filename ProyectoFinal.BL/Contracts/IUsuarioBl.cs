@@ -7,12 +7,7 @@ namespace ProyectoFinal.BL.Contracts
 {
     public interface IUsuarioBl
     {
-        Task<UsuarioDetallesDto> Login(UsuarioLoginDto login);
-        Task<UsuarioDetallesDto> Create(UsuarioCreateDto gimnasio);
-        Task<IEnumerable<UsuarioListaDto>> GetAll();
-        Task<UsuarioDetallesDto> GetById(Guid id);
-        Task<bool> Update(Guid id, UsuarioUpdateDto dto);
-        Task<bool> Delete(Guid id);
+        Task<Guid> Create(UsuarioCreateRequest usuario, Guid authId);
         Task<Guid> GetIdByAuthId(Guid authId);
     }
 }

@@ -48,14 +48,8 @@ namespace ProyectoFinal.API
             //  ------- Usuarios ----------
 
             // Mapeo Model --> DTO
-            CreateMap<Usuario, UsuarioListaDto>();
-            CreateMap<Usuario, UsuarioDetallesDto>();
 
             // Mapeo DTO   --> Model
-            CreateMap<UsuarioLoginDto, Usuario>();
-            CreateMap<UsuarioCreateDto, Usuario>();
-            CreateMap<UsuarioUpdateDto, Usuario>()
-                .ForMember(x => x.FechaCreado, opt => opt.Ignore());
 
 
             //  ------- Anuncios ----------
