@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -22,19 +22,43 @@ namespace ProyectoFinal.API.Controllers
         }
         
         [HttpPost]
+        [Authorize(Roles = Rol.Gimnasio)]
         public async Task<ActionResult> Create([FromForm] AnuncioCreateRequest request)
         {
             var anuncio = await _anuncioBl.Create(request);
             return Ok(anuncio);
         }
         
-        [HttpGet]
-        public async Task<ActionResult> GetForCheck([FromQuery] bool forCheckDates)
+        [HttpPut("/anuncios/{id:guid}/details")]
+        [Authorize(Roles = Rol.Gimnasio)]
+        public async Task<ActionResult> UpdateDetails(Guid id, [FromBody] AnuncioUpdateDetailsRequest request)
         {
-            if (!forCheckDates) return NoContent();
-            
-            var lista = await _anuncioBl.GetDates();
-            return Ok(lista);
+            var anuncio = await _anuncioBl.UpdateDetails(id, request);
+            return Ok(anuncio);
+        }
+        
+        [HttpPut("/anuncios/{id:guid}/recurso")]
+        [Authorize(Roles = Rol.Gimnasio)]
+        public async Task<ActionResult> UpdateFile(Guid id, [FromForm] AnuncioUpdateRecursoRequest request)
+        {
+            var anuncio = await _anuncioBl.UpdateRecurso(id, request);
+            return Ok(anuncio);
+        }
+        
+        [HttpPut("/anuncios/{id:guid}/finalizado")]
+        [Authorize(Roles = Rol.Gimnasio)]
+        public async Task<ActionResult> ConfirmCreation(Guid id, [FromBody] AnuncioConfirmRequest request)
+        {
+            var anuncio = await _anuncioBl.ConfirmCreation(id, request.Finalizado);
+            return Ok(anuncio);
+        }
+        
+        [HttpGet("/anuncios/{inicio:DateTime}/{fin:DateTime}")]
+        [Authorize(Roles = Rol.Gimnasio)]
+        public async Task<ActionResult> GetForCheck(DateTime inicio, DateTime fin)
+        {
+            var resultado = await _anuncioBl.CheckDates(inicio, fin);
+            return Ok(resultado);
         }
     }
 }

@@ -154,13 +154,16 @@ namespace ProyectoFinal.DAL.Migrations
                         .HasColumnName("fechaCreado")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<DateTime>("FechaFin")
-                        .HasColumnType("date")
-                        .HasColumnName("fechaFin");
+                    b.Property<DateTime?>("Fin")
+                        .HasColumnType("datetime")
+                        .HasColumnName("inicio");
 
-                    b.Property<DateTime>("FechaInicio")
-                        .HasColumnType("date")
-                        .HasColumnName("fechaInicio");
+                    b.Property<bool>("Finalizado")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("finalizado")
+                        .HasDefaultValueSql("'0'")
+                        .HasComment("Nos indica si este registro es de un anuncio cuya creación ha sido finalizada o no");
 
                     b.Property<Guid>("GimnasioId")
                         .ValueGeneratedOnAdd()
@@ -170,13 +173,17 @@ namespace ProyectoFinal.DAL.Migrations
                         .UseCollation("utf8mb4_unicode_ci")
                         .HasCharSet("utf8mb4");
 
+                    b.Property<DateTime?>("Inicio")
+                        .HasColumnType("datetime")
+                        .HasColumnName("fin");
+
                     b.Property<string>("Recurso")
                         .IsRequired()
                         .HasColumnType("varchar(255)")
                         .HasColumnName("recurso")
                         .HasComment("Se guarda la referencia al archivo en la carpeta anuncios");
 
-                    b.Property<int>("ReproduccionesLimite")
+                    b.Property<int?>("ReproduccionesLimite")
                         .HasColumnType("int(2)")
                         .HasColumnName("reproduccionesLimite");
 
@@ -192,9 +199,6 @@ namespace ProyectoFinal.DAL.Migrations
                     b.HasIndex(new[] { "GimnasioId" }, "FK_anuncios_gimnasios");
 
                     b.ToTable("anuncios");
-
-                    b
-                        .HasComment("La tabla que contiene los anuncios contratados por los gimnasios. Las especificaciones son las siguiente");
                 });
 
             modelBuilder.Entity("ProyectoFinal.DAL.Models.AnunciosUsuario", b =>
@@ -318,15 +322,15 @@ namespace ProyectoFinal.DAL.Migrations
                         {
                             Id = new Guid("76148582-7877-4b91-be8e-22e34376045a"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1e5eb8ed-b985-4aae-9287-b175faf02ed8",
+                            ConcurrencyStamp = "5d000d5d-0b96-4a1b-a214-9904d9d232d1",
                             Email = "admin@email.es",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@email.es",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBdBdJWR8gdjR9TTbotDUREQRnn/NSG84o5o6YEI/MqGWhHvDq1Ph3lTNPg08kEJ9g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBwW0m8jYuTXd7zv9VBFlURFYBue0zma2Qcu8OIZ2aH0+gpqki5TOQE5+BTS13+sdQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bda9ae08-d855-4f33-8f30-72c54906bd0d",
+                            SecurityStamp = "22e83ec5-bfdc-4839-b1d8-f285eb546eef",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -362,21 +366,21 @@ namespace ProyectoFinal.DAL.Migrations
                         new
                         {
                             Id = new Guid("893feaeb-af9f-400c-8779-4c783f3986b4"),
-                            ConcurrencyStamp = "e74ded5f-0055-40a5-acbb-e62d1060fdb9",
+                            ConcurrencyStamp = "65792b89-679f-4057-ab25-4f251c9c8de7",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("bebb099f-44ef-4f41-8558-5b12f413ee1a"),
-                            ConcurrencyStamp = "199aaba8-e5c1-42b4-9842-ec7da79bc4be",
+                            Id = new Guid("1896c21f-eebe-427d-a2ac-29416eb3432c"),
+                            ConcurrencyStamp = "731d9180-5b54-4e11-af56-d0ef6a0fb227",
                             Name = "Gimnasio",
                             NormalizedName = "GIMNASIO"
                         },
                         new
                         {
-                            Id = new Guid("e72c7d9b-4e58-4b81-9341-0ce6f46243e9"),
-                            ConcurrencyStamp = "9436af0a-7f82-4d81-9b81-90b55e075516",
+                            Id = new Guid("b3707a12-3297-4b3b-845f-6758db4b4484"),
+                            ConcurrencyStamp = "cec9bab3-e9c4-41bc-a13c-6286b003716e",
                             Name = "Usuario",
                             NormalizedName = "USUARIO"
                         });

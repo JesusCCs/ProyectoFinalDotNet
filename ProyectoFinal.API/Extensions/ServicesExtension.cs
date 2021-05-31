@@ -17,10 +17,10 @@ using Microsoft.OpenApi.Models;
 using ProyectoFinal.API.Authorization.Handlers;
 using ProyectoFinal.API.Authorization.Requirements;
 using ProyectoFinal.BL.Contracts;
-using ProyectoFinal.BL.Helpers;
 using ProyectoFinal.BL.Implementations;
 using ProyectoFinal.BL.Providers;
 using ProyectoFinal.Core;
+using ProyectoFinal.Core.Helpers;
 using ProyectoFinal.DAL;
 using ProyectoFinal.DAL.Models.Auth;
 using ProyectoFinal.DAL.Repositories.Contracts;
@@ -212,6 +212,7 @@ namespace ProyectoFinal.API.Extensions
         {
             services.AddSingleton<IAuthorizationHandler,GymIsTargetHandler>();
             services.AddSingleton<IAuthorizationHandler,AuthIsTargetHandler>();
+            services.AddSingleton<IAuthorizationHandler,GymIsOwnerHandler>();
             
             services.AddAuthorization(options =>
             {
@@ -223,6 +224,11 @@ namespace ProyectoFinal.API.Extensions
                 options.AddPolicy(Policy.AuthIsTarget, policy =>
                 {
                     policy.Requirements.Add(new AuthIsTargetRequirement());
+                });
+                
+                options.AddPolicy(Policy.GymIsOwner, policy =>
+                {
+                    policy.Requirements.Add(new GymIsOwnerRequirement());
                 });
             });
             

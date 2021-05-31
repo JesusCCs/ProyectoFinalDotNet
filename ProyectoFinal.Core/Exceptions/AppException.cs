@@ -9,7 +9,7 @@ namespace ProyectoFinal.Core.Exceptions
     {
         public ValidationProblemDetails ValidationProblemDetails { get; }
 
-        protected AppException(IDictionary<string, string[]> errors)
+        public AppException(IDictionary<string, string[]> errors)
         {
             ValidationProblemDetails = new ValidationProblemDetails(errors)
             {

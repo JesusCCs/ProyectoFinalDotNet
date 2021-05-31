@@ -37,9 +37,6 @@ namespace ProyectoFinal.DAL
             {
                 entity.ToTable("anuncios");
 
-                entity.HasComment(
-                    "La tabla que contiene los anuncios contratados por los gimnasios. Las especificaciones son las siguiente");
-
                 entity.HasIndex(e => e.GimnasioId, "FK_anuncios_gimnasios");
 
                 entity.Property(e => e.Id)
@@ -52,6 +49,12 @@ namespace ProyectoFinal.DAL
                     .IsRequired()
                     .HasColumnName("activo")
                     .HasDefaultValueSql("'1'");
+                
+                entity.Property(e => e.Finalizado)
+                    .HasComment("Nos indica si este registro es de un anuncio cuya creación ha sido finalizada o no")
+                    .IsRequired()
+                    .HasColumnName("finalizado")
+                    .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.FechaActualizado)
                     .HasColumnType("datetime")
@@ -64,13 +67,15 @@ namespace ProyectoFinal.DAL
                     .HasColumnName("fechaCreado")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.Property(e => e.FechaFin)
-                    .HasColumnType("date")
-                    .HasColumnName("fechaFin");
+                entity.Property(e => e.Fin)
+                    .IsRequired(false)
+                    .HasColumnType("datetime")
+                    .HasColumnName("fin");
 
-                entity.Property(e => e.FechaInicio)
-                    .HasColumnType("date")
-                    .HasColumnName("fechaInicio");
+                entity.Property(e => e.Inicio)
+                    .IsRequired(false)
+                    .HasColumnType("datetime")
+                    .HasColumnName("inicio");
 
                 entity.Property(e => e.GimnasioId)
                     .HasColumnName("gimnasioID")
@@ -80,6 +85,7 @@ namespace ProyectoFinal.DAL
 
                 entity.Property(e => e.ReproduccionesLimite)
                     .HasColumnType("int(2)")
+                    .IsRequired(false)
                     .HasColumnName("reproduccionesLimite");
 
                 entity.Property(e => e.Tipo)

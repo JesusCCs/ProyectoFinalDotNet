@@ -3,10 +3,10 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ProyectoFinal.BL.Contracts;
-using ProyectoFinal.BL.Helpers;
 using ProyectoFinal.Core;
 using ProyectoFinal.Core.DTO;
 using ProyectoFinal.Core.Exceptions;
+using ProyectoFinal.Core.Helpers;
 using ProyectoFinal.DAL.Models;
 using ProyectoFinal.DAL.Repositories.Contracts;
 

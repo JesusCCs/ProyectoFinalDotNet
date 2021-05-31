@@ -10,36 +10,59 @@ namespace ProyectoFinal.Core.DTO
         [Required] 
         public Guid GimnasioId { get; set; }
 
-        [Required, StringLength(200, MinimumLength = 6)]
-        public int ReproduccionesLimite { get; set; }
-
-        [Required, StringLength(200, MinimumLength = 5)]
-        public DateTime FechaInicio { get; set; }
-
-        [Required, MinLength(10)] 
-        public DateTime FechaFin { get; set; }
-            
         [Required, MaxFileSize(30), AllowedMimeType(".jpg,.jpeg,.png,.gif,.mp4,.avi,.webm")]
         public IFormFile Recurso { get; set; }
     }
+    
+    public class AnuncioUpdateRecursoRequest : AnuncioCreateRequest
+    {
         
-    public class AnuncioDetallesResponse
+    }
+
+    public class AnuncioConfirmRequest
+    {
+        [Required] 
+        public bool Finalizado { get; set; }
+    }
+
+    public class AnuncioUpdateDetailsRequest
+    {
+        [Required]
+        public int ReproduccionesLimite { get; set; }
+        
+        [Required] 
+        public DateTime Inicio { get; set; }
+            
+        [Required]
+        public DateTime Fin { get; set; }
+    }
+        
+    public class AnuncioDetallesResponse: AnuncioBaseResponse
+    {
+        
+    }
+    
+    public class AnuncioBaseResponse
     {
         public Guid Id { get; set; }
             
         public int ReproduccionesLimite { get; set; }
+        
+        public string Tipo { get; set; }
             
-        public DateTime FechaInicio { get; set; }
+        public DateTime Inicio { get; set; }
             
-        public DateTime FechaFin { get; set; }
+        public DateTime Fin { get; set; }
+        
+        public bool Activo { get; set; }
             
         public string Recurso { get; set; }
     }
         
     public class AnuncioDatesResponse
     {
-        public DateTime FechaInicio { get; set; }
+        public DateTime Inicio { get; set; }
             
-        public DateTime FechaFin { get; set; }
+        public DateTime Fin { get; set; }
     }
 }

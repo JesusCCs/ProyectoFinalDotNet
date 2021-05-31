@@ -24,6 +24,7 @@
     {
         public const string GymIsTarget = "GymIsTarget";
         public const string AuthIsTarget = "AuthIsTarget";
+        public const string GymIsOwner = "GymIsOwner";
     }
     
     public static class App
@@ -32,6 +33,13 @@
         public const string RefreshTokenProvider = "RefreshTokenProvider";
 
         public const int TimeDefaultToken = 24;
+    }
+    
+    public static class AnunciosTipo
+    {
+        public const string Imagen = "imagen";
+        public const string Gif = "gif";
+        public const string Video = "video";
     }
 
     public enum EmailType
