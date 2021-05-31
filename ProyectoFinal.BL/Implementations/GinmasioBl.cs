@@ -52,6 +52,12 @@ namespace ProyectoFinal.BL.Implementations
         public async Task<IEnumerable<GimnasioGetAllResponse>> GetAll()
         {
             var list = await _repository.GetAll();
+            
+            foreach (var gimnasio in list)
+            {
+                gimnasio.Logo = _fileManager.Get(gimnasio.Logo, FileType.Logo);
+            }
+            
             return _mapper.Map<IEnumerable<GimnasioGetAllResponse>>(list);
         }
 

@@ -60,7 +60,7 @@ namespace ProyectoFinal.API.Controllers
         }
         
         [HttpGet]
-        [Authorize(Roles = Rol.Admin)]
+        [Authorize(Roles = Rol.Usuario)]
         public async Task<ActionResult> GetAll()
         {
             var lista = await _gimnasioBl.GetAll();

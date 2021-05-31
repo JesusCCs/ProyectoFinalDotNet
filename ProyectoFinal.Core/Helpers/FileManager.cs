@@ -50,7 +50,7 @@ namespace ProyectoFinal.Core.Helpers
 
         public string Get(string? fileName, FileType type)
         {
-            return fileName is null
+            return (fileName is null or "")
                 ? Path.Combine(CreateOrigin(FileType.Logo), "default.jpg")
                 : Path.Combine(CreateOrigin(type), fileName);
         }
