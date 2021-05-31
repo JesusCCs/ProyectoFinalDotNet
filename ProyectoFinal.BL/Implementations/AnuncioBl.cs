@@ -94,6 +94,12 @@ namespace ProyectoFinal.BL.Implementations
         public async Task<IEnumerable<AnuncioBaseResponse>> GetAllFrom(Guid id)
         {
             var lista = await _repository.GetAll(anuncio => anuncio.GimnasioId == id && anuncio.Finalizado);
+            
+            foreach (var anuncio in lista)
+            {
+                anuncio.Recurso = _fileManager.Get(anuncio.Recurso, FileType.Anuncio);
+            }
+            
             return _mapper.Map<IEnumerable<AnuncioBaseResponse>>(lista);
         }
     }
