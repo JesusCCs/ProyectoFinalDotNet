@@ -50,7 +50,7 @@ namespace ProyectoFinal.API
             // Mapeo Model --> DTO
 
             // Mapeo DTO   --> Model
-
+            CreateMap<UsuarioCreateRequest, Usuario>();
 
             //  ------- Anuncios ----------
 

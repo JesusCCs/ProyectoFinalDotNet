@@ -65,6 +65,7 @@ namespace ProyectoFinal.API.Extensions
         {
             // Se añade inyección de dependencias de BL
             services.AddScoped<IGinmasioBl, GinmasioBl>();
+            services.AddScoped<IUsuarioBl, UsuarioBl>();
             services.AddScoped<IAnuncioBl, AnuncioBl>();
             services.AddScoped<IAuthBl, AuthBl>();
             

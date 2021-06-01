@@ -49,7 +49,7 @@ namespace ProyectoFinal.API.Controllers
         
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> Create([FromForm] UsuarioCreateRequest request)
+        public async Task<ActionResult> Create([FromBody] UsuarioCreateRequest request)
         {
             var guid = await _authBl.Create(request, Rol.Usuario);
             await _usuarioBl.Create(request, guid);
