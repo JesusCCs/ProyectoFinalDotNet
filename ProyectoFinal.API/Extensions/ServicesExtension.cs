@@ -79,6 +79,7 @@ namespace ProyectoFinal.API.Extensions
             // Se añaden las clases singleton wrappers de appsettings
             services.AddSingleton(_configuration.GetSection("FrontEnd").Get<FrontEnd>());
             services.AddSingleton(_configuration.GetSection("Server").Get<Server>());
+            services.AddSingleton(_configuration.GetSection("Mobile").Get<Mobile>());
             
             return services;
         }

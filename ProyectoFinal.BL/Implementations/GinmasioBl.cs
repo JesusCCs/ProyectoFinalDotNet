@@ -55,7 +55,7 @@ namespace ProyectoFinal.BL.Implementations
             
             foreach (var gimnasio in list)
             {
-                gimnasio.Logo = _fileManager.Get(gimnasio.Logo, FileType.Logo);
+                gimnasio.Logo = _fileManager.Get(gimnasio.Logo, FileType.Logo, true);
             }
             
             return _mapper.Map<IEnumerable<GimnasioGetAllResponse>>(list);
@@ -70,6 +70,15 @@ namespace ProyectoFinal.BL.Implementations
             return _mapper.Map<GimnasioGetByIdResponse>(entity);
         }
         
+        public async Task<GimnasioMobileResponse> GetByIdMobile(Guid id)
+        {
+            var entity = await _repository.GetById(id);
+
+            entity.Logo = _fileManager.Get(entity.Logo, FileType.Logo, true);
+            
+            return _mapper.Map<GimnasioMobileResponse>(entity);
+        }
+
         public async Task<GimnasioGetByIdResponse> GetByAuthId(Guid guidAuth)
         {
             var entity = await _repository.GetByCondition(gimnasio => gimnasio.AuthId == guidAuth);

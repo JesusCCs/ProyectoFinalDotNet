@@ -19,6 +19,11 @@
     {
         public string Url { get; set; }
     }
+    
+    public class Mobile
+    {
+        public string Url { get; set; }
+    }
 
     public static class Policy
     {

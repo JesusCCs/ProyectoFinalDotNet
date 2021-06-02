@@ -11,6 +11,7 @@ namespace ProyectoFinal.BL.Contracts
         Task<Gimnasio> Create(GimnasioCreateRequest gimnasio, Guid authId);
         Task<IEnumerable<GimnasioGetAllResponse>> GetAll();
         Task<GimnasioGetByIdResponse> GetById(Guid id);
+        Task<GimnasioMobileResponse> GetByIdMobile(Guid id);
         Task<GimnasioGetByIdResponse> GetByAuthId(Guid guidAuth);
         Task<Guid> GetIdByAuthId(Guid guidAuth);
         Task Update(Guid id, GimnasioUpdateRequest gimnasio);

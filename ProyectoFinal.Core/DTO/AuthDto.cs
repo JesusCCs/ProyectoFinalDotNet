@@ -25,8 +25,7 @@ namespace ProyectoFinal.Core.DTO
 
         [Required, StringLength(200, MinimumLength = 5)]
         public string Password { get; set; }
-
-        [Required]
+        
         public bool RememberMe { get; set; }
     }
     

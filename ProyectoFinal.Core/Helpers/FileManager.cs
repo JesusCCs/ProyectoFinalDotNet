@@ -11,11 +11,13 @@ namespace ProyectoFinal.Core.Helpers
     {
         private readonly IWebHostEnvironment _env;
         private readonly Server _server;
+        private readonly Mobile _mobile;
 
-        public FileManager(IWebHostEnvironment env, Server server)
+        public FileManager(IWebHostEnvironment env, Server server, Mobile mobile)
         {
             _env = env;
             _server = server;
+            _mobile = mobile;
         }
 
         public async Task<string> Upload(IFormFile file, FileType type)
@@ -51,8 +53,15 @@ namespace ProyectoFinal.Core.Helpers
         public string Get(string? fileName, FileType type)
         {
             return (fileName is null or "")
-                ? Path.Combine(CreateOrigin(FileType.Logo), "default.jpg")
-                : Path.Combine(CreateOrigin(type), fileName);
+                ? CreateOrigin(FileType.Logo, false) + "/" + "default.jpg"
+                : CreateOrigin(type, false) + "/" + fileName;
+        }
+        
+        public string Get(string? fileName, FileType type, bool isMobile)
+        {
+            return fileName is null or ""
+                ? CreateOrigin(FileType.Logo, isMobile) + "/" + "default.jpg"
+                : CreateOrigin(type, isMobile) + "/" + fileName;
         }
 
         private string CreateDestiny(FileType type)
@@ -65,12 +74,13 @@ namespace ProyectoFinal.Core.Helpers
             };
         }
 
-        private string CreateOrigin(FileType type)
+        private string CreateOrigin(FileType type, bool isMobile)
         {
+            var path = isMobile ? _mobile.Url : _server.Url;
             return type switch
             {
-                FileType.Logo => Path.Combine(_server.Url, "logos"),
-                FileType.Anuncio => Path.Combine(_server.Url, "anuncios"),
+                FileType.Logo => path +  "/logos",
+                FileType.Anuncio => path + "/anuncios",
                 _ => null
             };
         }
