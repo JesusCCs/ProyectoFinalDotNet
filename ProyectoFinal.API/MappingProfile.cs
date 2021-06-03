@@ -63,6 +63,7 @@ namespace ProyectoFinal.API
             CreateMap<Anuncio, AnuncioDetallesResponse>();
             CreateMap<Anuncio, AnuncioDatesResponse>();
             CreateMap<Anuncio, AnuncioBaseResponse>();
+            CreateMap<Anuncio, AnuncioToWatchResponse>();
 
             // Mapeo DTO   --> Model
             

@@ -53,12 +53,28 @@ namespace ProyectoFinal.API.Controllers
             return Ok(anuncio);
         }
         
+        [HttpPut("/anuncios/{id:guid}/visto")]
+        [AllowAnonymous]
+        public async Task<ActionResult> MarkAdAsWatched(Guid id, [FromBody] AnuncioWatchedRequest request)
+        {
+            await _anuncioBl.MarkAdAsWatched(id, request);
+            return Accepted();
+        }
+        
         [HttpGet("/anuncios/{inicio:DateTime}/{fin:DateTime}")]
         [Authorize(Roles = Rol.Gimnasio)]
         public async Task<ActionResult> GetForCheck(DateTime inicio, DateTime fin)
         {
             var resultado = await _anuncioBl.CheckDates(inicio, fin);
             return Ok(resultado);
+        }
+        
+        [HttpGet("/anuncios/disponible")]
+        [AllowAnonymous]
+        public async Task<ActionResult> GetAdToWatch()
+        {
+            var resultado = await _anuncioBl.GetAdToWatch();
+            return resultado is null ? NoContent() : Ok(resultado);
         }
     }
 }
