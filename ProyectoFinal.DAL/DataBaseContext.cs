@@ -84,9 +84,15 @@ namespace ProyectoFinal.DAL
                     .HasCollation("utf8mb4_unicode_ci");
 
                 entity.Property(e => e.ReproduccionesLimite)
-                    .HasColumnType("int(2)")
+                    .HasColumnType("int(10)")
                     .IsRequired(false)
                     .HasColumnName("reproduccionesLimite");
+                
+                entity.Property(e => e.Reproducciones)
+                    .HasColumnType("int(10)")
+                    .IsRequired(false)
+                    .HasColumnName("reproducciones")
+                    .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.Tipo)
                     .IsRequired()
