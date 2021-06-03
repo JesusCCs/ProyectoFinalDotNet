@@ -107,7 +107,8 @@ namespace ProyectoFinal.BL.Implementations
 
         public async Task<IEnumerable<AnuncioBaseResponse>> GetAllFrom(Guid id)
         {
-            var lista = await _repoAd.GetAll(anuncio => anuncio.GimnasioId == id && anuncio.Finalizado);
+            var lista = await _repoAd.GetAll(
+                a => a.GimnasioId == id && a.Finalizado, "", a => a.FechaCreado);
 
             foreach (var anuncio in lista)
             {
@@ -165,6 +166,16 @@ namespace ProyectoFinal.BL.Implementations
             };
 
             await _repoAdsUser.Create(relation);
+        }
+
+        public async Task Update(Guid id, AnuncioUpdateRequest request)
+        {
+            var anuncio = await _repoAd.GetById(id);
+            if (anuncio is null) return;
+
+            anuncio.Activo = request.Activo;
+
+            await _repoAd.Update(anuncio);
         }
     }
 }

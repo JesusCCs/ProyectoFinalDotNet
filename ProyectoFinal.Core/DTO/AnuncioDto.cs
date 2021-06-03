@@ -24,6 +24,12 @@ namespace ProyectoFinal.Core.DTO
         [Required] 
         public bool Finalizado { get; set; }
     }
+    
+    public class AnuncioUpdateRequest
+    {
+        [Required] 
+        public bool Activo { get; set; }
+    }
 
     public class AnuncioUpdateDetailsRequest
     {

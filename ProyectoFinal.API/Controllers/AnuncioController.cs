@@ -53,6 +53,14 @@ namespace ProyectoFinal.API.Controllers
             return anuncio is null ? NoContent() : Ok(anuncio);
         }
         
+        [HttpPut("/anuncios/{id:guid}")]
+        [Authorize(Roles = Rol.Gimnasio)]
+        public async Task<ActionResult> Update(Guid id, [FromBody] AnuncioUpdateRequest request)
+        {
+            await _anuncioBl.Update(id, request);
+            return Accepted();
+        }
+        
         [HttpPut("/anuncios/{id:guid}/visto")]
         [AllowAnonymous]
         public async Task<ActionResult> MarkAdAsWatched(Guid id, [FromBody] AnuncioWatchedRequest request)

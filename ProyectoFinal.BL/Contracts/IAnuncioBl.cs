@@ -18,5 +18,6 @@ namespace ProyectoFinal.BL.Contracts
         Task<AnuncioBaseResponse?> SetStatus(Guid id, bool finalizado);
         Task<AnuncioToWatchResponse?> GetAdToWatch();
         Task MarkAdAsWatched(Guid guid, AnuncioWatchedRequest request);
+        Task Update(Guid id, AnuncioUpdateRequest request);
     }
 }
