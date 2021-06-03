@@ -47,10 +47,10 @@ namespace ProyectoFinal.API.Controllers
         
         [HttpPut("/anuncios/{id:guid}/finalizado")]
         [Authorize(Roles = Rol.Gimnasio)]
-        public async Task<ActionResult> ConfirmCreation(Guid id, [FromBody] AnuncioConfirmRequest request)
+        public async Task<ActionResult> SetStatus(Guid id, [FromBody] AnuncioConfirmRequest request)
         {
-            var anuncio = await _anuncioBl.ConfirmCreation(id, request.Finalizado);
-            return Ok(anuncio);
+            var anuncio = await _anuncioBl.SetStatus(id, request.Finalizado);
+            return anuncio is null ? NoContent() : Ok(anuncio);
         }
         
         [HttpPut("/anuncios/{id:guid}/visto")]

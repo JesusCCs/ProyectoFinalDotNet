@@ -71,22 +71,29 @@ namespace ProyectoFinal.BL.Implementations
             return anuncio.Id;
         }
 
-        public async Task<AnuncioBaseResponse> ConfirmCreation(Guid id, bool finalizado)
+        public async Task<AnuncioBaseResponse?> SetStatus(Guid id, bool finalizado)
         {
             var anuncio = await _repoAd.GetById(id);
 
-            anuncio.Finalizado = finalizado;
-            await _repoAd.Update(anuncio);
+            if (!finalizado)
+            {
+                _fileManager.Remove(anuncio.Recurso, FileType.Anuncio);
+                await _repoAd.Delete(anuncio);
+                return null;
+            }
 
+            anuncio.Finalizado = true;
+            await _repoAd.Update(anuncio);
+            
             return _mapper.Map<AnuncioBaseResponse>(anuncio);
         }
 
         public async Task<bool> CheckDates(DateTime inicio, DateTime fin)
         {
             var list = await _repoAd.GetAll(
-                anuncio => anuncio.Finalizado && anuncio.Activo.Value && 
-                           ((anuncio.Inicio > inicio && inicio < anuncio.Fin) || 
-                            (anuncio.Inicio > fin && fin < anuncio.Fin)));
+                anuncio => anuncio.Finalizado && anuncio.Activo!.Value 
+                           && (inicio.Date <= anuncio.Inicio!.Value.Date && anuncio.Inicio!.Value.Date <= fin.Date 
+                               || inicio.Date <= anuncio.Fin!.Value.Date && anuncio.Fin!.Value.Date <= fin.Date));
 
             return !list.Any();
         }
