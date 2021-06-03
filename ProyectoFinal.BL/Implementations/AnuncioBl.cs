@@ -84,6 +84,7 @@ namespace ProyectoFinal.BL.Implementations
 
             anuncio.Finalizado = true;
             await _repoAd.Update(anuncio);
+            anuncio.Recurso = _fileManager.Get(anuncio.Recurso, FileType.Anuncio);
             
             return _mapper.Map<AnuncioBaseResponse>(anuncio);
         }
