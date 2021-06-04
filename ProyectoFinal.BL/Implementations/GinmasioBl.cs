@@ -51,7 +51,8 @@ namespace ProyectoFinal.BL.Implementations
 
         public async Task<IEnumerable<GimnasioGetAllResponse>> GetAll()
         {
-            var list = await _repository.GetAll();
+            var list = await _repository.GetAll(
+                g => g.Activo.Value && g.Auth.EmailConfirmed, "", g => g.Nombre, "asc");
             
             foreach (var gimnasio in list)
             {
