@@ -9,15 +9,33 @@ using Request.Body.Peeker;
 
 namespace ProyectoFinal.API.Authorization.Handlers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class AuthIsTargetHandler : AuthorizationHandler<AuthIsTargetRequirement>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="httpContextAccessor"></param>
         public AuthIsTargetHandler(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context">
+        /// Contiene la información que el usuario envía en el header de Authorization,
+        /// en el caso concreto de nuestra aplicación, se trata del token
+        /// </param>
+        /// <param name="requirement">
+        /// Lo que se debe cumplir para que 
+        /// </param>
+        /// <returns></returns>
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
             AuthIsTargetRequirement requirement)
         {

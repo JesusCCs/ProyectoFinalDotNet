@@ -11,6 +11,12 @@ namespace ProyectoFinal.API
     /// </summary>
     public class MappingProfile : Profile
     {
+        /// <summary>
+        /// Contiene en su definición todos los mapeos que se usa en la API. Hay que notar que alguno de ellos
+        /// tienen lógica simple, como por ejemplo los gimnasios y las tarifas. Pues en la base de datos se guarda
+        /// como céntimos mientras que en la aplicación hay que mostrarla como euros. Luego en el mapeo se multiplica
+        /// o divide entre 100 según convenga
+        /// </summary>
         public MappingProfile()
         {
             //  ---------  Auth  -----------
