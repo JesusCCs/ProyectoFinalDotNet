@@ -21,7 +21,7 @@ namespace ProyectoFinal.Core.Validation
 
             var extension = Path.GetExtension(file.FileName);
 
-            return !_mimesAllowed.Contains(extension)
+            return !_mimesAllowed.Contains(extension.ToLower())
                 ? new ValidationResult(ErrorMessage(extension))
                 : ValidationResult.Success;
         }

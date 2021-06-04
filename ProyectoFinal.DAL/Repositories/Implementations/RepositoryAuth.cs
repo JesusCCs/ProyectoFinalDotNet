@@ -13,11 +13,11 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
         {
             _context = context;
         }
-        
+
         public async Task<T> Login(T entity)
         {
             return await _context.Set<T>().FirstOrDefaultAsync(g =>
-                (g.Email == entity.Email || g.UserName == entity.UserName) && 
+                (g.Email == entity.Email || g.UserName == entity.UserName) &&
                 g.PasswordHash == entity.PasswordHash && g.EmailConfirmed);
         }
 

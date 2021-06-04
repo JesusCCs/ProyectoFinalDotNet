@@ -20,7 +20,7 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
 
         public async Task<IEnumerable<T>> GetAll(
             Expression<Func<T, bool>> where = null, string includes = "",
-            Expression<Func<T, object>> orderBy = null)
+            Expression<Func<T, object>> orderBy = null, string order = "desc")
         {
             IQueryable<T> query = _context.Set<T>();
 
@@ -36,7 +36,7 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
 
             if (orderBy is not null)
             {
-                query = query.OrderBy(orderBy);
+                query = order == "desc" ? query.OrderByDescending(orderBy) : query.OrderBy(orderBy);
             }
 
             return await query.ToListAsync();
@@ -78,7 +78,7 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
             _context.Set<T>().Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
             var entry = _context.Entry(entity);
-            
+
             entry.Entity.FechaActualizado = DateTime.Now;
 
             var properties = typeof(T).GetProperties();
@@ -90,7 +90,9 @@ namespace ProyectoFinal.DAL.Repositories.Implementations
                 {
                     entry.Property(property.Name).IsModified = false;
                 }
-                catch (InvalidOperationException) { }
+                catch (InvalidOperationException)
+                {
+                }
             }
 
             var count = await _context.SaveChangesAsync();

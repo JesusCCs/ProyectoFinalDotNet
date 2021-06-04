@@ -70,6 +70,20 @@ namespace ProyectoFinal.Core.DTO
         
         public bool RecibidoTour { get; set; }
     }
+    
+    public class GimnasioMobileResponse
+    {
+        public Guid Id { get; set; }
+        
+        public string Identificador { get; set; }
+        
+        public string Nombre { get; set; }
+        public string Direccion { get; set; }
+        public string Descripcion { get; set; }
+        public string Logo { get; set; }
+        
+        public float Tarifa { get; set; }
+    }
 
     public class GimnasioGetAllResponse
     {

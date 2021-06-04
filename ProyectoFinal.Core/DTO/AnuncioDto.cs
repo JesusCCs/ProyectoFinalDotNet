@@ -24,6 +24,12 @@ namespace ProyectoFinal.Core.DTO
         [Required] 
         public bool Finalizado { get; set; }
     }
+    
+    public class AnuncioUpdateRequest
+    {
+        [Required] 
+        public bool Activo { get; set; }
+    }
 
     public class AnuncioUpdateDetailsRequest
     {
@@ -48,6 +54,8 @@ namespace ProyectoFinal.Core.DTO
             
         public int ReproduccionesLimite { get; set; }
         
+        public int Reproducciones { get; set; }
+        
         public string Tipo { get; set; }
             
         public DateTime Inicio { get; set; }
@@ -64,5 +72,19 @@ namespace ProyectoFinal.Core.DTO
         public DateTime Inicio { get; set; }
             
         public DateTime Fin { get; set; }
+    }
+    
+    public class AnuncioToWatchResponse
+    {
+        public Guid Id { get; set; }
+        public string Recurso { get; set; }
+        public string Tipo { get; set; }
+    }
+    
+    // En caso de que se quiera limitar las reproducciones que quiere ver un usuario en particular
+    public class AnuncioWatchedRequest
+    {
+        [Required]
+        public Guid UsuarioId { get; set; }
     }
 }

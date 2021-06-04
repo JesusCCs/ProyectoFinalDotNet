@@ -65,6 +65,7 @@ namespace ProyectoFinal.API.Extensions
         {
             // Se añade inyección de dependencias de BL
             services.AddScoped<IGinmasioBl, GinmasioBl>();
+            services.AddScoped<IUsuarioBl, UsuarioBl>();
             services.AddScoped<IAnuncioBl, AnuncioBl>();
             services.AddScoped<IAuthBl, AuthBl>();
             
@@ -78,6 +79,7 @@ namespace ProyectoFinal.API.Extensions
             // Se añaden las clases singleton wrappers de appsettings
             services.AddSingleton(_configuration.GetSection("FrontEnd").Get<FrontEnd>());
             services.AddSingleton(_configuration.GetSection("Server").Get<Server>());
+            services.AddSingleton(_configuration.GetSection("Mobile").Get<Mobile>());
             
             return services;
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ProyectoFinal.Core.DTO;
@@ -14,6 +15,9 @@ namespace ProyectoFinal.BL.Contracts
         Task<IEnumerable<AnuncioBaseResponse>> GetAllFrom(Guid id);
         Task<AnuncioBaseResponse> UpdateDetails(Guid id, AnuncioUpdateDetailsRequest request);
         Task<Guid> UpdateRecurso(Guid id, AnuncioUpdateRecursoRequest request);
-        Task<AnuncioBaseResponse> ConfirmCreation(Guid id, bool finalizado);
+        Task<AnuncioBaseResponse?> SetStatus(Guid id, bool finalizado);
+        Task<AnuncioToWatchResponse?> GetAdToWatch();
+        Task MarkAdAsWatched(Guid guid, AnuncioWatchedRequest request);
+        Task Update(Guid id, AnuncioUpdateRequest request);
     }
 }

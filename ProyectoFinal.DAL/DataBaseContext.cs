@@ -84,9 +84,15 @@ namespace ProyectoFinal.DAL
                     .HasCollation("utf8mb4_unicode_ci");
 
                 entity.Property(e => e.ReproduccionesLimite)
-                    .HasColumnType("int(2)")
+                    .HasColumnType("int(10)")
                     .IsRequired(false)
                     .HasColumnName("reproduccionesLimite");
+                
+                entity.Property(e => e.Reproducciones)
+                    .HasColumnType("int(10)")
+                    .IsRequired(false)
+                    .HasColumnName("reproducciones")
+                    .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.Tipo)
                     .IsRequired()
@@ -262,19 +268,6 @@ namespace ProyectoFinal.DAL
                     .HasColumnName("activo")
                     .HasDefaultValueSql("'1'");
 
-                entity.Property(e => e.Apellidos)
-                    .HasColumnType("varchar(255)")
-                    .HasColumnName("apellidos")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_unicode_ci");
-
-                entity.Property(e => e.Direccion)
-                    .IsRequired()
-                    .HasColumnType("varchar(255)")
-                    .HasColumnName("direccion")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_unicode_ci");
-
                 entity.Property(e => e.FechaActualizado)
                     .HasColumnType("datetime")
                     .ValueGeneratedOnAddOrUpdate()
@@ -285,13 +278,6 @@ namespace ProyectoFinal.DAL
                     .HasColumnType("datetime")
                     .HasColumnName("fechaCreado")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.Property(e => e.Nombre)
-                    .IsRequired()
-                    .HasColumnType("varchar(255)")
-                    .HasColumnName("nombre")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_unicode_ci");
 
                 entity.HasOne(d => d.Auth);
             });

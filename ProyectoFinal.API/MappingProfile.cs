@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using ProyectoFinal.Core.DTO;
 using ProyectoFinal.DAL.Models;
 using ProyectoFinal.DAL.Models.Auth;
@@ -20,7 +19,13 @@ namespace ProyectoFinal.API
             //  ------- Gimnasios ----------
 
             // Mapeo Model --> DTO
-            CreateMap<Gimnasio, GimnasioGetAllResponse>();
+            CreateMap<Gimnasio, GimnasioGetAllResponse>()
+                .ForMember(destino => destino.Tarifa,
+                opt => opt.MapFrom(src => src.Tarifa / 100.0f));;
+            CreateMap<Gimnasio, GimnasioMobileResponse>()
+                .ForMember(destino => destino.Tarifa,
+                    opt => opt.MapFrom(src => src.Tarifa / 100.0f));
+            
             CreateMap<Gimnasio, GimnasioGetByIdResponse>()
                 .ForMember(destino => destino.Tarifa,
                     opt => opt.MapFrom(src => src.Tarifa / 100.0f))
@@ -48,15 +53,9 @@ namespace ProyectoFinal.API
             //  ------- Usuarios ----------
 
             // Mapeo Model --> DTO
-            CreateMap<Usuario, UsuarioListaDto>();
-            CreateMap<Usuario, UsuarioDetallesDto>();
 
             // Mapeo DTO   --> Model
-            CreateMap<UsuarioLoginDto, Usuario>();
-            CreateMap<UsuarioCreateDto, Usuario>();
-            CreateMap<UsuarioUpdateDto, Usuario>()
-                .ForMember(x => x.FechaCreado, opt => opt.Ignore());
-
+            CreateMap<UsuarioCreateRequest, Usuario>();
 
             //  ------- Anuncios ----------
 
@@ -64,6 +63,7 @@ namespace ProyectoFinal.API
             CreateMap<Anuncio, AnuncioDetallesResponse>();
             CreateMap<Anuncio, AnuncioDatesResponse>();
             CreateMap<Anuncio, AnuncioBaseResponse>();
+            CreateMap<Anuncio, AnuncioToWatchResponse>();
 
             // Mapeo DTO   --> Model
             

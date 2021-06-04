@@ -23,6 +23,7 @@ namespace ProyectoFinal.DAL.Models
         public DateTime? Fin { get; set; }
         
         public int? ReproduccionesLimite { get; set; }
+        public int? Reproducciones { get; set; }
         
         public Gimnasio Gimnasio { get; set; }
         public ICollection<AnunciosUsuario> AnunciosUsuarios { get; set; }

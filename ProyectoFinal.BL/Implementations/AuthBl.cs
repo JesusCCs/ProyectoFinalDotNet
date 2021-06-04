@@ -11,7 +11,9 @@ using ProyectoFinal.Core;
 using ProyectoFinal.Core.DTO;
 using ProyectoFinal.Core.Exceptions;
 using ProyectoFinal.Core.Helpers;
+using ProyectoFinal.DAL.Models;
 using ProyectoFinal.DAL.Models.Auth;
+using ProyectoFinal.DAL.Repositories.Contracts;
 using static System.String;
 
 namespace ProyectoFinal.BL.Implementations
@@ -22,23 +24,38 @@ namespace ProyectoFinal.BL.Implementations
         
         private readonly UserManager<Auth> _userManager;
         private readonly SignInManager<Auth> _signInManager;
+        private readonly IRepositoryAuth<Auth> _repositoryAuth;
         private readonly IFluentEmail _email;
         private readonly IMapper _mapper;
         private readonly FrontEnd _frontEnd;
 
         public AuthBl(UserManager<Auth> userManager, SignInManager<Auth> signInManager, IFluentEmail email,
-            IMapper mapper, FrontEnd frontEnd)
+            IMapper mapper, FrontEnd frontEnd, IRepositoryAuth<Auth> repositoryAuth)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _email = email;
             _mapper = mapper;
             _frontEnd = frontEnd;
+            _repositoryAuth = repositoryAuth;
         }
 
         public async Task<Guid> Create(AuthBaseRequest request, string rol)
         {
             var auth = _mapper.Map<Auth>(request);
+            
+            // Comprobamos si existe el email/login antes de añadirlo
+            var existencia = await _repositoryAuth.CheckExistence(auth);
+            
+            switch (existencia)
+            {
+                case 3:
+                    throw new EmailAndUserInUseException();
+                case 2:
+                    throw new UserInUseException();
+                case 1:
+                    throw new EmailInUseException();
+            }
 
             var result = await _userManager.CreateAsync(auth, request.Password);
 

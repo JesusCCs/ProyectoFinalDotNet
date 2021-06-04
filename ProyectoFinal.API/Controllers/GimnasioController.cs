@@ -60,7 +60,7 @@ namespace ProyectoFinal.API.Controllers
         }
         
         [HttpGet]
-        [Authorize(Roles = Rol.Admin)]
+        [AllowAnonymous]
         public async Task<ActionResult> GetAll()
         {
             var lista = await _gimnasioBl.GetAll();
@@ -68,10 +68,18 @@ namespace ProyectoFinal.API.Controllers
         }
         
         [HttpGet("{id:guid}")]
-        [Authorize(Roles = Rol.Todos)]
+        [Authorize(Roles = Rol.Gimnasio)]
         public async Task<ActionResult> GetById(Guid id)
         {
             var item = await _gimnasioBl.GetById(id);
+            return Ok(item);
+        }
+        
+        [HttpGet("{id:guid}/mobile")]
+        [AllowAnonymous]
+        public async Task<ActionResult> GetByIdToMobile(Guid id)
+        {
+            var item = await _gimnasioBl.GetByIdMobile(id);
             return Ok(item);
         }
         
